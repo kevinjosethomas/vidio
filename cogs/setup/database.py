@@ -71,3 +71,23 @@ class Database(commands.Cog):
                     return 'Channel doesn\'t exist'
         else:
             raise TypeError(f'Expected int, received {type(query_id)}')
+
+    async def add_channel(self, user_id, name, description, category):
+
+        if not self.text_check([name, description, category]):
+            return 'Bad Arguments'
+
+        async with self.db.acquire() as conn:
+            user = self.bot.db(
+                "SELECT * FROM users WHERE user_id = %s",
+                (user_id,))
+            if not user:
+                await conn.execute(
+                    "INSERT INTO users (user_id, money) VALUES (%s, %s)",
+                    (user_id, 0))
+            await conn.execute(
+                "INSERT INTO channels (user_id,  name, description, subscribers, "
+                "total_views, category, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s",
+                (user_id, name, description, 0, 0, category, datetime.today()))
+            
+        return 'Successful'
