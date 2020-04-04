@@ -85,8 +85,8 @@ bot.embed = 0x2f3136
 bot.money = '💵'
 bot.views = '👀'
 bot.category = '📂'
-bot.live = '<:live:693869294051655721>'
 bot.likes = '<:likes:694721324517556255>'
+bot.subscribers = '<:live:693869294051655721>'
 bot.dislikes = '<:dislikes:694721324483870760>'
 
 bot.fail = '🔴'

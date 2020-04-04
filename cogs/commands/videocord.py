@@ -1,5 +1,6 @@
 import locale
 import asyncio
+import discord
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 
@@ -142,6 +143,107 @@ class VideoCord(commands.Cog):
             await ctx.send(f"{self.bot.yes} **Successfully created your channel!** "
                            f"Check it out with ``>channel``!")
             await message.delete()
+
+    @create_channel.error
+    async def create_channel_error(self, ctx, error):
+        try:
+            if isinstance(error.original, asyncio.TimeoutError):
+                await ctx.send(f'{self.bot.yes} **Canceled channel creation process...** (Timed Out)')
+                ctx.handled = True
+                return
+            ctx.handled = False
+        except AttributeError:
+            ctx.handled = False
+
+    @commands.command(
+        aliases=['c'],
+        usage='``-channel``',
+        help='A simple command that returns the user\'s channel information!')
+    async def channel(self, ctx, *, user: discord.User = None):
+
+        def author_check(msg):
+            return msg.author == ctx.message.author
+
+        if user is None:
+            user = ctx.author.id
+
+        if isinstance(user, discord.User):
+            user = user.id
+
+        channels = await self.database.get_channel(user)
+
+        if channels == "Channel doesn't exist":
+            await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
+
+        elif len(channels) == 1:
+            name = channels[0][2]
+            description = channels[0][3]
+            subs = channels[0][4]
+            total_views = channels[0][5]
+            category = channels[0][6]
+            created_at = channels[0][7]
+            date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
+
+        elif len(channels) > 1:
+
+            message = f"{self.bot.youtube} **This user has multiple channels.** Use the index (number) given" \
+                      f" to the channels in the list below to choose which channel you want to see.\n"
+
+            for channel in channels:
+                message += f"• ``{channels.index(channel)+1}.`` {channel[2]}\n"
+
+            message += "\n To cancel channel search, simply type ``cancel``."
+
+            while True:
+                await ctx.send(message)
+                channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
+
+                if channel_index.content.lower() == 'cancel':
+                    await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
+                    return
+
+                try:
+                    if int(channel_index.content) > 3:
+                        await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                        continue
+                except ValueError:
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
+
+                channel_index = int(channel_index.content) - 1
+                break
+
+            name = channels[channel_index][2]
+            description = channels[channel_index][3]
+            subs = channels[channel_index][4]
+            total_views = channels[channel_index][5]
+            category = channels[channel_index][6]
+            created_at = channels[channel_index][7]
+            date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
+
+        user = self.bot.get_user(user)
+
+        yt_embed = discord.Embed(
+            title=f'**{name}**',
+            description=f'{self.bot.subscribers} **Subscribers:** {subs}\n'
+                        f'{self.bot.views} **Total Views:** {total_views}\n'
+                        f'{self.bot.category} **Category:** {category}\n'
+                        f':calendar_spiral: **Created on:** {date}\n\n'
+                        f':notepad_spiral: **Description:** {description}',
+            color=self.bot.embed)
+
+        yt_embed.set_author(name=user.name, icon_url=user.avatar_url)
+        yt_embed.set_thumbnail(url=user.avatar_url)
+
+        await ctx.send(embed=yt_embed)
+
+    @channel.error
+    async def channel_error(self, ctx, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(f"{self.bot.no} **Unknown user -** ``{ctx.message.content.split()[1]}``")
+            ctx.handled = True
+            return
+        ctx.handled = False
 
 
 def setup(bot):
