@@ -78,7 +78,7 @@ class Database(commands.Cog):
             return 'Bad Arguments'
 
         async with self.db.acquire() as conn:
-            user = self.bot.db(
+            user = self.bot.db.fetchrow(
                 "SELECT * FROM users WHERE user_id = %s",
                 (user_id,))
             if not user:
