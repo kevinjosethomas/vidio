@@ -78,6 +78,7 @@ class Database(commands.Cog):
             return 'Bad Arguments'
 
         async with self.db.acquire() as conn:
+            # This was user = self.bot.db(... Not sure if it needs to be fetchrow or fetch /shrug
             user = self.bot.db.fetchrow(
                 "SELECT * FROM users WHERE user_id = %s",
                 (user_id,))
