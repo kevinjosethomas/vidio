@@ -146,6 +146,7 @@ class VideoCord(commands.Cog):
 
     @create_channel.error
     async def create_channel_error(self, ctx, error):
+
         try:
             if isinstance(error.original, asyncio.TimeoutError):
                 await ctx.send(f'{self.bot.yes} **Canceled channel creation process...** (Timed Out)')
@@ -239,11 +240,97 @@ class VideoCord(commands.Cog):
 
     @channel.error
     async def channel_error(self, ctx, error):
+
         if isinstance(error, commands.BadArgument):
             await ctx.send(f"{self.bot.no} **Unknown user -** ``{ctx.message.content.split()[1]}``")
             ctx.handled = True
             return
         ctx.handled = False
+
+        try:
+            if isinstance(error.original, asyncio.TimeoutError):
+                await ctx.send(f'{self.bot.yes} **Canceled channel creation process...** (Timed Out)')
+                ctx.handled = True
+                return
+            ctx.handled = False
+        except AttributeError:
+            ctx.handled = False
+
+        ctx.handled = False
+
+    @commands.command(
+        aliases=['u'],
+        usage='``-upload``',
+        help='A command that uploads a video on the author\'s channel.')
+    async def upload(self, ctx):
+
+        def author_check(msg):
+            return msg.author == ctx.message.author
+
+        channels = await self.database.get_channel(ctx.author.id)
+
+        if channels == "Channel doesn't exist":
+            await ctx.send(f"{self.bot.no} **You don't have a channel.** You must create a channel to upload videos.")
+            return
+
+        if len(channels) > 1:
+
+            message = f"{self.bot.youtube} **You have multiple channels.** Use the index (number) given" \
+                      f" to the channels in the list below to choose which channel you want to upload to.\n"
+
+            for channel in channels:
+                message += f"• ``{channels.index(channel)+1}.`` {channel[2]}\n"
+
+            message += "\n To cancel video upload, simply type ``cancel``."
+
+            while True:
+                await ctx.send(message)
+                channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
+
+                if channel_index.content.lower() == 'cancel':
+                    await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
+                    return
+
+                try:
+                    if int(channel_index.content) > 3:
+                        await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                        continue
+                except ValueError:
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
+
+                channel_index = int(channel_index.content) - 1
+                break
+
+        video_msg = f'{self.bot.youtube} **Enter a name for your video**\n' \
+                    '**Your video name must not exceed 25 characters. **' \
+                    'Only ``alphabets``, ``digits``, ``punctuation`` ' \
+                    'and ``whitespaces`` are allowed.\n\n' \
+                    'To cancel video upload, simply type ``cancel``.'
+
+        while True:
+
+            await ctx.send(video_msg)
+
+            video_name = await self.bot.wait_for('message', check=author_check, timeout=60)
+
+            if video_name.content == 'cancel':
+                await ctx.send(f'{self.bot.yes} Successfully '
+                               'canceled video upload process...')
+                return
+
+            if len(video_name.content) > 25:
+                continue
+
+            video_name = video_name.content
+            break
+
+        message = await ctx.send(f"{self.bot.loading} Validating "
+                                 f"your entries and uploading your video.")
+
+        await asyncio.sleep(1)
+
+        video = await self.database.upload_video(ctx.author.id, )
 
 
 def setup(bot):
