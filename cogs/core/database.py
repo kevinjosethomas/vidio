@@ -159,11 +159,11 @@ class Database(commands.Cog):
 
     async def add_channel(self, user_id, name, description, category):
 
-        if not self.text_check([name, description, category]):
+        if not await self.text_check([name, description, category]):
             return 'Bad Arguments'
 
         async with self.db.acquire() as conn:
-            user = self.bot.db.fetch(
+            user = await self.bot.db.fetch(
                 "SELECT * FROM users WHERE user_id = $1",
                 user_id,)
             if not user:
@@ -172,13 +172,15 @@ class Database(commands.Cog):
                     user_id, 0)
 
             channels = await self.get_channel(user_id)
-            for channel in channels:
-                if channel[2].lower() == name.lower():
-                    return 'Channel with same name exists'
+
+            if not channels == "Channel doesn't exist":
+                for channel in channels:
+                    if channel[2].lower() == name.lower():
+                        return 'Channel with same name exists'
 
             await conn.execute(
                 "INSERT INTO channels (user_id, name, description, subscribers, "
-                "total_views, category, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+                "total_views, category, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)",
                 user_id, name, description, 0, 0, category, datetime.today())
 
         return 'Successful'
@@ -230,7 +232,7 @@ class Database(commands.Cog):
 
     async def upload_video(self, user_id, channel, name, description):
 
-        if not self.text_check([name, description]):
+        if not await self.text_check([name, description]):
             return 'Bad Arguments'
 
         choices = ['fail', 'poor', 'average', 'good', 'trending']

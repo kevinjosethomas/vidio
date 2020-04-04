@@ -107,12 +107,8 @@ bot.support_server_id = 689210707232686158
 
 # defines the list of cogs in the bot
 cogs = [
-    'cogs.backend.database',
-    'cogs.backend.default',
-    'cogs.backend.owner',
-    'cogs.main.utility',
-    'cogs.main.youtube',
-    'cogs.main.simulation']
+    'cogs.core.database',
+    'cogs.commands.videocord']
 
 # loads all the cogs from the cog list
 for cog in cogs:

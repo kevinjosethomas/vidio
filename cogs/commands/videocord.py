@@ -16,7 +16,7 @@ class VideoCord(commands.Cog):
         help='A simple command that creates a channel for you.')
     async def create_channel(self, ctx):
 
-        channels = self.database.get_channel(ctx.author.id)
+        channels = await self.database.get_channel(ctx.author.id)
 
         if channels == "Channel doesn't exist":
             channels = None
@@ -122,23 +122,26 @@ class VideoCord(commands.Cog):
 
         await asyncio.sleep(1)
 
-        query = self.database.add_channel(ctx.author.id, name, description, category)
+        query = await self.database.add_channel(ctx.author.id, name, description, category)
 
         if query == 'Bad arguments.':
             await ctx.send(f"{self.bot.no} **Error.** Please make "
                            "sure your entries only have alphabets, numbers, punctuation "
                            "and spaces.")
+            await message.delete()
             return
 
         elif query == 'Channel with same name exists':
             await ctx.send(f"{self.bot.no} **You have a channel with the same name.** "
                            f"This makes it really hard for us to handle."
                            f" Please retry with a different name.")
+            await message.delete()
             return
 
         elif query == 'Successful':
             await ctx.send(f"{self.bot.yes} **Successfully created your channel!** "
                            f"Check it out with ``>channel``!")
+            await message.delete()
 
 
 def setup(bot):
