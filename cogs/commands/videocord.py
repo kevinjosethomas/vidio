@@ -330,7 +330,7 @@ class VideoCord(commands.Cog):
 
         await asyncio.sleep(1)
 
-        video = await self.database.upload_video(ctx.author.id, )
+        video = await self.database.upload_video(ctx.author.id, channels[channel_index][1], name, description)
 
 
 def setup(bot):
