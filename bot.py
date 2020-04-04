@@ -83,6 +83,7 @@ bot.PASSWORD = PASSWORD
 bot.embed = 0x2f3136
 
 # some emojis used by the bot
+# Hey can we turn these into discord emojis instead of actual unicode emojis? Idk
 bot.money = '💵'
 bot.views = '👀'
 bot.category = '📂'
