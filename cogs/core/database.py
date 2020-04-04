@@ -164,12 +164,12 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
             user = self.bot.db.fetch(
-                "SELECT * FROM users WHERE user_id = %s",
-                (user_id,))
+                "SELECT * FROM users WHERE user_id = $1",
+                user_id,)
             if not user:
                 await conn.execute(
-                    "INSERT INTO users (user_id, money) VALUES (%s, %s)",
-                    (user_id, 0))
+                    "INSERT INTO users (user_id, money) VALUES ($1, $2)",
+                    user_id, 0)
 
             channels = await self.get_channel(user_id)
             for channel in channels:
@@ -178,8 +178,8 @@ class Database(commands.Cog):
 
             await conn.execute(
                 "INSERT INTO channels (user_id, name, description, subscribers, "
-                "total_views, category, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                (user_id, name, description, 0, 0, category, datetime.today()))
+                "total_views, category, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+                user_id, name, description, 0, 0, category, datetime.today())
 
         return 'Successful'
 
@@ -187,16 +187,16 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
             await conn.execute(
-                "INSERT INTO guilds (guild_id, prefix) VALUES (%s, %s)",
-                (guild.id, '-'))
+                "INSERT INTO guilds (guild_id, prefix) VALUES ($1, $2)",
+                guild.id, '-')
 
     async def get_channel(self, query_id):
 
         if isinstance(query_id, int):
             if len(str(query_id)) >= 15:  # Provided id is a a discord snowflake.
                 channel = await self.db.fetch(
-                    "SELECT * FROM channels WHERE user_id = %s",
-                    (query_id,))
+                    "SELECT * FROM channels WHERE user_id = $1",
+                    query_id)
                 if channel:
                     return channel
                 else:
@@ -204,12 +204,12 @@ class Database(commands.Cog):
 
             else:  # Provided id is a channel id.
                 channel = await self.db.fetch(
-                    "SELECT * FROM channels WHERE channel_id = %s",
-                    (query_id,))
+                    "SELECT * FROM channels WHERE channel_id = $1",
+                    query_id)
                 if channel:
                     return channel
                 else:
-                    return 'Channel doesn\'t exist'
+                    return "Channel doesn't exist"
         else:
             raise TypeError(f'Expected int, received {type(query_id)}')
 
@@ -225,8 +225,8 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
             conn.execute(
-                "UPDATE guilds SET prefix = %s WHERE guild_id = %s",
-                (prefix, guild.id))
+                "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
+                prefix, guild.id)
 
     async def upload_video(self, user_id, channel, name, description):
 
@@ -237,8 +237,8 @@ class Database(commands.Cog):
         status = random.choices(choices, weights=[20, 20, 50, 9.9999, 0.0001])
 
         channel_data = self.db.fetch(
-            "SELECT channel_id, subscribers, total_views FROM channels WHERE user_id = %s AND name = %s",
-            (user_id, channel))
+            "SELECT channel_id, subscribers, total_views FROM channels WHERE user_id = $1 AND name = $2",
+            user_id, channel)
         channel_id = channel_data[0]
         subscribers = channel_data[1]
         total_views = channel_data[2]
@@ -260,14 +260,14 @@ class Database(commands.Cog):
             async with self.db.acquire() as conn:
                 conn.execute(
                     "INSERT INTO videos (channel_id, name, description, status, new_subs, views, "
-                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES (%s, %s, %s"
-                    "%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (channel_id, name, description, status, new_subscribers, views, likes, dislikes,
-                     last_percentage, datetime.now(), datetime.today()))
+                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES $1, $2, $3"
+                    "$4, $5, $6, $7, $8, $9, $10, $11)",
+                    channel_id, name, description, status, new_subscribers, views, likes, dislikes,
+                    last_percentage, datetime.now(), datetime.today())
 
                 conn.execute(
-                    "UPDATE channels SET subscribers = %s, total_views = %s WHERE channel_id = %s",
-                    (subscribers, total_views, channel_id))
+                    "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
+                    subscribers, total_views, channel_id)
 
         elif status == 'poor':
             last_percentage = 1
@@ -286,14 +286,14 @@ class Database(commands.Cog):
             async with self.db.acquire() as conn:
                 conn.execute(
                     "INSERT INTO videos (channel_id, name, description, status, new_subs, views, "
-                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES (%s, %s, %s"
-                    "%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (channel_id, name, description, status, new_subscribers, views, likes, dislikes,
-                     last_percentage, datetime.now(), datetime.today()))
+                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES ($1, $2, $3"
+                    "$4, $5, $6, $7, $8, $9, $10, $11)",
+                    channel_id, name, description, status, new_subscribers, views, likes, dislikes,
+                    last_percentage, datetime.now(), datetime.today())
 
                 conn.execute(
-                    "UPDATE channels SET subscribers = %s, total_views = %s WHERE channel_id = %s",
-                    (subscribers, total_views, channel_id))
+                    "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
+                    subscribers, total_views, channel_id)
 
         elif status == 'average':
             last_percentage = 1
@@ -312,14 +312,14 @@ class Database(commands.Cog):
             async with self.db.acquire() as conn:
                 conn.execute(
                     "INSERT INTO videos (channel_id, name, description, status, new_subs, views, "
-                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES (%s, %s, %s"
-                    "%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (channel_id, name, description, status, new_subscribers, views, likes, dislikes,
-                     last_percentage, datetime.now(), datetime.today()))
+                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES ($1, $2, $3"
+                    "$4, $5, $6, $7, $8, $9, $10, $11)",
+                    channel_id, name, description, status, new_subscribers, views, likes, dislikes,
+                    last_percentage, datetime.now(), datetime.today())
 
                 conn.execute(
-                    "UPDATE channels SET subscribers = %s, total_views = %s WHERE channel_id = %s",
-                    (subscribers, total_views, channel_id))
+                    "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
+                    subscribers, total_views, channel_id)
 
         elif status == 'good':
             last_percentage = 1
@@ -338,14 +338,14 @@ class Database(commands.Cog):
             async with self.db.acquire() as conn:
                 conn.execute(
                     "INSERT INTO videos (channel_id, name, description, status, new_subs, views, "
-                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES (%s, %s, %s"
-                    "%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (channel_id, name, description, status, new_subscribers, views, likes, dislikes,
-                     last_percentage, datetime.now(), datetime.today()))
+                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES ($1, $2, $3"
+                    "$4, $5, $6, $7, $8, $9, $10, $11)",
+                    channel_id, name, description, status, new_subscribers, views, likes, dislikes,
+                    last_percentage, datetime.now(), datetime.today())
 
                 conn.execute(
-                    "UPDATE channels SET subscribers = %s, total_views = %s WHERE channel_id = %s",
-                    (subscribers, total_views, channel_id))
+                    "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
+                    subscribers, total_views, channel_id)
 
         elif status == 'trending':
             last_percentage = 1
@@ -364,14 +364,14 @@ class Database(commands.Cog):
             async with self.db.acquire() as conn:
                 conn.execute(
                     "INSERT INTO videos (channel_id, name, description, status, new_subs, views, "
-                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES (%s, %s, %s"
-                    "%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (channel_id, name, description, status, new_subscribers, views, likes, dislikes,
-                     last_percentage, datetime.now(), datetime.today()))
+                    "likes, dislikes, last_percentage, last_updated, created_at) VALUES ($1, $2, $3"
+                    "$4, $5, $6, $7, $8, $9, $10, $11)",
+                    channel_id, name, description, status, new_subscribers, views, likes, dislikes,
+                    last_percentage, datetime.now(), datetime.today())
 
                 conn.execute(
-                    "UPDATE channels SET subscribers = %s, total_views = %s WHERE channel_id = %s",
-                    (subscribers, total_views, channel_id))
+                    "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
+                    subscribers, total_views, channel_id)
 
         return {'status': status,
                 'new_subs': new_subscribers,

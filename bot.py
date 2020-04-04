@@ -39,15 +39,14 @@ async def get_prefix(bot, message):
     guild_id = message.guild.id
 
     prefix = await bot.db.fetchrow(
-        "SELECT prefix FROM guilds WHERE guild_id = %s",
-        (guild_id,))
+        "SELECT prefix FROM guilds WHERE guild_id = $1",
+        guild_id,)
 
     if not prefix:
         async with bot.db.acquire() as conn:
             await conn.execute(
-                "INSERT INTO guilds (guild_id, prefix) VALUES (%s, %s)",
-                (guild_id, '-')
-            )
+                "INSERT INTO guilds (guild_id, prefix) VALUES ($1, $2)",
+                guild_id, '-')
         return '-'
 
     return prefix[0]
