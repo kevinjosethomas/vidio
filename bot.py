@@ -1,7 +1,7 @@
 """
 This file has the basic setup and configuration for the videonet discord bot.
 It loads the token, creates and runs bot instances, loads it's cogs and prefixes
-and defines a bunch of bot variables.
+and defines a bunch of bot variables including emojis.
 """
 
 
