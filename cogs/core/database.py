@@ -12,6 +12,8 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
+        self.update_videos.start()
+
         bot.algorithm = {
             'fail': {
                 'views': {
@@ -296,13 +298,75 @@ class Database(commands.Cog):
                 'likes': likes,
                 'dislikes': dislikes}
 
-    @tasks.loop(minutes=10)
+    @tasks.loop(seconds=10)
     async def update_videos(self):
 
-        self.db.fetch(
-            "SELECT * FROM videos WHERE now() - last_updated > make_interval(hours := 12)")
+        print("Running")
 
+        videos = await self.db.fetch("SELECT * FROM videos WHERE now() - last_updated > make_interval(seconds := 5);")
 
+        print("1", flush=True)
+        print(videos, flush=True)
+
+        for video in videos:
+
+            video_id = video[0]
+            channel_id = video[1]
+            name = video[2]
+            description = video[3]
+            status = video[4]
+            new_subscribers = video[5]
+            views = video[6]
+            likes = video[7]
+            dislikes = video[8]
+            last_percentage = video[9]
+            last_updated = video[10]
+            uploaded_at = video[11]
+
+            print(channel_id)
+
+            last_percentage += 1
+
+            channel_data = await self.db.fetchrow(
+                "SELECT subscribers, total_views FROM channels WHERE channel_id = $2",
+                channel_id)
+
+            subscribers = int(channel_data[0])
+            total_views = int(channel_data[1])
+
+            views = views + math.ceil(self.bot.algorithm[status]['views'][last_percentage] * views / 100)
+
+            if status == 'poor':
+                new_subscribers = math.ceil(random.choice(self.bot.algorithm[status]['subscribers'])
+                                            * views / 100 - subscribers)
+            else:
+                new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100 - subscribers)
+
+            likes = random.randint(
+                self.bot.algorithm[status]['stats']['likes'][0],
+                self.bot.algorithm[status]['stats']['likes'][1]) * views / 100
+            dislikes = random.randint(
+                self.bot.algorithm[status]['stats']['dislikes'][0],
+                self.bot.algorithm[status]['stats']['dislikes'][1]
+            ) * views / 100
+
+            subscribers += new_subscribers
+            total_views += views
+
+            async with self.db.acquire() as conn:
+                await conn.execute(
+                    "UPDATED videos SET new_subs, views, likes, dislikes, last_percentage, last_updated)"
+                    " VALUES ($1, $2, $3, "
+                    "$4, $5, $6, $7, $8, $9, $10, $11)",
+                    new_subscribers, views, likes, dislikes, last_percentage, datetime.now())
+
+                await conn.execute(
+                    "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
+                    subscribers, total_views, channel_id)
+
+    @update_videos.before_loop
+    async def before_updating(self):
+        await self.bot.wait_until_ready()
 
 
 def setup(bot):
