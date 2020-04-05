@@ -211,7 +211,11 @@ class VideoCord(commands.Cog):
                     await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                     continue
 
-                channel_index = int(channel_index.content) - 1
+                try:
+                    channel_index = int(channel_index.content) - 1
+                except IndexError:
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
                 break
 
             name = channels[channel_index][2]
@@ -292,17 +296,24 @@ class VideoCord(commands.Cog):
                     return
 
                 try:
-                    if int(channel_index.content) > 3:
+                    if int(channel_index.content) > 3 or int(channel_index.content) < 1:
                         await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                         continue
                 except ValueError:
                     await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                     continue
+                try:
+                    channel_index = int(channel_index.content) - 1
+                except IndexError:
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
 
-                channel_index = int(channel_index.content) - 1
                 break
 
-        video_msg = f'{self.bot.youtube} **Enter a name for your video**\n' \
+        else:
+            channel_index = 0
+
+        video_msg = f'{self.bot.youtube} ** Step 1/2 Enter a name for your video**\n' \
                     '**Your video name must not exceed 25 characters. **' \
                     'Only ``alphabets``, ``digits``, ``punctuation`` ' \
                     'and ``whitespaces`` are allowed.\n\n' \
@@ -325,12 +336,79 @@ class VideoCord(commands.Cog):
             video_name = video_name.content
             break
 
-        message = await ctx.send(f"{self.bot.loading} Validating "
-                                 f"your entries and uploading your video.")
+        description_msg = f'{self.bot.youtube} **Step 2/2: Write a description for your video**\n' \
+                          'Perfect! Now, write a cool description ' \
+                          'for your video! Only ``alphabets``, ``digits``, ' \
+                          '``punctuation`` and ``whitespaces`` are allowed. ' \
+                          '**Your channel description must not exceed 250 characters.**\n\n' \
+                          'To skip this, simply type ``skip``\n' \
+                          'To cancel channel setup, simply type ``cancel``.'
+
+        while True:
+
+            await ctx.send(description_msg)
+
+            description = await self.bot.wait_for('message', check=author_check, timeout=180)
+
+            if description.content.lower() == 'cancel':
+                await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
+                return
+
+            if description.content.lower() == 'skip':
+                description = ''
+                break
+
+            if len(description.content) > 250:
+                continue
+
+            description = description.content
+            break
+
+        message = await ctx.send(f"{self.bot.loading} Validating your entries and uploading your video.")
 
         await asyncio.sleep(1)
 
-        video = await self.database.upload_video(ctx.author.id, channels[channel_index][1], name, description)
+        video = await self.database.upload_video(ctx.author.id, channels[channel_index][1], video_name, description)
+
+        if video == 'Bad Arguments':
+            await ctx.send(f"{self.bot.no} **Error.** Please make sure your "
+                           "entries only have alphabets, numbers, punctuation and spaces.")
+            await message.delete()
+            return
+
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
+        status = video['status']
+        channel_name = video['channel']
+        new_subs = locale.format_string('%d', video['new_subs'], grouping=True)
+        views = locale.format_string('%d', video['views'], grouping=True)
+        likes = locale.format_string('%d', video['likes'], grouping=True)
+        dislikes = locale.format_string('%d', video['dislikes'], grouping=True)
+
+        if status == 'successful' or status == 'good':
+            status_quote = f'{self.bot.success} Status'
+            new_subs = f"+{new_subs}"
+        elif status == 'average':
+            status_quote = f'{self.bot.average} Status'
+            new_subs = f"+{new_subs}"
+        elif status == 'poor' or status == 'fail':
+            status_quote = f'{self.bot.fail} Status'
+            new_subs = f"-{new_subs}"
+        else:
+            status_quote = f'{self.bot.average} Status'
+            new_subs = f"+{new_subs}"
+
+        video_embed = discord.Embed(
+            title=video_name,
+            description=f'{self.bot.youtube} **Channel:** {channel_name}\n'
+                        f'**{status_quote}:** {status.capitalize()}\n\n'
+                        f'{self.bot.subscribers} **Subscribers:** {new_subs}\n'
+                        f'{self.bot.views} **Views:** {views}\n\n'
+                        f'{self.bot.likes} **Likes:** {likes}\n'
+                        f'{self.bot.dislikes} **Dislikes:** {dislikes}')
+
+        await message.delete()
+        await ctx.send(embed=video_embed)
 
 
 def setup(bot):
