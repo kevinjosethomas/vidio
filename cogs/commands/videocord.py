@@ -141,7 +141,7 @@ class VideoCord(commands.Cog):
 
         elif query == 'Successful':
             await ctx.send(f"{self.bot.yes} **Successfully created your channel!** "
-                           f"Check it out with ``>channel``!")
+                           f"Check it out with ``{ctx.prefix}channel``!")
             await message.delete()
 
     @create_channel.error
@@ -314,7 +314,7 @@ class VideoCord(commands.Cog):
             channel_index = 0
 
         video_msg = f'{self.bot.youtube} ** Step 1/2 Enter a name for your video**\n' \
-                    '**Your video name must not exceed 25 characters. **' \
+                    '**Your video name must not exceed 50 characters. **' \
                     'Only ``alphabets``, ``digits``, ``punctuation`` ' \
                     'and ``whitespaces`` are allowed.\n\n' \
                     'To cancel video upload, simply type ``cancel``.'
@@ -330,7 +330,8 @@ class VideoCord(commands.Cog):
                                'canceled video upload process...')
                 return
 
-            if len(video_name.content) > 25:
+            if len(video_name.content) > 50:
+                await ctx.send(f"{self.bot.no} **Your title is too long.** Please try again.")
                 continue
 
             video_name = video_name.content
@@ -387,15 +388,12 @@ class VideoCord(commands.Cog):
 
         if status == 'successful' or status == 'good':
             status_quote = f'{self.bot.success} Status'
-            new_subs = f"+{new_subs}"
         elif status == 'average':
             status_quote = f'{self.bot.average} Status'
-            new_subs = f"+{new_subs}"
         elif status == 'poor' or status == 'fail':
             status_quote = f'{self.bot.fail} Status'
-            new_subs = f"-{new_subs}"
-        else:
-            status_quote = f'{self.bot.average} Status'
+
+        if not str(new_subs).startswith('-'):
             new_subs = f"+{new_subs}"
 
         video_embed = discord.Embed(

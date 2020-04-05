@@ -50,7 +50,7 @@ class Database(commands.Cog):
                     10: 5,
                     11: 5
                 },
-                'subscribers': [-10, 10],
+                'subscribers': 10,
                 'stats': {
                     'likes': [2, 4],
                     'dislikes': [2, 4]
@@ -253,10 +253,7 @@ class Database(commands.Cog):
 
         views = math.ceil(self.bot.algorithm[status]['views'][last_percentage] * subscribers / 100)
 
-        if status == 'poor':
-            new_subscribers = math.ceil(random.choice(self.bot.algorithm[status]['subscribers']) * views / 100)
-        else:
-            new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
+        new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
         likes = random.randint(
             self.bot.algorithm[status]['stats']['likes'][0],
@@ -266,18 +263,15 @@ class Database(commands.Cog):
             self.bot.algorithm[status]['stats']['dislikes'][1]
         ) * views / 100
 
-        subscribers += new_subscribers
-        total_views += views
-
         if subscribers < 20:
-            status = 'Average'
+            status = 'average'
             new_subscribers = random.randint(5, 10)
             views = math.ceil(80 * subscribers / 100)
             likes = math.ceil(20 * views / 100)
             dislikes = math.ceil(10 * views / 100)
 
-            total_views += views
-            subscribers += new_subscribers
+        total_views += views
+        subscribers += new_subscribers
 
         async with self.db.acquire() as conn:
             await conn.execute(
@@ -298,13 +292,11 @@ class Database(commands.Cog):
                 'likes': likes,
                 'dislikes': dislikes}
 
-    @tasks.loop(seconds=10)
+    @tasks.loop(minutes=10)
     async def update_videos(self):
         try:
 
-            print("Running")
-
-            videos = await self.db.fetch("SELECT * FROM videos WHERE now() - last_updated > make_interval(secs := 20);")
+            videos = await self.db.fetch("SELECT * FROM videos WHERE now() - last_updated > make_interval(hours := 12);")
 
             for video in videos:
 
@@ -334,15 +326,12 @@ class Database(commands.Cog):
                 subscribers = int(channel_data[0])
                 total_views = int(channel_data[1])
 
+                if subscribers < 20:
+                    continue
+
                 views = views + math.ceil(self.bot.algorithm[status]['views'][last_percentage] * views / 100)
 
-                if status == 'poor':
-                    new_subscribers = math.ceil(random.choice(self.bot.algorithm[status]['subscribers'])
-                                                * views / 100 - subscribers)
-                else:
-                    new_subscribers = math.ceil((self.bot.algorithm[status]['subscribers'] * views / 100) - subscribers)
-
-                print(new_subscribers)
+                new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
                 likes = math.ceil(random.randint(
                     self.bot.algorithm[status]['stats']['likes'][0],
