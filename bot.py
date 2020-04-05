@@ -67,8 +67,7 @@ async def database_setup():
         user='postgres',
         password=PASSWORD,
         database='vlogerdb',
-        host='127.0.0.1'
-    )
+        host='127.0.0.1')
 
 # Calls the database_setup function.
 asyncio.get_event_loop().run_until_complete(database_setup())
@@ -82,8 +81,10 @@ bot.PASSWORD = PASSWORD
 bot.embed = 0x2f3136
 
 # some emojis used by the bot
+bot.bug = '🐛'
 bot.money = '💵'
 bot.views = '👀'
+bot.pencil = '📝'
 bot.category = '📂'
 bot.likes = '<:likes:694721324517556255>'
 bot.subscribers = '<:live:693869294051655721>'
@@ -101,13 +102,18 @@ bot.heartbeat = '<a:ping:692399981935722607>'
 bot.loading = '<a:loading:693852613812158494>'
 
 # some channels the bot uses
+bot.bugs_channel_id = 696014942083612742
 bot.error_channel_id = 692405881115246603
 bot.support_server_id = 689210707232686158
+bot.suggestions_channel_id = 696014954532438116
 
 
 # defines the list of cogs in the bot
 cogs = [
     'cogs.core.database',
+    'cogs.core.default',
+    'cogs.core.owner',
+    'cogs.commands.utility',
     'cogs.commands.videocord']
 
 # loads all the cogs from the cog list

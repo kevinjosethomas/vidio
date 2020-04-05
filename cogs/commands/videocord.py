@@ -45,7 +45,7 @@ class VideoCord(commands.Cog):
                 await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
                 return
 
-            if len(name.content) > 20:
+            if len(name.content) > 50:
                 continue
 
             name = name.content
@@ -173,6 +173,8 @@ class VideoCord(commands.Cog):
 
         channels = await self.database.get_channel(user)
 
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
         if channels == "Channel doesn't exist":
             await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
 
@@ -227,6 +229,9 @@ class VideoCord(commands.Cog):
             date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
 
         user = self.bot.get_user(user)
+
+        subs = locale.format_string("%d", subs, grouping=True)
+        total_views = locale.format_string("%d", total_views, grouping=True)
 
         yt_embed = discord.Embed(
             title=f'**{name}**',
@@ -407,6 +412,31 @@ class VideoCord(commands.Cog):
 
         await message.delete()
         await ctx.send(embed=video_embed)
+
+    @commands.command(
+        aliases=['lb'],
+        usage='``-leaderboard``',
+        help='Returns the 10 people with the most subscribers.')
+    async def leaderboard(self, ctx):
+
+        lb = await self.database.get_leaderboard()
+
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
+        desc = ''
+        pos = 1
+
+        for entry in lb:
+            desc += f'{pos}. ``{locale.format_string("%d", entry[2], grouping=True)} ' \
+                    f'subs`` {self.bot.subscribers} {entry[1]} - <@{entry[0]}>\n'
+            pos += 1
+
+        lb_embed = discord.Embed(
+            title='vloger subscriber leaderboard',
+            description=desc,
+            color=self.bot.embed)
+
+        await ctx.send(embed=lb_embed)
 
 
 def setup(bot):

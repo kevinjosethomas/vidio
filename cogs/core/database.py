@@ -225,12 +225,32 @@ class Database(commands.Cog):
 
         return leaderboard
 
+    async def get_channels_count(self):
+
+        length = await self.db.fetchrow("SELECT COUNT(*) FROM channels")
+
+        return length[0]
+
     async def set_prefix(self, guild, prefix):
 
+        if not await self.text_check(prefix):
+            return 'Bad Arguments'
+
         async with self.db.acquire() as conn:
-            conn.execute(
-                "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
-                prefix, guild.id)
+            c_prefix = await self.db.fetchrow(
+                "SELECT prefix FROM guilds WHERE guild_id = $1",
+                guild.id, )
+            if not c_prefix:
+                await conn.execute(
+                    "INSERT INTO guilds (guild_id, prefix) VALUES ($1, $2)",
+                    guild.id, prefix)
+                return prefix
+            else:
+                await conn.execute(
+                    "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
+                    prefix, guild.id)
+
+        return prefix
 
     async def upload_video(self, user_id, channel, name, description):
 
