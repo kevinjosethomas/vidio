@@ -258,7 +258,7 @@ class VideoCord(commands.Cog):
 
         try:
             if isinstance(error.original, asyncio.TimeoutError):
-                await ctx.send(f'{self.bot.yes} **Canceled channel creation process...** (Timed Out)')
+                await ctx.send(f'{self.bot.yes} **Canceled channel viewing process...** (Timed Out)')
                 ctx.handled = True
                 return
             ctx.handled = False
@@ -271,6 +271,7 @@ class VideoCord(commands.Cog):
         aliases=['u'],
         usage='``-upload``',
         help='A command that uploads a video on the author\'s channel.')
+    @commands.cooldown(1, 3600, BucketType.user)
     async def upload(self, ctx):
 
         def author_check(msg):
