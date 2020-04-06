@@ -4,8 +4,8 @@
 
 # videonet - *work in progress*
 
-[Invite the bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&permissions=379968&scope=bot)  
-[Join the Support Server](https://discord.gg/3MShhbr)
+[![Invite the bot](https://img.shields.io/badge/1.0-Invite%20the%20bot-blue.svg)](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&permissions=379968&scope=bot)  
+[![Join the Support Server](https://img.shields.io/badge/codebyte-Join%20our%20Support%20Server-blue.svg)](https://discord.gg/3MShhbr)
 
 ## What is videonet?
 **videonet** is a new youtube simulator discord bot
