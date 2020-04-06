@@ -4,7 +4,7 @@
 
 # videonet - *work in progress*
 
-[Invite the bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&permissions=379968&scope=bot)
+[Invite the bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&permissions=379968&scope=bot)  
 [Join the Support Server](https://discord.gg/3MShhbr)
 
 ## What is videonet?
@@ -13,9 +13,6 @@ with new features coming out regularly!
 **videonet** allows you and the members of your
 server to create a simulation of a youtube
 channel on Discord!
-
-[Invite the bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&permissions=379968&scope=bot)
-[Join the Support Server](https://discord.gg/3MShhbr)
 
 It's easy to understand and fun to use!
 Start your youtube journey by creating a
