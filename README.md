@@ -14,7 +14,10 @@ with new features coming out regularly!
 server to create a simulation of a youtube
 channel on Discord!
 
-It's easy to understand and fun to play!
+[Invite the bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&permissions=379968&scope=bot)
+[Join the Support Server](https://discord.gg/3MShhbr)
+
+It's easy to understand and fun to use!
 Start your youtube journey by creating a
 channel with `-create_channel` and then work
 towards becoming the best **channel** by uploading 
