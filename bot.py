@@ -17,6 +17,7 @@ dotenv.load_dotenv()
 PASSWORD = os.getenv('password')
 TOKEN = os.getenv('token')
 YT_KEY = os.getenv('yt_key')
+HOSTNAME = os.getenv('hostname')
 
 
 async def get_prefix(bot, message):
@@ -67,7 +68,7 @@ async def database_setup():
         user='postgres',
         password=PASSWORD,
         database='vlogerdb',
-        host='127.0.0.1')
+        host=HOSTNAME)
 
 # Calls the database_setup function.
 asyncio.get_event_loop().run_until_complete(database_setup())
