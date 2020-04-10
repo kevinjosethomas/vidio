@@ -67,7 +67,7 @@ async def database_setup():
     bot.db = await asyncpg.create_pool(
         user='postgres',
         password=PASSWORD,
-        database='vlogerdb',
+        database='videonet',
         host=HOSTNAME)
 
 # Calls the database_setup function.
