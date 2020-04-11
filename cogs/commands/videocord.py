@@ -177,6 +177,7 @@ class VideoCord(commands.Cog):
 
         if channels == "Channel doesn't exist":
             await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
+            return
 
         elif len(channels) == 1:
             name = channels[0][2]
