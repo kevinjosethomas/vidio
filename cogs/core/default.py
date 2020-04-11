@@ -137,8 +137,7 @@ class Default(commands.Cog):
             cooldown_embed = discord.Embed(
                 description=f'You need to wait {str(int(error.retry_after // 60))} '
                 'minutes before trying again!',
-                color=self.bot.embed
-            )
+                color=self.bot.embed)
             await ctx.send(embed=cooldown_embed)
             return
 

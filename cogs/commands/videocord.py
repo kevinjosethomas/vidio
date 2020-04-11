@@ -320,13 +320,20 @@ class VideoCord(commands.Cog):
         else:
             channel_index = 0
 
-        # latest_video = await self.database.get_videos(channels[channel_index][1], 1)
-        #
-        # difference = datetime.now() - latest_video[0][12]
+        latest_video = await self.database.get_videos(channels[channel_index][1], 1)
 
-        # if difference < timedelta(hours=1):
-        #     await ctx.send("Less than an hour")
-        #     return
+        if not latest_video == 'No videos':
+            difference = datetime.now() - latest_video[0][12]
+
+            if difference < timedelta(hours=1):
+                remaining = (difference.seconds // 60) % 60
+
+                cooldown_embed = discord.Embed(
+                    description=f'You need to wait {str(remaining)} '
+                                'minutes before trying again!',
+                    color=self.bot.embed)
+                await ctx.send(embed=cooldown_embed)
+                return
 
         video_msg = f'{self.bot.youtube} ** Step 1/2 Enter a name for your video**\n' \
                     '**Your video name must not exceed 50 characters. **' \
