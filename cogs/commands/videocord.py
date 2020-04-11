@@ -326,7 +326,7 @@ class VideoCord(commands.Cog):
             difference = datetime.now() - latest_video[0][12]
 
             if difference < timedelta(hours=1):
-                remaining = (difference.seconds // 60) % 60
+                remaining = ((timedelta(hours=1) - difference).seconds // 60) % 60
 
                 cooldown_embed = discord.Embed(
                     description=f'You need to wait {str(remaining)} '
