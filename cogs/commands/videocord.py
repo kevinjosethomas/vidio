@@ -2,6 +2,7 @@ import locale
 import asyncio
 import discord
 from discord.ext import commands
+from datetime import datetime, timedelta
 from discord.ext.commands.cooldowns import BucketType
 
 
@@ -272,7 +273,6 @@ class VideoCord(commands.Cog):
         aliases=['u'],
         usage='``-upload``',
         help='A command that uploads a video on the author\'s channel.')
-    @commands.cooldown(1, 3600, BucketType.user)
     async def upload(self, ctx):
 
         def author_check(msg):
@@ -319,6 +319,14 @@ class VideoCord(commands.Cog):
 
         else:
             channel_index = 0
+
+        latest_video = await self.database.get_videos(channels[channel_index][1], 1)
+
+        difference = datetime.now() - latest_video[0][12]
+
+        if difference < timedelta(hours=1):
+            await ctx.send("Less than an hour")
+            return
 
         video_msg = f'{self.bot.youtube} ** Step 1/2 Enter a name for your video**\n' \
                     '**Your video name must not exceed 50 characters. **' \
@@ -414,6 +422,18 @@ class VideoCord(commands.Cog):
 
         await message.delete()
         await ctx.send(embed=video_embed)
+
+    @upload.error
+    async def upload_error(self, ctx, error):
+
+        try:
+            if isinstance(error.original, asyncio.TimeoutError):
+                await ctx.send(f'{self.bot.yes} **Canceled video upload process...** (Timed Out)')
+                ctx.handled = True
+                return
+            ctx.handled = False
+        except AttributeError:
+            ctx.handled = False
 
     @commands.command(
         aliases=['lb'],

@@ -9,8 +9,7 @@ class MyHelpCommand(commands.HelpCommand):
     async def send_bot_help(self, mapping):
 
         help_embed = discord.Embed(
-            color=self.context.bot.embed
-        )
+            color=self.context.bot.embed)
 
         for category in mapping:
             command = ', '
@@ -136,9 +135,9 @@ class Default(commands.Cog):
 
         elif isinstance(error, commands.CommandOnCooldown):
             cooldown_embed = discord.Embed(
-            description = f'You need to wait {str(int(error.retry_after // 60))} '
-            'minutes before trying again!',
-            color=self.bot.embed
+                description=f'You need to wait {str(int(error.retry_after // 60))} '
+                'minutes before trying again!',
+                color=self.bot.embed
             )
             await ctx.send(embed=cooldown_embed)
             return
@@ -212,7 +211,7 @@ class Default(commands.Cog):
 
             etype = type(error)
             trace = error.__traceback__
-            verbosity = 4
+            verbosity = 2
             lines = traceback.format_exception(etype, error, trace, verbosity)
             traceback_text = ''.join(lines)
 
@@ -220,12 +219,15 @@ class Default(commands.Cog):
 
             input = ctx.message.content
 
+            if len(traceback_text) > 1024:
+                traceback_text = traceback_text[:1023]
+
             error_embed = discord.Embed(color=self.bot.embed)
             error_embed.add_field(
                 name='Input',
                 value=f'```{input}```',
-                inline=False
-            )
+                inline=False)
+
             error_embed.add_field(
                 name='Output',
                 value=f'```{traceback_text}```',

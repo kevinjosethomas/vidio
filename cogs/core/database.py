@@ -235,7 +235,8 @@ class Database(commands.Cog):
 
         videos = await self.db.fetch(
             "SELECT * FROM videos WHERE channel_id = $1 "
-            "ORDER BY uploaded_at LIMIT $2")
+            "ORDER BY uploaded_at LIMIT $2",
+            cid, amount)
 
         return videos
 
