@@ -82,7 +82,7 @@ class Utility(commands.Cog):
 
         credits_embed.add_field(
             name='Other',
-            value='A special thanks to thebrownbatman for helping out with the vloger algorithm and it\'s formulas.')
+            value='A special thanks to thebrownbatman for helping out with the videonet algorithm and it\'s formulas.')
 
         credits_embed.set_author(name='videonet', icon_url='https://i.imgur.com/7mf0D6z.png')
 
