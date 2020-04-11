@@ -231,6 +231,14 @@ class Database(commands.Cog):
 
         return length[0]
 
+    async def get_videos(self, cid, amount):
+
+        videos = await self.db.fetch(
+            "SELECT * FROM videos WHERE channel_id = $1 "
+            "ORDER BY uploaded_at LIMIT $2")
+
+        return videos
+
     async def set_prefix(self, guild, prefix):
 
         if not await self.text_check(prefix):
