@@ -321,6 +321,9 @@ class VideoCord(commands.Cog):
             channel_index = 0
 
         latest_video = await self.database.get_videos(channels[channel_index][1], 1)
+        print(latest_video)
+        print(latest_video[0])
+        print(latest_video[0][12])
 
         if not latest_video == 'No videos':
             difference = datetime.now() - latest_video[0][12]
