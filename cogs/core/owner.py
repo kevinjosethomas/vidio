@@ -83,15 +83,15 @@ class Owner(commands.Cog):
         )
         await ctx.send(embed=cogs_embed)
 
-    @commands.command(
-        usage=f'``>restart``',
-        help='Force restarts the bot.'
-    )
-    @commands.is_owner()
-    async def restart(self, ctx):
-        await ctx.send(f'{  self.bot.yes} **Restarting the bot.**')
-        await self.bot.logout()
-        exit()
+    # @commands.command(
+    #     usage=f'``>restart``',
+    #     help='Force restarts the bot.'
+    # )
+    # @commands.is_owner()
+    # # async def restart(self, ctx):
+    #     await ctx.send(f'{  self.bot.yes} **Restarting the bot.**')
+    #     await self.bot.logout()
+    #     exit()
 
 
 def setup(bot):
