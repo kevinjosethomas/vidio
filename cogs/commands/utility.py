@@ -131,6 +131,7 @@ class Utility(commands.Cog):
         suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator, icon_url=ctx.author.avatar_url)
 
         message = await suggestions_channel.send(embed=suggestion_embed)
+        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the videonet support server!**')
 
         await message.add_reaction(self.bot.yes)
         await message.add_reaction(self.bot.no)
@@ -151,10 +152,12 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         bug_embed.set_footer(text="Report your bug with -bug")
-        bug_embed.set_author(name=ctx.author.name + '#' + ctx.author.discriminator,
-                                    icon_url=ctx.author.avatar_url)
+        bug_embed.set_author(
+            name=ctx.author.name + '#' + ctx.author.discriminator,
+            icon_url=ctx.author.avatar_url)
 
-        message = await bugs_channel.send(embed=bug_embed)
+        await bugs_channel.send(embed=bug_embed)
+        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the videonet support server!**')
 
 
 def setup(bot):
