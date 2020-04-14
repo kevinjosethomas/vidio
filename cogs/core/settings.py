@@ -81,7 +81,7 @@ class Default(commands.Cog):
                 'aliases': ['h'],
                 'usage': '``>help {command}``'}
         )
-        self.db = self.bot.get_cog('Database')
+        self.database = self.bot.get_cog('Database')
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -119,7 +119,7 @@ class Default(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        await self.db.add_guild(guild)
+        await self.database.add_guild(guild)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -235,6 +235,13 @@ class Default(commands.Cog):
             print(traceback_text)
             await error_channel.send(embed=error_embed)
             return
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+
+        if self.bot.user.mentioned_in(message):
+
+            await message.channel.send(f'**The prefix for this server is -** ``{self.database.get_prefix(message.guild)}``')
 
 
 def setup(bot):
