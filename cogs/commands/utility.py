@@ -17,14 +17,14 @@ class Utility(commands.Cog):
             title='Videonet - Information',
             description='**videonet** is a new youtube simulator discord bot with new features coming out regularly!'
                         ' videonet allows you and the members of your server to create a simulation of a '
-                        f'youtube channel on Discord!\n\n videonet is in {len(self.bot.guilds)} servers and has made a'
+                        f'youtube channel on Discord!\n\n videonet is in {len(self.bot.guilds)} servers and has made a '
                         f'total of {await self.database.get_channels_count()} channel simulations!',
             color=self.bot.embed)
 
         info_embed.set_footer(text=f'Check out {ctx.prefix}help, {ctx.prefix}credits and {ctx.prefix}stats for '
                                    f'more information!')
 
-        info_embed.set_author(name='videonet', icon_url='https://i.imgur.com/7mf0D6z.png')
+        info_embed.set_author(name='videonet', icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=info_embed)
 
