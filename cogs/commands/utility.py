@@ -92,7 +92,7 @@ class Utility(commands.Cog):
 
     @commands.command(
         aliases=['sp', 'setprefix', 'set_prefix'],
-        usage='``-prefix',
+        usage='``-prefix``',
         help='Sets a different prefix for your server.')
     @commands.has_guild_permissions(manage_guild=True)
     @commands.cooldown(1, 10, BucketType.user)
