@@ -94,7 +94,6 @@ class Default(commands.Cog):
         if not self.bot.is_ready():
             await ctx.send('**Wait a moment!** videonet is still starting up!')
 
-
     # @tasks.loop(minutes=random.randint(20, 26))
     # async def change_presence(self):
     #     presences = [
