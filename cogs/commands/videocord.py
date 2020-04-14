@@ -19,6 +19,9 @@ class VideoCord(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def create_channel(self, ctx):
 
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild
+
         channels = await self.database.get_channel(ctx.author.id)
 
         if channels == "Channel doesn't exist":
@@ -27,9 +30,6 @@ class VideoCord(commands.Cog):
             await ctx.send(
                 f"{self.bot.no} **You cannot create more than 3 channels.**")
             return
-
-        def author_check(msg):
-            return msg.author == ctx.message.author
 
         name_msg = f'{self.bot.youtube} **Step 1/3: Choose a name ' \
                    'for your channel**\nLet\'s create your channel! First, ' \
@@ -166,7 +166,7 @@ class VideoCord(commands.Cog):
     async def channel(self, ctx, *, user: discord.User = None):
 
         def author_check(msg):
-            return msg.author == ctx.message.author
+            return msg.author == ctx.message.author and ctx.guild == msg.guild
 
         if user is None:
             user = ctx.author.id
@@ -279,7 +279,7 @@ class VideoCord(commands.Cog):
     async def upload(self, ctx):
 
         def author_check(msg):
-            return msg.author == ctx.message.author
+            return msg.author == ctx.message.author and ctx.guild == msg.guild
 
         channels = await self.database.get_channel(ctx.author.id)
 
