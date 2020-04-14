@@ -417,6 +417,8 @@ class VideoCord(commands.Cog):
             status_quote = f'{self.bot.average} Status'
         elif status == 'poor' or status == 'fail':
             status_quote = f'{self.bot.fail} Status'
+        else:
+            status_quote = 'Status'
 
         if not str(new_subs).startswith('-'):
             new_subs = f"+{new_subs}"
@@ -428,7 +430,9 @@ class VideoCord(commands.Cog):
                         f'{self.bot.subscribers} **Subscribers:** {new_subs}\n'
                         f'{self.bot.views} **Views:** {views}\n\n'
                         f'{self.bot.likes} **Likes:** {likes}\n'
-                        f'{self.bot.dislikes} **Dislikes:** {dislikes}')
+                        f'{self.bot.dislikes} **Dislikes:** {dislikes}\n\n'
+                        f'{self.bot.description} **Description:** {description}',
+            color=self.bot.embed)
 
         await message.delete()
         await ctx.send(embed=video_embed)
