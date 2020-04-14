@@ -243,6 +243,16 @@ class Database(commands.Cog):
 
         return videos
 
+    async def get_prefix(self, guild):
+
+        prefix = await self.db.fetchrow(
+            "SELECT prefix FROM guilds WHERE guild_id = $1",
+            guild.id)
+
+        if not prefix:
+            return '-'
+        return prefix
+
     async def set_prefix(self, guild, prefix):
 
         if not await self.text_check(prefix):
