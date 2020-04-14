@@ -241,7 +241,7 @@ class Default(commands.Cog):
 
         if self.bot.user.mentioned_in(message):
 
-            await message.channel.send(f'**The prefix for this server is -** ``{self.database.get_prefix(message.guild)}``')
+            await message.channel.send(f'**The prefix for this server is -** ``{await self.database.get_prefix(message.guild)}``')
 
 
 def setup(bot):
