@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
 
 
 class Utility(commands.Cog):
@@ -94,6 +95,7 @@ class Utility(commands.Cog):
         usage='``-prefix',
         help='Sets a different prefix for your server.')
     @commands.has_guild_permissions(manage_guild=True)
+    @commands.cooldown(1, 10, BucketType.user)
     async def prefix(self, ctx, *, prefix):
 
         if len(prefix) > 10:
@@ -114,6 +116,7 @@ class Utility(commands.Cog):
         aliases=['s'],
         usage='``-suggest``',
         help='Broadcasts your suggestion to the videonet support server.')
+    @commands.cooldown(1, 10, BucketType.user)
     async def suggest(self, ctx, *, suggestion):
 
         support_server = self.bot.get_guild(self.bot.support_server_id)
@@ -136,6 +139,7 @@ class Utility(commands.Cog):
         aliases=['report'],
         usage='``-bug``',
         help='Send your bug to the videonet support server!')
+    @commands.cooldown(1, 10, BucketType.user)
     async def bug(self, ctx, *, bug):
 
         support_server = self.bot.get_guild(self.bot.support_server_id)

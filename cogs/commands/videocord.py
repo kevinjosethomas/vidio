@@ -16,6 +16,7 @@ class VideoCord(commands.Cog):
         aliases=['cc'],
         usage='``-create_channel``',
         help='A simple command that creates a channel for you.')
+    @commands.cooldown(1, 10, BucketType.user)
     async def create_channel(self, ctx):
 
         channels = await self.database.get_channel(ctx.author.id)
@@ -161,6 +162,7 @@ class VideoCord(commands.Cog):
         aliases=['c'],
         usage='``-channel``',
         help='A simple command that returns the user\'s channel information!')
+    @commands.cooldown(1, 10, BucketType.user)
     async def channel(self, ctx, *, user: discord.User = None):
 
         def author_check(msg):
@@ -273,6 +275,7 @@ class VideoCord(commands.Cog):
         aliases=['u'],
         usage='``-upload``',
         help='A command that uploads a video on the author\'s channel.')
+    @commands.cooldown(1, 10, BucketType.user)
     async def upload(self, ctx):
 
         def author_check(msg):
