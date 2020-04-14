@@ -89,6 +89,12 @@ class Default(commands.Cog):
         self.bot.support_server = self.bot.get_guild(self.bot.support_server_id)
         # self.change_presence.start() # Turns out this is API abuse so BYEE
 
+    async def bot_check(self, ctx):
+
+        if not self.bot.is_ready():
+            await ctx.send('**Wait a moment!** videonet is still starting up!')
+
+
     # @tasks.loop(minutes=random.randint(20, 26))
     # async def change_presence(self):
     #     presences = [
