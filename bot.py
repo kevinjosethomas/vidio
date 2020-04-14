@@ -112,7 +112,7 @@ bot.suggestions_channel_id = 696014954532438116
 # defines the list of cogs in the bot
 cogs = [
     'cogs.core.database',
-    'cogs.core.default',
+    'cogs.core.settings',
     'cogs.core.owner',
     'cogs.commands.utility',
     'cogs.commands.videocord']
