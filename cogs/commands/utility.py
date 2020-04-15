@@ -169,6 +169,7 @@ class Utility(commands.Cog):
                       '- Added ``video {video_name}`` command, to search for videos by name.\n' \
                       '- Added ``changelog`` command, to see new bot updates and changes.\n' \
                       '- Added ``search`` command, to search for youtube videos (first result)\n' \
+                      '- Added ``invite`` command, provides you with a support server invite.\n' \
                       '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯'
 
         changelog_embed = discord.Embed(
