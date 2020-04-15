@@ -520,7 +520,7 @@ class VideoCord(commands.Cog):
                     await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                     continue
 
-                break
+                breakK
 
         else:
             channel_index = 0
@@ -535,9 +535,8 @@ class VideoCord(commands.Cog):
 
         description = ''
 
-
         for video in videos:
-            description += f'• {video[2]}'
+            description += f'• {video[2]}\n'
 
         if len(description) > 2043:
             description = description[:2043]
