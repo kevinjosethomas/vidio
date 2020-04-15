@@ -477,8 +477,8 @@ class VideoCord(commands.Cog):
     @commands.command(
         aliases=['v'],
         usage='``-video``',
-        help='A command that searches for videos uploaded on your channel.')
-    async def video(self, ctx):
+        help='A command that (inaccurately) searches for videos uploaded on your channel.')
+    async def video(self, ctx, video_name):
 
         def author_check(msg):
             return msg.author == ctx.message.author and ctx.guild == msg.guild
@@ -525,8 +525,28 @@ class VideoCord(commands.Cog):
         else:
             channel_index = 0
 
-        print(channels[channel_index])
+        channel_id = channels[channel_index][1]
 
+        videos = await self.database.get_video(channel_id, video_name)
+
+        if videos == 'No videos':
+            await ctx.send(f'{self.bot.no} **Unknown video.** Could not find a video with that name on videonet.')
+            return
+
+        description = ''
+
+
+        for video in videos:
+            description += f'• {video[2]}'
+
+        if len(description) > 2043:
+            description = description[:2043]
+
+        videos_embed = discord.Embed(
+            title=f'We found ``{len(videos)}`` video(s) related to ``{video_name}``',
+            description=description)
+
+        await ctx.send(embed=videos_embed)
 
 
 def setup(bot):
