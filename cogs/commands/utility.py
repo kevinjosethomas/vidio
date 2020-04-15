@@ -168,7 +168,7 @@ class Utility(commands.Cog):
         description = '**• Wednesday, 15th April 2020**\n' \
                       '- Added ``video {video_name}`` command, to search for videos by name.\n' \
                       '- Added ``changelog`` command, to see new bot updates and changes.\n' \
-                      '- Added ``search`` command, to search for youtube videos (first result)' \
+                      '- Added ``search`` command, to search for youtube videos (first result)\n' \
                       '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯'
 
         changelog_embed = discord.Embed(
