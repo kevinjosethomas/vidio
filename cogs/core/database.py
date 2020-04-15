@@ -251,7 +251,7 @@ class Database(commands.Cog):
 
         if not videos:
             return 'No Videos'
-        return videos
+        return
 
     async def get_prefix(self, guild):
 
