@@ -520,7 +520,7 @@ class VideoCord(commands.Cog):
                     await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                     continue
 
-                breakK
+                break
 
         else:
             channel_index = 0
