@@ -159,6 +159,23 @@ class Utility(commands.Cog):
         await bugs_channel.send(embed=bug_embed)
         await ctx.send(f'{self.bot.yes} **Sent your suggestion to the videonet support server!**')
 
+    @commands.command(
+        aliases=['changes'],
+        usage='``-changelog``',
+        help='Shows you a list of recent changes made to the bot.')
+    async def changelog(self, ctx):
+
+        description = '**• Wednesday, 15th April 2020**\n' \
+                      '- Added ``-video {video_name}`` command to search for videos by name.\n' \
+                      '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯'
+
+        changelog_embed = discord.Embed(
+            title='Changelog - videonet',
+            description=description,
+            color=self.bot.embed)
+
+        await ctx.send(embed=changelog_embed)
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
