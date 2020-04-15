@@ -114,6 +114,7 @@ cogs = [
     'cogs.core.database',
     'cogs.core.settings',
     'cogs.core.owner',
+    'cogs.commands.youtube',
     'cogs.commands.utility',
     'cogs.commands.videocord']
 
