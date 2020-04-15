@@ -323,7 +323,7 @@ class VideoCord(commands.Cog):
         else:
             channel_index = 0
 
-        latest_video = await self.database.get_videos(channels[channel_index][1], 1)
+        latest_video = await self.database.get_all_videos(channels[channel_index][1], 1)
 
         if not latest_video == 'No videos':
             difference = datetime.now() - latest_video[0][11]
@@ -473,6 +473,60 @@ class VideoCord(commands.Cog):
             color=self.bot.embed)
 
         await ctx.send(embed=lb_embed)
+
+    @commands.command(
+        aliases=['v'],
+        usage='``-video``',
+        help='A command that searches for videos uploaded on your channel.')
+    async def video(self, ctx):
+
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild
+
+        channels = await self.database.get_channel(ctx.author.id)
+
+        if channels == "Channel doesn't exist":
+            await ctx.send(f"{self.bot.no} **You don't have a channel.** You must create a channel to upload videos.")
+            return
+
+        if len(channels) > 1:
+
+            message = f"{self.bot.youtube} **You have multiple channels.** Use the index (number) given" \
+                      f" to the channels in the list below to choose which channel you want to upload to.\n"
+
+            for channel in channels:
+                message += f"• ``{channels.index(channel)+1}.`` {channel[2]}\n"
+
+            message += "\n To cancel video upload, simply type ``cancel``."
+
+            while True:
+                await ctx.send(message)
+                channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
+
+                if channel_index.content.lower() == 'cancel':
+                    await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
+                    return
+
+                try:
+                    if int(channel_index.content) > 3 or int(channel_index.content) < 1:
+                        await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                        continue
+                except ValueError:
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
+                try:
+                    channel_index = int(channel_index.content) - 1
+                except IndexError:
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
+
+                break
+
+        else:
+            channel_index = 0
+
+        print(channels[channel_index])
+
 
 
 def setup(bot):

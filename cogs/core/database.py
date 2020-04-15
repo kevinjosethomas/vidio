@@ -231,7 +231,7 @@ class Database(commands.Cog):
 
         return length[0]
 
-    async def get_videos(self, cid, amount):
+    async def get_all_videos(self, cid, amount):
 
         videos = await self.db.fetch(
             "SELECT * FROM videos WHERE channel_id = $1 "
@@ -241,6 +241,16 @@ class Database(commands.Cog):
         if not videos:
             return 'No videos'
 
+        return videos
+
+    async def get_video(self, cid, name):
+
+        videos = await self.db.fetch(
+            "SELECT * FROM videos WHERE channel_id = $1 AND name LIKE $2",
+            cid, name)
+
+        if not videos:
+            return 'No Videos'
         return videos
 
     async def get_prefix(self, guild):
