@@ -178,6 +178,14 @@ class Utility(commands.Cog):
 
         await ctx.send(embed=changelog_embed)
 
+    @commands.command(
+        aliases=['inv'],
+        usage='``-invite``',
+        help='Sends an invite to the support server.')
+    async def invite(self, ctx):
+
+        await ctx.send(f'{self.bot.yes} **https://discord.gg/3MShhbr**')
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
