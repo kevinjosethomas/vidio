@@ -1,3 +1,4 @@
+import os
 import asyncio
 import discord
 import traceback
@@ -85,11 +86,11 @@ class Owner(commands.Cog):
         await ctx.send(embed=cogs_embed)
 
     @commands.command(
-        aliases=['evaluate', 'ev'],
-        usage='``-eval``',
-        help='Executes the provided code')
+        aliases=['eval', 'ev'],
+        usage='``-evaluate``',
+        help='Executes the provided code.')
     @commands.is_owner()
-    async def eval(self, ctx, *, code):
+    async def evaluate(self, ctx, *, code):
 
         eval_embed = discord.Embed(
          color=self.bot.embed)
@@ -112,9 +113,11 @@ class Owner(commands.Cog):
         await ctx.send(embed=eval_embed)
 
     @commands.command(
-        aliases=['awaitevaluate', 'awaitev', 'awev'])
+        aliases=['awaiteval', 'awaitev', 'awev'],
+        usage='``-awaitevaluate``',
+        help='Asynchronously executes the provided code.')
     @commands.is_owner()
-    async def awaiteval(self, ctx, *, code):
+    async def awaitevaluate(self, ctx, *, code):
 
         eval_embed = discord.Embed(
             color=self.bot.embed)
@@ -135,7 +138,6 @@ class Owner(commands.Cog):
             inline=False)
 
         await ctx.send(embed=eval_embed)
-
 
     # @commands.command(
     #     usage=f'``>restart``',
