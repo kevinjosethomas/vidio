@@ -164,8 +164,6 @@ class Database(commands.Cog):
         bans = await self.db.fetch("SELECT * FROM bans WHERE user_id = $1",
                                    user_id)
 
-        print(bans)
-
         if bans:
             return True
         else:
