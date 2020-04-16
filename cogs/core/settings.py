@@ -90,6 +90,11 @@ class Default(commands.Cog):
 
     async def bot_check(self, ctx):
 
+        banned = await self.database.check_banned(ctx.author.id)
+
+        if not banned:
+            return False
+
         if not self.bot.is_ready():
             await ctx.send(f'**{random.choice(["Hold up", "Wait a moment"])}!** videonet is still starting up!')
             return

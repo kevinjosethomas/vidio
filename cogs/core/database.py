@@ -159,6 +159,15 @@ class Database(commands.Cog):
         else:
             raise Exception(TypeError(f'Expected str or list, received {type(text)}'))
 
+    async def check_banned(self, user_id):
+
+        bans = await self.db.fetch("SELECT * FROM bans WHERE id = $1",
+                                   user_id)
+        if bans:
+            return True
+        else:
+            return False
+
     async def add_channel(self, user_id, name, description, category):
 
         if not await self.text_check([name, description, category]):
