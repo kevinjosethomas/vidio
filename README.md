@@ -25,7 +25,7 @@ videos with `-upload`
 
 ### Report Issues
 If you find any error/bug in the bot or in the
-code, please report it by [making an issue here](https://github.com/vloger-bot/vloger/issues)
+code, please report it by [making an issue here](https://github.com/codebytedev/videonet/issues)
 or report it on [our support server](https://discord.gg/3kJJS4c).
 
 ### Fix/Edit Content
@@ -33,11 +33,11 @@ or report it on [our support server](https://discord.gg/3kJJS4c).
 If you want to contribute to this site, 
 fork the repository and then -
 ```
-git clone https://github.com/vloger-bot/vloger.git
-cd vloger
+git clone https://github.com/codebytedev/videonet.git
+cd videonet
 ```
 
-Make the necessary changes and then proceed to [create a pull request here](https://github.com/vloger-bot/vloger/pulls)
+Make the necessary changes and then proceed to [create a pull request here](https://github.com/codebytedev/videonet/pulls)
 
 
 ## Contact
