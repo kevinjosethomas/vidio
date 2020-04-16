@@ -187,6 +187,20 @@ class Database(commands.Cog):
 
         return 'Successful'
 
+    async def add_ban(self, user_id):
+
+        async with self.db.acquire() as conn:
+
+            conn.execute("INSERT INTO bans (user_id) VALUES ($1)",
+                         user_id)
+
+    async def remove_ban(self, user_id):
+
+        async with self.db.acquire() as conn:
+
+            conn.execute("DELETE FROM bans WHERE user_id = $1",
+                         user_id)
+
     async def add_guild(self, guild):
 
         async with self.db.acquire() as conn:
