@@ -92,7 +92,7 @@ class Default(commands.Cog):
 
         banned = await self.database.check_banned(ctx.author.id)
 
-        if not banned:
+        if banned:
             return False
 
         if not self.bot.is_ready():
