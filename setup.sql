@@ -77,3 +77,7 @@ CREATE TABLE IF NOT EXISTS guilds (
     guild_id BIGINT UNIQUE,
     prefix VARCHAR(15)
 );
+
+CREATE TABLE IF NOT EXISTS bans (
+    user_id BIGINT
+);
