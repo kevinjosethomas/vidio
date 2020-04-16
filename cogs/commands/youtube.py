@@ -17,7 +17,7 @@ class YouTube(commands.Cog):
 
         yt = YouTubeDataAPI(self.bot.YT_KEY)
 
-        video = yt.search(q=query, max_results=1)
+        video = yt.search(q=query, max_results=1, safe_search='strict')
 
         if not video:
             await ctx.send(f'{self.bot.no} **Not Found.** No video found for the provided search term.')
