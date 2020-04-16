@@ -161,7 +161,7 @@ class Database(commands.Cog):
 
     async def check_banned(self, user_id):
 
-        bans = await self.db.fetch("SELECT * FROM bans WHERE id = $1",
+        bans = await self.db.fetch("SELECT * FROM bans WHERE user_id = $1",
                                    user_id)
         if bans:
             return True
