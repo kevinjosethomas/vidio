@@ -147,6 +147,7 @@ class Owner(commands.Cog):
     async def ban(self, ctx, *, user: discord.User):
 
         await self.database.add_ban(user.id)
+        await ctx.send(f"{self.bot.yes} **Successfully banned -** <@{user.id}>")
 
     @commands.command(
         aliases=['unyeet', 'revive', 'pardon'],
@@ -156,6 +157,7 @@ class Owner(commands.Cog):
     async def unban(self, ctx, *, user: discord.User):
 
         await self.database.remove_ban(user.id)
+        await ctx.send(f"{self.bot.yes} **Successfully unbanned -** <@{user.id}>")
 
     # @commands.command(
     #     usage=f'``>restart``',
