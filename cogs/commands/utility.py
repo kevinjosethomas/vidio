@@ -165,7 +165,9 @@ class Utility(commands.Cog):
         help='Shows you a list of recent changes made to the bot.')
     async def changelog(self, ctx):
 
-        description = '**• Wednesday, 15th April 2020**\n' \
+        description = '**• Thursday, 16th April 2020**\n' \
+                      '- Added ``ban`` and ``unban`` commands, to ban users from the bot.\n\n' \
+                      '**• Wednesday, 15th April 2020**\n' \
                       '- Added ``video {video_name}`` command, to search for videos by name.\n' \
                       '- Added ``changelog`` command, to see new bot updates and changes.\n' \
                       '- Added ``search`` command, to search for youtube videos (first result)\n' \
