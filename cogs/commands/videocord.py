@@ -468,7 +468,7 @@ class VideoCord(commands.Cog):
             pos += 1
 
         lb_embed = discord.Embed(
-            title='vloger subscriber leaderboard',
+            title='videonet subscriber leaderboard',
             description=desc,
             color=self.bot.embed)
 
