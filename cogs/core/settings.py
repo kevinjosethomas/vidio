@@ -250,7 +250,7 @@ class Default(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
 
-        if self.bot.user.mentioned_in(message):
+        if self.bot.user.mentioned_in(message.clean_content):
 
             await message.channel.send(f'**The prefix for this server is -'
                                        f'** ``{(await self.database.get_prefix(message.guild))[0]}``')
