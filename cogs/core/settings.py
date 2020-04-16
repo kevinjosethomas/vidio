@@ -62,7 +62,7 @@ class MyHelpCommand(commands.HelpCommand):
         await self.context.send(embed=help_embed)
 
     async def command_not_found(self, string):
-        return f'{self.context.bot.no} Invalid command: ``{string}``'
+        return f'{self.context.bot.no} **Invalid command:** ``{string}``'
 
     async def send_error_message(self, error):
         await self.context.send(
@@ -79,15 +79,14 @@ class Default(commands.Cog):
         self.bot.help_command = MyHelpCommand(
             command_attrs={
                 'aliases': ['h'],
-                'usage': '``>help {command}``'}
-        )
+                'usage': '``-help {command}``'})
         self.database = self.bot.get_cog('Database')
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"Videonet is back online!")
         self.bot.support_server = self.bot.get_guild(self.bot.support_server_id)
-        # self.change_presence.start() # Turns out this is API abuse so BYEE
+        self.change_presence.start()
 
     async def bot_check(self, ctx):
 
@@ -97,33 +96,33 @@ class Default(commands.Cog):
 
         return True
 
-    # @tasks.loop(minutes=random.randint(20, 26))
-    # async def change_presence(self):
-    #     presences = [
-    #         discord.Activity(
-    #             name='youtube videos',
-    #             type=discord.ActivityType.watching),
-    #         discord.Activity(
-    #             name='pewdiepie fail',
-    #             type=discord.ActivityType.watching),
-    #         discord.Activity(
-    #             name='satisfying slime videos',
-    #             type=discord.ActivityType.watching),
-    #         discord.Activity(
-    #             name='some viral videos',
-    #             type=discord.ActivityType.watching),
-    #         discord.Activity(
-    #             name='youtube videos',
-    #             type=discord.ActivityType.watching),
-    #         discord.Activity(
-    #             name=f'{len(self.bot.guilds)} servers',
-    #             type=discord.ActivityType.watching),
-    #         discord.Activity(
-    #             name=f'{len(self.bot.users)} users play.',
-    #             type=discord.ActivityType.watching),
-    #         discord.Game(name='with VillagerBot')
-    #     ]
-    #     await self.bot.change_presence(activity=random.choice(presences))
+    @tasks.loop(minutes=random.randint(20, 26))
+    async def change_presence(self):
+        presences = [
+            discord.Activity(
+                name='youtube videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name='pewdiepie fail',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name='satisfying slime videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name='some viral videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name='youtube videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name=f'{len(self.bot.guilds)} servers',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name=f'{len(self.bot.users)} users play.',
+                type=discord.ActivityType.watching),
+            discord.Game(name='with VillagerBot')
+        ]
+        await self.bot.change_presence(activity=random.choice(presences))
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
