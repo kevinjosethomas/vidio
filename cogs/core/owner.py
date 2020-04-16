@@ -88,6 +88,7 @@ class Owner(commands.Cog):
         aliases=['evaluate'],
         usage='``-eval``',
         help='Executes the provided code')
+    @commands.is_owner()
     async def eval(self, ctx, *, code):
 
         eval_embed = discord.Embed(
