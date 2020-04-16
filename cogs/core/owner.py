@@ -10,7 +10,7 @@ class Owner(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.db = self.bot.get_cog('Database')
+        self.database = self.bot.get_cog('Database')
 
     @commands.group(name="cog", aliases=['cogs'])
     @commands.is_owner()
@@ -138,6 +138,23 @@ class Owner(commands.Cog):
             inline=False)
 
         await ctx.send(embed=eval_embed)
+
+    @commands.command(
+        aliases=['yeet', 'stop', 'murder', 'assassinate'],
+        usage='``-ban {user}``',
+        help='Bans the user from videonet.')
+    @commands.is_owner()
+    async def ban(self, ctx, *, user: discord.User):
+
+        await self.database.add_ban(user.id)
+
+    @commands.command(
+        aliases=['unyeet', 'revive', 'pardon'],
+        usage='``-unban {user}``',
+        help='Unbans the user from videonet.')
+    async def unban(self, ctx, *, user: discord.User):
+
+        await self.database.remove_ban(user.id)
 
     # @commands.command(
     #     usage=f'``>restart``',
