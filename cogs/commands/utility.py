@@ -35,7 +35,7 @@ class Utility(commands.Cog):
         help='Provides you with some in-depth statistics about the bot.')
     async def statistics(self, ctx):
         emb = discord.Embed(
-            description=f'**Total Channel Simulations:** ``{await self.database.get_channels_count()}``'
+            description=f'**Total Channel Simulations:** ``{await self.database.get_channels_count()}``\n'
             f'**Total Users:** ``{len(self.bot.users)} users``\n'
             f'**Total Guilds:** ``{len(self.bot.guilds)} servers``\n'
             f'**Total DMs:** ``{len(self.bot.private_channels)} DMs``\n'
