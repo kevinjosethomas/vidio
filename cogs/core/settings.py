@@ -237,8 +237,7 @@ class Default(commands.Cog):
             error_embed.add_field(
                 name='Output',
                 value=f'```{traceback_text}```',
-                inline=False
-            )
+                inline=False)
             print(traceback_text)
             await error_channel.send(embed=error_embed)
             return

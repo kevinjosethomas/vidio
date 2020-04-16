@@ -1,5 +1,6 @@
 import asyncio
 import discord
+import traceback
 from datetime import datetime
 from discord.ext import commands
 
@@ -82,6 +83,33 @@ class Owner(commands.Cog):
             color=self.bot.embed
         )
         await ctx.send(embed=cogs_embed)
+
+    @commands.command(
+        aliases=['evaluate'],
+        usage='``-eval``',
+        help='Executes the provided code')
+    async def eval(self, ctx, *, code):
+
+        eval_embed = discord.Embed(
+         color=self.bot.embed)
+
+        eval_embed.add_field(
+            name='Input',
+            value=f'```{code}```',
+            inline=False)
+
+        try:
+            output = eval(code)
+        except Exception as error:
+            output = error
+
+        eval_embed.add_field(
+            name='Output',
+            value=f'```{output}```',
+            inline=False)
+
+        await ctx.send(embed=eval_embed)
+
 
     # @commands.command(
     #     usage=f'``>restart``',
