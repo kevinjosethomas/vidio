@@ -85,7 +85,7 @@ class Owner(commands.Cog):
         await ctx.send(embed=cogs_embed)
 
     @commands.command(
-        aliases=['evaluate'],
+        aliases=['evaluate', 'ev'],
         usage='``-eval``',
         help='Executes the provided code')
     @commands.is_owner()
@@ -101,6 +101,31 @@ class Owner(commands.Cog):
 
         try:
             output = eval(code)
+        except Exception as error:
+            output = error
+
+        eval_embed.add_field(
+            name='Output',
+            value=f'```{output}```',
+            inline=False)
+
+        await ctx.send(embed=eval_embed)
+
+    @commands.command(
+        aliases=['awaitevaluate', 'awaitev', 'awev'])
+    @commands.is_owner()
+    async def awaiteval(self, ctx, *, code):
+
+        eval_embed = discord.Embed(
+            color=self.bot.embed)
+
+        eval_embed.add_field(
+            name='Input',
+            value=f'```{code}```',
+            inline=False)
+
+        try:
+            output = await eval(code)
         except Exception as error:
             output = error
 
