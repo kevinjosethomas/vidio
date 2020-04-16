@@ -71,13 +71,16 @@ CREATE TABLE IF NOT EXISTS subscribers (
 
 
 -- creates guilds table which holds -
---      - guild ids
---      - custom prefixes
+--      - guild_id, guild ids
+--      - prefix, custom prefixes
 CREATE TABLE IF NOT EXISTS guilds (
     guild_id BIGINT UNIQUE,
     prefix VARCHAR(15)
 );
 
+
+-- creates bans table which holds -
+--      - user_id, banned user's id
 CREATE TABLE IF NOT EXISTS bans (
     user_id BIGINT
 );
