@@ -152,6 +152,7 @@ class Owner(commands.Cog):
         aliases=['unyeet', 'revive', 'pardon'],
         usage='``-unban {user}``',
         help='Unbans the user from videonet.')
+    @commands.is_owner()
     async def unban(self, ctx, *, user: discord.User):
 
         await self.database.remove_ban(user.id)
