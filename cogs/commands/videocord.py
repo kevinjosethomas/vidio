@@ -12,6 +12,44 @@ class VideoCord(commands.Cog):
         self.bot = bot
         self.database = self.bot.get_cog('Database')
 
+    async def multi_channels(self, ctx, channels):
+
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild
+
+        message = f"{self.bot.youtube} **This user has multiple channels.** Use the index (number) given" \
+                  f" to the channels in the list below to choose which channel you want to see.\n"
+
+        for channel in channels:
+            message += f"• ``{channels.index(channel) + 1}.`` {channel[2]}\n"
+
+        message += "\n To cancel channel search, simply type ``cancel``."
+
+        while True:
+            await ctx.send(message)
+            channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
+
+            if channel_index.content.lower() == 'cancel':
+                await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
+                return
+
+            try:
+                if int(channel_index.content) > len(channels):
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
+            except ValueError:
+                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                continue
+
+            try:
+                channel_index = int(channel_index.content) - 1
+            except IndexError:
+                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                continue
+            break
+
+        return channel_index
+
     @commands.command(
         aliases=['cc'],
         usage='``-create_channel``',
@@ -270,6 +308,26 @@ class VideoCord(commands.Cog):
             ctx.handled = False
 
         ctx.handled = False
+
+    @commands.command(
+        aliases=['dc'],
+        usage='``-delete_channel``',
+        help='A command that deleted a particular channel for you.')
+    @commands.cooldown(1, 10, BucketType.user)
+    async def delete_channel(self, ctx):
+
+        user = ctx.author.id
+
+        channels = await self.database.get_channel(user)
+
+        if len(channels) == 1:
+            channel_index = channels[0]
+
+        elif len(channels) > 1:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        print(channels[channel_index])
+
 
     @commands.command(
         aliases=['u'],
