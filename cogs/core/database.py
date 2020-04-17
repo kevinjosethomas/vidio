@@ -215,7 +215,7 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
 
-            conn.execute("DELETE FROM channels WHERE cid = $1 AND user_id = $2",
+            await conn.execute("DELETE FROM channels WHERE cid = $1 AND user_id = $2",
                          cid, user_id)
 
     async def add_guild(self, guild):
