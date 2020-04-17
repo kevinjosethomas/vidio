@@ -171,22 +171,21 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Friday, 17th April 2020**',
-            value='- Added channel ``delete`` command.'
+            value='- Added channel ``delete`` command.\n'
                   '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
             inline=False
         )
 
         changelog_embed.add_field(
             name='**• Thursday, 16th April 2020**',
-            value='- Added ``ban`` and ``unban`` commands, to ban users from the bot.\n\n'
+            value='- Added ``ban`` and ``unban`` commands, to ban users from the bot.\n'
                   '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
             inline=False
         )
 
         changelog_embed.add_field(
             name='**• Wednesday, 15th April 2020**',
-            value='**• Wednesday, 15th April 2020**\n'
-                  '- Added ``video {video_name}`` command, to search for videos by name.\n'
+            value='- Added ``video {video_name}`` command, to search for videos by name.\n'
                   '- Added ``changelog`` command, to see new bot updates and changes.\n'
                   '- Added ``search`` command, to search for youtube videos (first result)\n'
                   '- Added ``invite`` command, provides you with a support server invite.\n'
