@@ -171,7 +171,8 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Friday, 17th April 2020**',
-            value='- Added channel ``delete`` command.\n'
+            value='- Added more characters for titles and descriptions.'
+                  '- Added channel ``delete`` command.\n'
                   '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
             inline=False
         )
