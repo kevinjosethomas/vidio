@@ -314,6 +314,16 @@ class Database(commands.Cog):
 
         return prefix
 
+    async def set_description(self, cid, description):
+
+        if not await self.text_check(description):
+            return 'Bad Arguments'
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("UPDATE channels SET description = $1 WHERE channel_id = $2",
+                               description, cid)
+
     async def upload_video(self, user_id, channel, name, description):
 
         if not await self.text_check([name, description]):

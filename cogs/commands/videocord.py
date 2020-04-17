@@ -310,6 +310,61 @@ class VideoCord(commands.Cog):
         ctx.handled = False
 
     @commands.command(
+        aliases=['edit_dsc', 'set_dsc', 'set_description'],
+        usage='``-edit_description``',
+        help='A command that changes your channel description')
+    @commands.cooldown(1, 10, BucketType.user)
+    async def edit_description(self, ctx):
+
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild
+
+        user = ctx.author.id
+        channels = await self.database.get_channel()
+
+        if channels == 1:
+            channel_index = 0
+        elif channels > 1:
+            await self.multi_channels(ctx, channels)
+
+        if not channel_index:
+            return
+
+        description_msg = f'{self.bot.youtube} **Step 1/1: Write a new description' \
+                          ' for your channel**\n Write a cooler description ' \
+                          'about your channel! Only ``alphabets``, ``digits``, ' \
+                          '``punctuation`` and ``whitespaces`` are allowed. ' \
+                          '**Your channel description must not exceed 250 characters.**\n\n' \
+                          'To cancel edit, simply type ``cancel``.'
+
+        while True:
+
+            await ctx.send(description_msg)
+
+            description = await self.bot.wait_for('message', check=author_check, timeout=180)
+
+            if description.content.lower() == 'cancel':
+                await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
+                return
+
+            if len(description.content) > 250:
+                continue
+
+            description = description.content
+            break
+
+        query = await self.database.set_description(channels[channel_index], description)
+
+        if query == 'Bad arguments.':
+            await ctx.send(f"{self.bot.no} **Error.** Please make "
+                           "sure your entries only have alphabets, numbers, punctuation "
+                           "and spaces.")
+            return
+
+        await ctx.send(f"{self.bot.yes} **Successfully changed your channel description!**")
+
+
+    @commands.command(
         aliases=['dc'],
         usage='``-delete_channel``',
         help='A command that deleted a particular channel for you.')
