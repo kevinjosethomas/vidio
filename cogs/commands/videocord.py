@@ -322,9 +322,9 @@ class VideoCord(commands.Cog):
         user = ctx.author.id
         channels = await self.database.get_channel(user)
 
-        if channels == 1:
+        if len(channels) == 1:
             channel_index = 0
-        elif channels > 1:
+        elif len(channels) > 1:
             await self.multi_channels(ctx, channels)
 
         if not channel_index:
