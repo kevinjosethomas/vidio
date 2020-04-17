@@ -320,7 +320,7 @@ class VideoCord(commands.Cog):
             return msg.author == ctx.message.author and ctx.guild == msg.guild
 
         user = ctx.author.id
-        channels = await self.database.get_channel()
+        channels = await self.database.get_channel(user)
 
         if channels == 1:
             channel_index = 0
