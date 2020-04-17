@@ -325,10 +325,14 @@ class VideoCord(commands.Cog):
         elif len(channels) > 1:
             channel_index = await self.multi_channels(ctx, channels)
 
-        if channel_index is False:
+        if not channel_index:
             return
 
-        print(channels[channel_index])
+        channel = channels[channel_index]
+
+        await self.database.remove_channel(channel[0], channel[1])
+
+        await ctx.send(f"{self.bot.yes} **Successfully deleted your channel -** ``{channel[2]}``")
 
 
     @commands.command(
