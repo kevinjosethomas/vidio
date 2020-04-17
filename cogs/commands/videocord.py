@@ -31,7 +31,7 @@ class VideoCord(commands.Cog):
 
             if channel_index.content.lower() == 'cancel':
                 await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
-                return
+                return False
 
             try:
                 if int(channel_index.content) > len(channels):
@@ -322,9 +322,11 @@ class VideoCord(commands.Cog):
 
         if len(channels) == 1:
             channel_index = channels[0]
-
         elif len(channels) > 1:
             channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
 
         print(channels[channel_index])
 
