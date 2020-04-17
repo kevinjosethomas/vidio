@@ -334,7 +334,6 @@ class VideoCord(commands.Cog):
 
         await ctx.send(f"{self.bot.yes} **Successfully deleted your channel -** ``{channel[2]}``")
 
-
     @commands.command(
         aliases=['u'],
         usage='``-upload``',

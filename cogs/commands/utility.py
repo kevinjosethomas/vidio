@@ -165,19 +165,33 @@ class Utility(commands.Cog):
         help='Shows you a list of recent changes made to the bot.')
     async def changelog(self, ctx):
 
-        description = '**• Thursday, 16th April 2020**\n' \
-                      '- Added ``ban`` and ``unban`` commands, to ban users from the bot.\n\n' \
-                      '**• Wednesday, 15th April 2020**\n' \
-                      '- Added ``video {video_name}`` command, to search for videos by name.\n' \
-                      '- Added ``changelog`` command, to see new bot updates and changes.\n' \
-                      '- Added ``search`` command, to search for youtube videos (first result)\n' \
-                      '- Added ``invite`` command, provides you with a support server invite.\n' \
-                      '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯'
+        description = '**• Thursday, 16th April 2020' \
+                      '\n' \
+
 
         changelog_embed = discord.Embed(
             title='Changelog - videonet',
             description=description,
             color=self.bot.embed)
+
+        changelog_embed.add_field(
+            name='**• Friday, 17th April 2020**',
+            value='- Added channel ``delete`` command.'
+        )
+
+        changelog_embed.add_field(
+            name='**• Thursday, 16th April 2020**',
+            value='- Added ``ban`` and ``unban`` commands, to ban users from the bot.\n\n'
+        )
+
+        changelog_embed.add_field(
+            name='**• Wednesday, 15th April 2020**',
+            value='**• Wednesday, 15th April 2020**\n'
+                  '- Added ``video {video_name}`` command, to search for videos by name.\n'
+                  '- Added ``changelog`` command, to see new bot updates and changes.\n'
+                  '- Added ``search`` command, to search for youtube videos (first result)\n'
+                  '- Added ``invite`` command, provides you with a support server invite.\n'
+                  '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')
 
         await ctx.send(embed=changelog_embed)
 
