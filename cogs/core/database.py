@@ -124,8 +124,6 @@ class Database(commands.Cog):
     @staticmethod
     async def text_check(text):
 
-        printable = string.printable
-
         if isinstance(text, str):
             if len(text) == 0:
                 return False
@@ -135,7 +133,7 @@ class Database(commands.Cog):
                 return False
 
             for letter in text:
-                if letter not in printable:
+                if letter not in string.printable:
                     return False
             return True
 
@@ -148,7 +146,7 @@ class Database(commands.Cog):
                         return False
 
                     for letter in word:
-                        if letter not in printable:
+                        if letter not in string.printable:
                             return False
                     return True
                 else:
