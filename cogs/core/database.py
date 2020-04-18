@@ -206,6 +206,11 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
 
+            subscribed = await self.get_subscribed(user_id)
+
+            if (user_id, channel_id) in subscribed:
+                return 'Already subscribed to this user'
+
             await conn.execute("INSERT INTO subscribers (subscriber, channel) VALUES ($1, $2)",
                                user_id, channel_id)
 
@@ -273,6 +278,11 @@ class Database(commands.Cog):
         channels = await self.db.fetch("SELECT * FROM channels WHERE subscriber = $1",
                                        user_id)
         return channels
+
+    async def get_subscribers(self, channel_id):
+
+        await self.db.fetch("SELECT * FROM subscribers WHERE channel = $1",
+                            channel_id)
 
     async def get_channels_count(self):
 
