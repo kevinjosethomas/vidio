@@ -236,6 +236,9 @@ class Videonet(commands.Cog):
         created_at = channels[channel_index][7]
         date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
 
+        real_subscribers = await self.database.get_subscribers(channels[channel_index][1])
+        real_subscribers = len(real_subscribers)
+
         user = self.bot.get_user(user)
 
         subs = locale.format_string("%d", subs, grouping=True)
@@ -244,6 +247,7 @@ class Videonet(commands.Cog):
         yt_embed = discord.Embed(
             title=f'**{name}**',
             description=f'{self.bot.subscribers} **Subscribers:** {subs}\n'
+                        f'{self.bot.real_subscribers} **Real Subscribers:** {real_subscribers}\n\n'
                         f'{self.bot.views} **Total Views:** {total_views}\n'
                         f'{self.bot.category} **Category:** {category}\n'
                         f':calendar_spiral: **Created on:** {date}\n\n'

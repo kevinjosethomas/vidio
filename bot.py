@@ -87,6 +87,7 @@ bot.money = '💵'
 bot.views = '👀'
 bot.pencil = '📝'
 bot.category = '📂'
+bot.real_subscribers = '🤝'
 bot.likes = '<:likes:694721324517556255>'
 bot.subscribers = '<:live:693869294051655721>'
 bot.dislikes = '<:dislikes:694721324483870760>'
@@ -110,7 +111,7 @@ bot.suggestions_channel_id = 696014954532438116
 
 
 # defines the list of cogs in the bot
-cogs = [
+bot.cogs = [
     'cogs.core.database',
     'cogs.core.settings',
     'cogs.core.owner',
@@ -119,7 +120,7 @@ cogs = [
     'cogs.commands.videonet']
 
 # loads all the cogs from the cog list
-for cog in cogs:
+for cog in bot.cogs:
     bot.load_extension(cog)
 
 
