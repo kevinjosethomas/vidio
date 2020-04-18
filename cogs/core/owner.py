@@ -189,6 +189,15 @@ class Owner(commands.Cog):
         await self.database.remove_ban(user.id)
         await ctx.send(f"{self.bot.yes} **Successfully unbanned -** <@{user.id}>")
 
+    @commands.command(
+        aliases=['update', 'gitpull'],
+        usage='``-pull``',
+        help='Pulls latest version from Github')
+    @commands.is_owner()
+    async def pull(self, ctx):
+        os.system('git pull')
+        await ctx.send(f'{self.bot.yes} **Successfully pulled latest from Github!**')
+
     # @commands.command(
     #     usage=f'``>restart``',
     #     help='Force restarts the bot.'
