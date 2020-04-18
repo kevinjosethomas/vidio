@@ -268,6 +268,12 @@ class Database(commands.Cog):
 
         return leaderboard
 
+    async def get_subscribed(self, user_id):
+
+        channels = await self.db.fetch("SELECT * FROM channels WHERE subscriber = $1",
+                                       user_id)
+        return channels
+
     async def get_channels_count(self):
 
         length = await self.db.fetchrow("SELECT COUNT(*) FROM channels")
