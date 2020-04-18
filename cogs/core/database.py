@@ -468,6 +468,7 @@ class Database(commands.Cog):
                 last_percentage = video[9]
                 last_updated = video[10]
                 uploaded_at = video[11]
+                money = video[12]
 
                 if last_percentage == 10:
                     continue
@@ -476,16 +477,26 @@ class Database(commands.Cog):
                 status = status.lower()
 
                 channel_data = await self.db.fetchrow(
-                    "SELECT subscribers, total_views FROM channels WHERE channel_id = $1",
+                    "SELECT user_id, subscribers, total_views FROM channels WHERE channel_id = $1",
                     channel_id)
 
-                subscribers = int(channel_data[0])
-                total_views = int(channel_data[1])
+                user_id = int(channel_data[0])
+                subscribers = int(channel_data[1])
+                total_views = int(channel_data[2])
+
+                total_money = await self.db.fetchrow(
+                    "SELECT money FROM users WHERE user_id = $1",
+                    user_id)
 
                 if subscribers < 20:
                     continue
 
                 views = views + math.ceil(self.bot.algorithm[status]['views'][last_percentage] * views / 100)
+
+                if subscribers > 1000:
+                    total_money -= money
+                    money = 1 * views / 100
+                    total_money += money
 
                 new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
@@ -503,13 +514,16 @@ class Database(commands.Cog):
                 async with self.db.acquire() as conn:
                     await conn.execute(
                         "UPDATE videos SET new_subs = $1, views = $2, likes = $3, "
-                        "dislikes = $4, last_percentage = $5, last_updated = $6 "
-                        "WHERE video_id = $7",
-                        new_subscribers, views, likes, dislikes, last_percentage, datetime.now(), video_id)
+                        "dislikes = $4, last_percentage = $5, last_updated = $6, money = $7 "
+                        "WHERE video_id = $8",
+                        new_subscribers, views, likes, dislikes, last_percentage, datetime.now(), money, video_id)
 
                     await conn.execute(
                         "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
                         subscribers, total_views, channel_id)
+
+                    await conn.execute("UPDATE users SET money = $1 WHERE user_id = $2",
+                                       total_money, user_id)
 
         except Exception as e:
             print(e)
