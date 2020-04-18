@@ -437,7 +437,7 @@ class Database(commands.Cog):
                 subscribers, total_views, channel_id)
 
             await conn.execute(
-                "UPDATE channels SET money = $1 WHERE user_id = $2",
+                "UPDATE users SET money = $1 WHERE user_id = $2",
                 total_money, user_id)
 
         return {'status': status,
