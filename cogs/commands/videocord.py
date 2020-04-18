@@ -326,7 +326,7 @@ class VideoCord(commands.Cog):
         if len(channels) == 1:
             channel_index = 0
         elif len(channels) > 1:
-            await self.multi_channels(ctx, channels)
+            channel_index = await self.multi_channels(ctx, channels)
 
         if not channel_index:
             return
@@ -363,7 +363,6 @@ class VideoCord(commands.Cog):
             return
 
         await ctx.send(f"{self.bot.yes} **Successfully changed your channel description!**")
-
 
     @commands.command(
         aliases=['dc'],
