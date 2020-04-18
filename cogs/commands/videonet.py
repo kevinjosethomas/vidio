@@ -664,6 +664,37 @@ class Videonet(commands.Cog):
 
         await ctx.send(embed=videos_embed)
 
+    @commands.command(
+        aliases=['sub'],
+        usage='``-subscribe {user}``',
+        help='A command that subscribes to another user\'s channel')
+    async def subscribe(self, ctx, user: discord.User):
+
+        user = user.id
+
+        channels = await self.database.get_channel(user)
+
+        if channels == "Channel doesn't exist":
+            await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
+            return
+
+        if len(channels) == 1:
+            channel_index = 0
+        elif len(channels) > 1:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if not channel_index:
+            return
+
+        self.database.add_subscriber(user, channels[channel_index][1])
+
+        subscribed_embed = discord.Embed(
+            description=f'{self.bot.yes} Successfully subscribed to {channels[channel_index][2]} '
+                       f'<@{channels[channel_index][0]}>',
+            color=self.bot.embed)
+
+        await ctx.send(embed=subscribed_embed)
+
 
 def setup(bot):
     bot.add_cog(Videonet(bot))
