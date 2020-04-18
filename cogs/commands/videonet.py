@@ -374,41 +374,13 @@ class Videonet(commands.Cog):
             await ctx.send(f"{self.bot.no} **You don't have a channel.** You must create a channel to upload videos.")
             return
 
-        if len(channels) > 1:
-
-            message = f"{self.bot.youtube} **You have multiple channels.** Use the index (number) given" \
-                      f" to the channels in the list below to choose which channel you want to upload to.\n"
-
-            for channel in channels:
-                message += f"• ``{channels.index(channel)+1}.`` {channel[2]}\n"
-
-            message += "\n To cancel video upload, simply type ``cancel``."
-
-            while True:
-                await ctx.send(message)
-                channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
-
-                if channel_index.content.lower() == 'cancel':
-                    await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
-                    return
-
-                try:
-                    if int(channel_index.content) > 3 or int(channel_index.content) < 1:
-                        await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                        continue
-                except ValueError:
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                    continue
-                try:
-                    channel_index = int(channel_index.content) - 1
-                except IndexError:
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                    continue
-
-                break
-
-        else:
+        if len(channels) == 1:
             channel_index = 0
+        elif len(channels) > 1:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
 
         latest_video = await self.database.get_all_videos(channels[channel_index][1], 1)
 
@@ -576,41 +548,14 @@ class Videonet(commands.Cog):
             await ctx.send(f"{self.bot.no} **You don't have a channel.** You must create a channel to upload videos.")
             return
 
-        if len(channels) > 1:
-
-            message = f"{self.bot.youtube} **You have multiple channels.** Use the index (number) given" \
-                      f" to the channels in the list below to choose which channel you want to upload to.\n"
-
-            for channel in channels:
-                message += f"• ``{channels.index(channel)+1}.`` {channel[2]}\n"
-
-            message += "\n To cancel video upload, simply type ``cancel``."
-
-            while True:
-                await ctx.send(message)
-                channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
-
-                if channel_index.content.lower() == 'cancel':
-                    await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
-                    return
-
-                try:
-                    if int(channel_index.content) > 3 or int(channel_index.content) < 1:
-                        await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                        continue
-                except ValueError:
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                    continue
-                try:
-                    channel_index = int(channel_index.content) - 1
-                except IndexError:
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                    continue
-
-                break
-
-        else:
+        if len(channels) == 1:
             channel_index = 0
+
+        elif len(channels) > 1:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
 
         channel_id = channels[channel_index][1]
 
