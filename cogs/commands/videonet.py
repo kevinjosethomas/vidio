@@ -47,7 +47,7 @@ class Videonet(commands.Cog):
                 await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                 continue
             break
-
+        print(channel_index)
         return channel_index
 
     @commands.command(
