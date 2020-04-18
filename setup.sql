@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS videos (
 --      - subscriber, the user that subscribed.
 --      - channel, the channel that was subscribed to.
 CREATE TABLE IF NOT EXISTS subscribers (
-    subscriber BIGINT REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    subscriber BIGINT,
     channel INT REFERENCES channels (channel_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
