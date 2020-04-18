@@ -544,6 +544,30 @@ class Videonet(commands.Cog):
 
         await ctx.send(embed=lb_embed)
 
+    @leaderboard.command(
+        usage='``-leaderboard views``',
+        help='List the 10 most viewed users on videonet.')
+    async def views(self, ctx):
+
+        lb = await self.database.get_leaderboard('total_views')
+
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
+        desc = ''
+        pos = 1
+
+        for entry in lb:
+            desc += f'{pos}. ``{locale.format_string("%d", entry[2], grouping=True)} ' \
+                    f'subs`` {self.bot.views} {entry[1]} - <@{entry[0]}>\n'
+            pos += 1
+
+        lb_embed = discord.Embed(
+            title='videonet views leaderboard',
+            description=desc,
+            color=self.bot.embed)
+
+        await ctx.send(embed=lb_embed)
+
     @commands.command(
         aliases=['v'],
         usage='``-video``',
