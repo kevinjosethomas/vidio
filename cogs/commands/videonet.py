@@ -686,11 +686,11 @@ class Videonet(commands.Cog):
         if not channel_index:
             return
 
-        self.database.add_subscriber(user, channels[channel_index][1])
+        await self.database.add_subscriber(user, channels[channel_index][1])
 
         subscribed_embed = discord.Embed(
             description=f'{self.bot.yes} Successfully subscribed to {channels[channel_index][2]} '
-                       f'<@{channels[channel_index][0]}>',
+                        f'<@{channels[channel_index][0]}>',
             color=self.bot.embed)
 
         await ctx.send(embed=subscribed_embed)
