@@ -637,7 +637,7 @@ class Videonet(commands.Cog):
     @commands.command(
         aliases=['sub'],
         usage='``-subscribe {user}``',
-        help='A command that subscribes to another user\'s channel')
+        help='A command that subscribes to another user\'s channel.')
     async def subscribe(self, ctx, user: discord.User):
 
         user = user.id
@@ -662,6 +662,50 @@ class Videonet(commands.Cog):
             return
 
         status = await self.database.add_subscriber(author, channels[channel_index][1])
+
+        if status == 'Already subscribed to this user':
+            await ctx.send(f'{self.bot.no} **You are already subscribed to this user.** '
+                           f'You can\'t subscribe to the same person twice.')
+            return
+        elif status == 'You cannot subscribe to your own channels.':
+            await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
+            return
+
+        subscribed_embed = discord.Embed(
+            description=f'{self.bot.yes} Successfully subscribed to **{channels[channel_index][2]}** '
+                        f'<@{channels[channel_index][0]}>',
+            color=self.bot.embed)
+
+        await ctx.send(embed=subscribed_embed)
+
+    @commands.command(
+        aliases=['unsub'],
+        usage='``-unsubscribe``',
+        help='A command that unsubscribes from another user\'s channel.')
+    async def unsubscribe(self, ctx, user: discord.User):
+
+        user = user.id
+        author = ctx.author.id
+
+        if user == ctx.author.id:
+            await ctx.send(f'{self.bot.no} **You cannot unsubscribe from your own channels.**')
+            return
+
+        channels = await self.database.get_channel(user)
+
+        if channels == "Channel doesn't exist":
+            await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
+            return
+
+        if len(channels) == 1:
+            channel_index = 0
+        elif len(channels) > 1:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
+
+        status = await self.database.remove_subscriber(author, channels[channel_index][1])
 
         if status == 'Already subscribed to this user':
             await ctx.send(f'{self.bot.no} **You are already subscribed to this user.** '

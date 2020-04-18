@@ -206,18 +206,20 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
 
-            subscribed = await self.get_subscribed(user_id)
+            subscribed = await self.db.fetch("SELECT * FROM subscribers WHERE subscriber = $1 AND channel = $2",
+                                             user_id, channel_id)
 
-            if (user_id, channel_id) in subscribed:
+            if not subscribed:
                 return 'Already subscribed to this user'
 
             channels = await self.get_channel(user_id)
             channelids = []
-            for channel in channels:
-                channelids.append(channel[1])
+            if channels != 'Channel doesn\'t exist':
+                for channel in channels:
+                    channelids.append(channel[1])
 
-            if channel_id in channelids:
-                return 'You cannot subscribe to your own channels.'
+                if channel_id in channelids:
+                    return 'You cannot subscribe to your own channels.'
 
             await conn.execute("INSERT INTO subscribers (subscriber, channel) VALUES ($1, $2)",
                                user_id, channel_id)
@@ -225,6 +227,12 @@ class Database(commands.Cog):
     async def remove_subscriber(self, user_id, channel_id):
 
         async with self.db.acquire() as conn:
+
+            status = self.db.fetch("SELECT * FROM subscribers WHERE subscriber = $1 AND channel = $2",
+                                   user_id)
+
+            if not status:
+                return 'Subscription doesn\'t exist'
 
             await conn.execute("DELETE FROM subscribers WHERE subscriber = $1 AND channel = $2",
                                user_id, channel_id)
