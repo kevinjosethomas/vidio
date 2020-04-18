@@ -283,7 +283,7 @@ class Database(commands.Cog):
     async def get_leaderboard(self, by):
 
         leaderboard = await self.db.fetch(
-            "SELECT user_id, name, subscribers FROM channels "
+            "SELECT user_id, name, subscribers, total_views FROM channels "
             f"ORDER BY {by} DESC LIMIT 10")
 
         return leaderboard

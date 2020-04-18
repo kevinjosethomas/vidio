@@ -557,7 +557,7 @@ class Videonet(commands.Cog):
         pos = 1
 
         for entry in lb:
-            desc += f'{pos}. ``{locale.format_string("%d", entry[2], grouping=True)} ' \
+            desc += f'{pos}. ``{locale.format_string("%d", entry[3], grouping=True)} ' \
                     f'subs`` {self.bot.views} {entry[1]} - <@{entry[0]}>\n'
             pos += 1
 
