@@ -171,7 +171,8 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Saturday, 18th April 2020**',
-            value='- Added ``edit_description`` command.\n'
+            value='- Added real subscribers (``-subscribe``)\n'
+                  '- Added ``edit_description`` command.\n'
         )
 
         changelog_embed.add_field(

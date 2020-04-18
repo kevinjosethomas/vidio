@@ -638,7 +638,7 @@ class Videonet(commands.Cog):
 
         user = user.id
 
-        if user.id == ctx.author.id:
+        if user == ctx.author.id:
             await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
             return
 
