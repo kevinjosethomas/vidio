@@ -686,10 +686,17 @@ class Videonet(commands.Cog):
         if not channel_index:
             return
 
-        await self.database.add_subscriber(user, channels[channel_index][1])
+        status = await self.database.add_subscriber(user, channels[channel_index][1])
+
+        if status == 'Already subscribed to this user':
+            await ctx.send(f'{self.bot.no} **You are already subscribed to this user.** '
+                           f'You can\'t subscribe to the same person twice.')
+            return
+        elif status == 'You cannot subscribe to your own channels.':
+            await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
 
         subscribed_embed = discord.Embed(
-            description=f'{self.bot.yes} Successfully subscribed to {channels[channel_index][2]} '
+            description=f'{self.bot.yes} Successfully subscribed to **{channels[channel_index][2]}** '
                         f'<@{channels[channel_index][0]}>',
             color=self.bot.embed)
 
