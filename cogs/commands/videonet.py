@@ -641,6 +641,7 @@ class Videonet(commands.Cog):
     async def subscribe(self, ctx, user: discord.User):
 
         user = user.id
+        author = ctx.author.id
 
         if user == ctx.author.id:
             await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
@@ -660,7 +661,7 @@ class Videonet(commands.Cog):
         if channel_index is False:
             return
 
-        status = await self.database.add_subscriber(user, channels[channel_index][1])
+        status = await self.database.add_subscriber(author, channels[channel_index][1])
 
         if status == 'Already subscribed to this user':
             await ctx.send(f'{self.bot.no} **You are already subscribed to this user.** '
