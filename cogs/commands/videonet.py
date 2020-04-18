@@ -525,7 +525,7 @@ class Videonet(commands.Cog):
         help='List the 10 most subscribed users on videonet.')
     async def subscribers(self, ctx):
 
-        lb = await self.database.get_leaderboard()
+        lb = await self.database.get_leaderboard('subscribers')
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
