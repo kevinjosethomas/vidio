@@ -399,10 +399,12 @@ class Database(commands.Cog):
 
         if subscribers > 1000:
             money = 1 * views / 100
+            money = math.ceil(money)
         else:
             money = 0
 
         total_money += money
+        total_money = math.ceil(total_money)
 
         new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
@@ -497,6 +499,9 @@ class Database(commands.Cog):
                     total_money -= money
                     money = 1 * views / 100
                     total_money += money
+
+                    money = math.ceil(money)
+                    total_money = math.ceil(money)
 
                 new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
