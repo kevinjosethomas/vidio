@@ -214,7 +214,7 @@ class Database(commands.Cog):
             channels = await self.get_channel(user_id)
             channelids = []
             for channel in channels:
-                channelids.append(channel[0])
+                channelids.append(channel[1])
             print(channelids)
             print(channel_id)
             print(user_id)
