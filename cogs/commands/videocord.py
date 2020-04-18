@@ -354,7 +354,7 @@ class VideoCord(commands.Cog):
             description = description.content
             break
 
-        query = await self.database.set_description(channels[channel_index], description)
+        query = await self.database.set_description(channels[channel_index][0], description)
 
         if query == 'Bad arguments.':
             await ctx.send(f"{self.bot.no} **Error.** Please make "
