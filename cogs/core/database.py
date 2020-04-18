@@ -215,6 +215,9 @@ class Database(commands.Cog):
             channelids = []
             for channel in channels:
                 channelids.append(channel[0])
+            print(channelids)
+            print(channel_id)
+            print(user_id)
             if channel_id in channelids:
                 return 'You cannot subscribe to your own channels.'
 

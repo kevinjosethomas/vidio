@@ -34,7 +34,7 @@ class Videonet(commands.Cog):
                 return False
 
             try:
-                if int(channel_index.content) > len(channels):
+                if int(channel_index.content) > len(channels) or int(channel_index.content) <= 0:
                     await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                     continue
             except ValueError:
@@ -221,54 +221,21 @@ class Videonet(commands.Cog):
             return
 
         elif len(channels) == 1:
-            name = channels[0][2]
-            description = channels[0][3]
-            subs = channels[0][4]
-            total_views = channels[0][5]
-            category = channels[0][6]
-            created_at = channels[0][7]
-            date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
+            channel_index = 0
 
         elif len(channels) > 1:
+            channel_index = await self.multi_channels(ctx, channels)
 
-            message = f"{self.bot.youtube} **This user has multiple channels.** Use the index (number) given" \
-                      f" to the channels in the list below to choose which channel you want to see.\n"
+        if not channel_index:
+            return
 
-            for channel in channels:
-                message += f"• ``{channels.index(channel)+1}.`` {channel[2]}\n"
-
-            message += "\n To cancel channel search, simply type ``cancel``."
-
-            while True:
-                await ctx.send(message)
-                channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
-
-                if channel_index.content.lower() == 'cancel':
-                    await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
-                    return
-
-                try:
-                    if int(channel_index.content) > 3:
-                        await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                        continue
-                except ValueError:
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                    continue
-
-                try:
-                    channel_index = int(channel_index.content) - 1
-                except IndexError:
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
-                    continue
-                break
-
-            name = channels[channel_index][2]
-            description = channels[channel_index][3]
-            subs = channels[channel_index][4]
-            total_views = channels[channel_index][5]
-            category = channels[channel_index][6]
-            created_at = channels[channel_index][7]
-            date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
+        name = channels[channel_index][2]
+        description = channels[channel_index][3]
+        subs = channels[channel_index][4]
+        total_views = channels[channel_index][5]
+        category = channels[channel_index][6]
+        created_at = channels[channel_index][7]
+        date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
 
         user = self.bot.get_user(user)
 
