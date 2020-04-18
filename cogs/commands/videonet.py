@@ -638,6 +638,10 @@ class Videonet(commands.Cog):
 
         user = user.id
 
+        if user.id == ctx.author.id:
+            await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
+            return
+
         channels = await self.database.get_channel(user)
 
         if channels == "Channel doesn't exist":
