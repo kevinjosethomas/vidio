@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS channels (
 --      - last_percentage, the last added/subtracted percentage in the vloger algorithm.
 --      - last_updated, the last time the statistics of the video were updated.
 --      - uploaded_at, the date the video was uploaded.
+--      - money, the amount of money earned in the video.
 CREATE TABLE IF NOT EXISTS videos (
     video_id SERIAL PRIMARY KEY,
     channel_id INT REFERENCES channels (channel_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -57,7 +58,8 @@ CREATE TABLE IF NOT EXISTS videos (
     iteration INT,
     last_percentage INT,
     last_updated TIMESTAMP,
-    uploaded_at TIMESTAMP
+    uploaded_at TIMESTAMP,
+    money BIGINT
 );
 
 
