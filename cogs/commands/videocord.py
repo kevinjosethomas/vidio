@@ -314,7 +314,6 @@ class VideoCord(commands.Cog):
         usage='``-edit_description``',
         help='A command that changes your channel description')
     @commands.cooldown(1, 10, BucketType.user)
-    @commands.is_owner()
     async def edit_description(self, ctx):
 
         def author_check(msg):
