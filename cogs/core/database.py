@@ -209,6 +209,8 @@ class Database(commands.Cog):
             subscribed = await self.db.fetch("SELECT * FROM subscribers WHERE subscriber = $1 AND channel = $2",
                                              user_id, channel_id)
 
+            print(subscribed)
+
             if not subscribed:
                 return 'Already subscribed to this user'
 
