@@ -47,7 +47,6 @@ class Videonet(commands.Cog):
                 await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                 continue
             break
-        print(channel_index)
         return channel_index
 
     @commands.command(
@@ -226,7 +225,7 @@ class Videonet(commands.Cog):
         elif len(channels) > 1:
             channel_index = await self.multi_channels(ctx, channels)
 
-        if not channel_index:
+        if channel_index is False:
             return
 
         name = channels[channel_index][2]
@@ -294,7 +293,7 @@ class Videonet(commands.Cog):
         elif len(channels) > 1:
             channel_index = await self.multi_channels(ctx, channels)
 
-        if not channel_index:
+        if channel_index is False:
             return
 
         description_msg = f'{self.bot.youtube} **Step 1/1: Write a new description' \
@@ -346,7 +345,7 @@ class Videonet(commands.Cog):
         elif len(channels) > 1:
             channel_index = await self.multi_channels(ctx, channels)
 
-        if not channel_index:
+        if channel_index is False:
             return
 
         channel = channels[channel_index]
@@ -650,7 +649,7 @@ class Videonet(commands.Cog):
         elif len(channels) > 1:
             channel_index = await self.multi_channels(ctx, channels)
 
-        if not channel_index:
+        if channel_index is False:
             return
 
         status = await self.database.add_subscriber(user, channels[channel_index][1])
