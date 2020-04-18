@@ -285,7 +285,7 @@ class Database(commands.Cog):
 
     async def get_subscribed(self, user_id):
 
-        channels = await self.db.fetch("SELECT * FROM channels WHERE subscriber = $1",
+        channels = await self.db.fetch("SELECT * FROM subscribers WHERE subscriber = $1",
                                        user_id)
         return channels
 
