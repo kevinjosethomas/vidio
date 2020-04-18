@@ -228,7 +228,7 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
 
-            status = self.db.fetch("SELECT * FROM subscribers WHERE subscriber = $1 AND channel = $2",
+            status = await self.db.fetch("SELECT * FROM subscribers WHERE subscriber = $1 AND channel = $2",
                                    user_id, channel_id)
             if not status:
                 return 'Subscription doesn\'t exist'

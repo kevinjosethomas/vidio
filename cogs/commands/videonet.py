@@ -680,7 +680,7 @@ class Videonet(commands.Cog):
 
     @commands.command(
         aliases=['unsub'],
-        usage='``-unsubscribe``',
+        usage='``-unsubscribe {user}``',
         help='A command that unsubscribes from another user\'s channel.')
     async def unsubscribe(self, ctx, user: discord.User):
 
@@ -707,12 +707,9 @@ class Videonet(commands.Cog):
 
         status = await self.database.remove_subscriber(author, channels[channel_index][1])
 
-        if status == 'Already subscribed to this user':
-            await ctx.send(f'{self.bot.no} **You are already subscribed to this user.** '
-                           f'You can\'t subscribe to the same person twice.')
-            return
-        elif status == 'You cannot subscribe to your own channels.':
-            await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
+        if status == 'Subscription doesn\'t exist':
+            await ctx.send(f'{self.bot.no} **You are not subscribed to this channel.** You can\'t '
+                           f'unsubscribe from a channel you were never subscribed to.')
             return
 
         subscribed_embed = discord.Embed(
