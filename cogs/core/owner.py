@@ -27,7 +27,17 @@ class Owner(commands.Cog):
 
     @cog.command(name="load")
     async def load_cog(self, ctx, *, cog: str):
+
         cog = cog.lower()
+
+        if cog == 'all':
+            for cog in self.bot.cog_list:
+                self.bot.load_extension(cog)
+            cog_embed = discord.Embed(
+                description=f'{self.bot.yes} **Successfully reloaded all cogs!**',
+                color=self.bot.embed)
+            await ctx.send(embed=cog_embed)
+            return
 
         if not cog.startswith('cogs.'):
             cog = f'cogs.{cog}'
@@ -42,7 +52,17 @@ class Owner(commands.Cog):
 
     @cog.command(name="unload")
     async def unload_cog(self, ctx, *, cog: str):
+
         cog = cog.lower()
+
+        if cog == 'all':
+            for cog in self.bot.cog_list:
+                self.bot.unload_extension(cog)
+            cog_embed = discord.Embed(
+                description=f'{self.bot.yes} **Successfully unloaded all cogs!**',
+                color=self.bot.embed)
+            await ctx.send(embed=cog_embed)
+            return
 
         if not cog.startswith('cogs.'):
             cog = f'cogs.{cog}'
@@ -57,7 +77,17 @@ class Owner(commands.Cog):
 
     @cog.command(name="reload")
     async def reload_cog(self, ctx, *, cog: str):
+
         cog = cog.lower()
+
+        if cog == 'all':
+            for cog in self.bot.cog_list:
+                self.bot.reload_extension(cog)
+            cog_embed = discord.Embed(
+                description=f'{self.bot.yes} **Successfully reloaded all cogs!**',
+                color=self.bot.embed)
+            await ctx.send(embed=cog_embed)
+            return
 
         if not cog.startswith('cogs.'):
             cog = f'cogs.{cog}'
