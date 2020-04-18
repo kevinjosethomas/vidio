@@ -204,9 +204,6 @@ class Database(commands.Cog):
 
     async def add_subscriber(self, user_id, channel_id):
 
-        print(user_id)
-        print(channel_id)
-
         async with self.db.acquire() as conn:
 
             subscribed = await self.get_subscribed(user_id)
@@ -218,7 +215,7 @@ class Database(commands.Cog):
             channelids = []
             for channel in channels:
                 channelids.append(channel[0])
-            if channel_id in channels:
+            if channel_id in channelids:
                 return 'You cannot subscribe to your own channels.'
 
             await conn.execute("INSERT INTO subscribers (subscriber, channel) VALUES ($1, $2)",
