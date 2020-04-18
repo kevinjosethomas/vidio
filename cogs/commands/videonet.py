@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from discord.ext.commands.cooldowns import BucketType
 
 
-class VideoCord(commands.Cog):
+class Videonet(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -666,4 +666,4 @@ class VideoCord(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(VideoCord(bot))
+    bot.add_cog(Videonet(bot))

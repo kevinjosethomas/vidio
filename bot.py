@@ -116,7 +116,7 @@ cogs = [
     'cogs.core.owner',
     'cogs.commands.youtube',
     'cogs.commands.utility',
-    'cogs.commands.videocord']
+    'cogs.commands.videonet']
 
 # loads all the cogs from the cog list
 for cog in cogs:
