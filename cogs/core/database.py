@@ -382,6 +382,12 @@ class Database(commands.Cog):
             "SELECT channel_id, name, subscribers, total_views FROM channels WHERE user_id = $1 AND channel_id = $2",
             user_id, channel)
 
+        total_money = await self.db.fetchrow(
+            "SELECT money FROM users WHERE user_id = $1",
+            user_id)
+
+        total_money = total_money[0]
+
         channel_id = int(channel_data[0])
         channel_name = channel_data[1]
         subscribers = int(channel_data[2])
@@ -390,6 +396,13 @@ class Database(commands.Cog):
         last_percentage = 1
 
         views = math.ceil(self.bot.algorithm[status]['views'][last_percentage] * subscribers / 100)
+
+        if subscribers > 1000:
+            money = 1 * views / 100
+        else:
+            money = 0
+
+        total_money += money
 
         new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
@@ -414,18 +427,23 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
             await conn.execute(
                 "INSERT INTO videos (channel_id, name, description, status, new_subs, views, "
-                "likes, dislikes, last_percentage, last_updated, uploaded_at) VALUES ($1, $2, $3, "
-                "$4, $5, $6, $7, $8, $9, $10, $11)",
+                "likes, dislikes, last_percentage, last_updated, uploaded_at, money) VALUES ($1, $2, $3, "
+                "$4, $5, $6, $7, $8, $9, $10, $11, $12)",
                 channel_id, name, description, status, new_subscribers, views, likes, dislikes,
-                last_percentage, datetime.now(), datetime.today())
+                last_percentage, datetime.now(), datetime.today(), money)
 
             await conn.execute(
-                "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
+                "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $4",
                 subscribers, total_views, channel_id)
+
+            await conn.execute(
+                "UPDATE channels SET money = $1 WHERE user_id = $2",
+                total_money, user_id)
 
         return {'status': status,
                 'channel': channel_name,
                 'new_subs': new_subscribers,
+                'money': money,
                 'views': views,
                 'likes': likes,
                 'dislikes': dislikes}

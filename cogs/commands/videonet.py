@@ -467,6 +467,7 @@ class Videonet(commands.Cog):
         channel_name = video['channel']
         new_subs = locale.format_string('%d', video['new_subs'], grouping=True)
         views = locale.format_string('%d', video['views'], grouping=True)
+        money = locale.format_string('%d', video['money'], grouping=True)
         likes = locale.format_string('%d', video['likes'], grouping=True)
         dislikes = locale.format_string('%d', video['dislikes'], grouping=True)
 
@@ -487,11 +488,17 @@ class Videonet(commands.Cog):
             description=f'{self.bot.youtube} **Channel:** {channel_name}\n'
                         f'**{status_quote}:** {status.capitalize()}\n\n'
                         f'{self.bot.subscribers} **Subscribers:** {new_subs}\n'
-                        f'{self.bot.views} **Views:** {views}\n\n'
+                        f'{self.bot.views} **Views:** {views}\n'
+                        f'{self.bot.money} **Money:** {money}\n\n'
                         f'{self.bot.likes} **Likes:** {likes}\n'
                         f'{self.bot.dislikes} **Dislikes:** {dislikes}\n\n'
                         f'{self.bot.description} **Description:** {description}',
             color=self.bot.embed)
+
+        video_embed.set_footer(
+            text='⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n'
+                 'Note: The statistics of your video will continue changing for the next 5 days.'
+        )
 
         await message.delete()
         await ctx.send(embed=video_embed)
