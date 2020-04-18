@@ -660,6 +660,7 @@ class Videonet(commands.Cog):
             return
         elif status == 'You cannot subscribe to your own channels.':
             await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
+            return
 
         subscribed_embed = discord.Embed(
             description=f'{self.bot.yes} Successfully subscribed to **{channels[channel_index][2]}** '
