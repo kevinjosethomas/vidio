@@ -375,8 +375,6 @@ class Database(commands.Cog):
         if not await self.text_check([name, description]):
             return 'Bad Arguments'
 
-        print('1')
-
         choices = ['fail', 'poor', 'average', 'good', 'trending']
         status = random.choices(choices, weights=[20, 20, 50, 9.9999, 0.0001])[0]
 
@@ -395,8 +393,6 @@ class Database(commands.Cog):
         subscribers = int(channel_data[2])
         total_views = int(channel_data[3])
 
-        print('2')
-
         last_percentage = 1
 
         views = math.ceil(self.bot.algorithm[status]['views'][last_percentage] * subscribers / 100)
@@ -407,8 +403,6 @@ class Database(commands.Cog):
             money = 0
 
         total_money += money
-
-        print('3')
 
         new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
@@ -427,22 +421,19 @@ class Database(commands.Cog):
             likes = math.ceil(20 * views / 100)
             dislikes = math.ceil(10 * views / 100)
 
-        print('4')
-
         total_views += views
         subscribers += new_subscribers
 
         async with self.db.acquire() as conn:
-            print('5')
             await conn.execute(
                 "INSERT INTO videos (channel_id, name, description, status, new_subs, views, "
                 "likes, dislikes, last_percentage, last_updated, uploaded_at, money) VALUES ($1, $2, $3, "
                 "$4, $5, $6, $7, $8, $9, $10, $11, $12)",
                 channel_id, name, description, status, new_subscribers, views, likes, dislikes,
                 last_percentage, datetime.now(), datetime.today(), money)
-            print('6')
+
             await conn.execute(
-                "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $4",
+                "UPDATE channels SET subscribers = $1, total_views = $2 WHERE channel_id = $3",
                 subscribers, total_views, channel_id)
 
             await conn.execute(
