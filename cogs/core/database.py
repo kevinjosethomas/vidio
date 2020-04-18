@@ -280,11 +280,11 @@ class Database(commands.Cog):
         else:
             raise TypeError(f'Expected int, received {type(query_id)}')
 
-    async def get_leaderboard(self):
+    async def get_leaderboard(self, by):
 
         leaderboard = await self.db.fetch(
             "SELECT user_id, name, subscribers FROM channels "
-            "ORDER BY subscribers DESC LIMIT 10")
+            f"ORDER BY {by} DESC LIMIT 10")
 
         return leaderboard
 

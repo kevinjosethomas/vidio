@@ -508,11 +508,22 @@ class Videonet(commands.Cog):
         except AttributeError:
             ctx.handled = False
 
-    @commands.command(
-        aliases=['lb'],
-        usage='``-leaderboard``',
-        help='Returns the 10 people with the most subscribers.')
+    @commands.group(
+        aliases=['lb'])
     async def leaderboard(self, ctx):
+
+        if ctx.invoked_subcommand is None:
+            lb_embed = discord.Embed(
+                description=f'• Subscriber Leaderboard | ``{ctx.prefix}leaderboard subscribers``\n'
+                            f'• Views Leaderboard | ``{ctx.prefix}leaderboard views``',
+                color=self.bot.embed)
+            await ctx.send(embed=lb_embed)
+
+    @leaderboard.command(
+        aliases=['subs'],
+        usage='``-leaderboard subscribers``',
+        help='List the 10 most subscribed users on videonet.')
+    async def subscribers(self, ctx):
 
         lb = await self.database.get_leaderboard()
 
