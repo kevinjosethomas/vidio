@@ -345,7 +345,7 @@ class Videonet(commands.Cog):
         channels = await self.database.get_channel(user)
 
         if len(channels) == 1:
-            channel_index = channels[0]
+            channel_index = 0
         elif len(channels) > 1:
             channel_index = await self.multi_channels(ctx, channels)
 
