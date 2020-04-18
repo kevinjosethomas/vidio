@@ -170,6 +170,11 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         changelog_embed.add_field(
+            name='**• Saturday, 18th April 2020**',
+            value='- Added ``edit_description`` command.\n'
+        )
+
+        changelog_embed.add_field(
             name='**• Friday, 17th April 2020**',
             value='- Added seconds to cooldowns. \n'
                   '- Added more characters for titles and descriptions.\n'
