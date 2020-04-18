@@ -209,6 +209,13 @@ class Database(commands.Cog):
             await conn.execute("INSERT INTO subscribers (subscriber, channel) VALUES ($1, $2)",
                                user_id, channel_id)
 
+    async def remove_subscriber(self, user_id, channel_id):
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("DELETE FROM subscribers WHERE subscriber = $1 AND channel = $2",
+                               user_id, channel_id)
+
     async def remove_ban(self, user_id):
 
         async with self.db.acquire() as conn:
