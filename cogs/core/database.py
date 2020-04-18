@@ -204,6 +204,9 @@ class Database(commands.Cog):
 
     async def add_subscriber(self, user_id, channel_id):
 
+        print(user_id)
+        print(channel_id)
+
         async with self.db.acquire() as conn:
 
             subscribed = await self.get_subscribed(user_id)
