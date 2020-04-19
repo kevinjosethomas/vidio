@@ -91,7 +91,7 @@ class Default(commands.Cog):
             '**You should join the videonet support server to stay updated about'
             ' new features!** https://discord.gg/pGzQUvE']
 
-        if random.choice([True, False, False, False]):
+        if random.choice([True, False, False]):
 
             await ctx.send(random.choice(replies))
 
