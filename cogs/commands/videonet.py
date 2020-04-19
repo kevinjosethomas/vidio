@@ -489,7 +489,7 @@ class Videonet(commands.Cog):
                         f'**{status_quote}:** {status.capitalize()}\n\n'
                         f'{self.bot.subscribers} **Subscribers:** {new_subs}\n'
                         f'{self.bot.views} **Views:** {views}\n'
-                        f'{self.bot.money} **Money:** {money}\n\n'
+                        f'{self.bot.money} **Money:** ${money}\n\n'
                         f'{self.bot.likes} **Likes:** {likes}\n'
                         f'{self.bot.dislikes} **Dislikes:** {dislikes}\n\n'
                         f'{self.bot.description} **Description:** {description}',
@@ -725,7 +725,7 @@ class Videonet(commands.Cog):
             return
 
         description = f'<@{user_details[0]}>\n' \
-                      f'**Money:** ``{user_details[1]}``'
+                      f'**Money:** ``${user_details[1]}``'
 
         channels = await self.database.get_channel(user_id)
 
@@ -734,7 +734,7 @@ class Videonet(commands.Cog):
         else:
             description += '\n\n **Channels**\n'
             for channel in channels:
-                description += f'• {channel[2]} | {channel[4]} subscribers\n'
+                description += f'• {channel[2]} | ``{channel[4]} subscribers``\n'
 
         user_embed = discord.Embed(
             title=user.name+user.discriminator,
