@@ -541,7 +541,7 @@ class Videonet(commands.Cog):
 
         for entry in lb:
             desc += f'{pos}. ``{locale.format_string("%d", entry[2], grouping=True)} ' \
-                    f'views`` {self.bot.subscribers} {entry[1]} - <@{entry[0]}>\n'
+                    f'subs`` {self.bot.subscribers} {entry[1]} - <@{entry[0]}>\n'
             pos += 1
 
         lb_embed = discord.Embed(
@@ -565,7 +565,7 @@ class Videonet(commands.Cog):
 
         for entry in lb:
             desc += f'{pos}. ``{locale.format_string("%d", entry[3], grouping=True)} ' \
-                    f'subs`` {self.bot.views} {entry[1]} - <@{entry[0]}>\n'
+                    f'views`` {self.bot.views} {entry[1]} - <@{entry[0]}>\n'
             pos += 1
 
         lb_embed = discord.Embed(
