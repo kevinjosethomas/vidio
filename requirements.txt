@@ -2,3 +2,4 @@ youtube-data-api
 python-dotenv
 discord.py
 asyncpg
+dblpy
