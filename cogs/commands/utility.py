@@ -171,7 +171,8 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Sunday, 19th April 2020**',
-            value='- Added money'
+            value='- Added ``-profile`` command\n'
+                  '- Added money'
         )
 
         changelog_embed.add_field(
