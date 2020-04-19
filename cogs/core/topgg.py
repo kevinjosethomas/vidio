@@ -1,6 +1,6 @@
 import dbl
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 
 class TopGG(commands.Cog):
@@ -10,7 +10,16 @@ class TopGG(commands.Cog):
         self.token = self.bot.DBL_TOKEN
         self.database = self.bot.get_cog('Database')
         self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True, webhook_path='/vote', webhook_port=3004)
-        print(self.dblpy.bot.user)
+        self.print_dbl.start()
+
+    @tasks.loop()
+    async def print_dbl(self):
+        print(self.dblpy)
+
+    @print_dbl.before_loop
+    async def before_printing(self):
+
+        await self.bot.wait_until_ready()
 
     @commands.Cog.listener()
     async def on_guild_post(self):

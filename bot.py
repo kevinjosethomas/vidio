@@ -111,7 +111,6 @@ bot.error_channel_id = 692405881115246603
 bot.support_server_id = 689210707232686158
 bot.suggestions_channel_id = 696014954532438116
 
-
 # defines the list of cogs in the bot
 bot.cog_list = [
     'cogs.core.database',
