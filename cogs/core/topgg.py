@@ -12,7 +12,7 @@ class TopGG(commands.Cog):
         self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True, webhook_path='/vote', webhook_port=3004)
         self.print_dbl.start()
 
-    @tasks.loop()
+    @tasks.loop(hours=1)
     async def print_dbl(self):
         print(self.dblpy)
 
