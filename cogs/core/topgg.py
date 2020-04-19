@@ -47,8 +47,8 @@ class TopGG(commands.Cog):
 
     @commands.Cog.listener()
     async def on_dbl_test(self, data):
-
-        print("test vote")
+        print("Successful Test")
+        print(data)
 
 
 def setup(bot):
