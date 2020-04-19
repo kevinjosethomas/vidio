@@ -718,7 +718,7 @@ class Videonet(commands.Cog):
         else:
             user_id = user.id
 
-        user_details = self.database.get_user(user_id)
+        user_details = await self.database.get_user(user_id)
 
         if user_details == 'User doesn\'t exist':
             await ctx.send(f'{self.bot.no} **This user is not videonet.**')
