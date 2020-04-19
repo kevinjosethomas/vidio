@@ -85,7 +85,14 @@ class Default(commands.Cog):
     @commands.Cog.listener()
     async def on_command_completion(self, ctx):
 
-        print('hi')
+        replies = [
+            '**Remember to upvote the bot to get some money!**',
+            f'**Make sure you regularly check **``{ctx.prefix}changelog`` **to learn about new cool features!',
+            '**You should join the videonet support server to stay updated about new features!**']
+
+        if random.choice([True, False, False, False]):
+
+            await ctx.send(random.choice(replies))
 
     @commands.Cog.listener()
     async def on_ready(self):
