@@ -29,7 +29,7 @@ class TopGG(commands.Cog):
         upvote_type = data["type"]
         is_weekend = data["isWeekend"]
 
-        if bot_id != self.bot.id:
+        if bot_id != self.bot.user.id:
             return
 
         upvote = self.database.on_vote(user_id, is_weekend)
