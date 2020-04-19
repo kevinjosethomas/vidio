@@ -491,6 +491,8 @@ class Database(commands.Cog):
                     "SELECT money FROM users WHERE user_id = $1",
                     user_id)
 
+                total_money = total_money[0]
+
                 if subscribers < 20:
                     continue
 
