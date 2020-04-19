@@ -454,7 +454,8 @@ class Database(commands.Cog):
     async def update_videos(self):
         try:
 
-            videos = await self.db.fetch("SELECT * FROM videos WHERE now() - last_updated > make_interval(hours := 12);")
+            videos = await self.db.fetch("SELECT * FROM videos WHERE now() - last_updated > make_interval(hours := 12) "
+                                         "AND last_percentage < 10")
 
             for video in videos:
 
