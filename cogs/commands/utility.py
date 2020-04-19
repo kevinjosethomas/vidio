@@ -208,6 +208,21 @@ class Utility(commands.Cog):
 
         await ctx.send(f'{self.bot.yes} **https://discord.gg/3MShhbr**')
 
+    @commands.command(
+        aliases=['upvote'],
+        usage='``-vote``',
+        help='Sends a link to upvote the bot.')
+    async def vote(self, ctx):
+
+        vote_embed = discord.Embed(
+            title='Vote for videonet and get some handy money!',
+            description='[Click Here to Vote](https://top.gg/bot/689210550680682560/vote)',
+            color=self.bot.embed)
+
+        vote_embed.set_thumbnail(url=self.bot.user.avatar_url)
+
+        await ctx.send(embed=vote_embed)
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
