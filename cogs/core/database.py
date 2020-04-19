@@ -183,6 +183,9 @@ class Database(commands.Cog):
             added_money = math.ceil(2 * money / 100)
             money += added_money
 
+        if added_money == 0:
+            added_money += random.randint(1, 4)
+
         async with self.db.acquire() as conn:
 
             await conn.execute("UPDATE users SET money = $1 WHERE user_id = $2",
