@@ -32,7 +32,7 @@ class TopGG(commands.Cog):
         if bot_id != self.bot.user.id:
             return
 
-        upvote = self.database.on_vote(user_id, is_weekend)
+        upvote = await self.database.on_vote(user_id, is_weekend)
 
         if upvote == 'User doesn\'t exist':
             return
@@ -58,7 +58,7 @@ class TopGG(commands.Cog):
         if bot_id != self.bot.user.id:
             return
 
-        upvote = self.database.on_vote(user_id, is_weekend)
+        upvote = await self.database.on_vote(user_id, is_weekend)
 
         if upvote == 'User doesn\'t exist':
             return
