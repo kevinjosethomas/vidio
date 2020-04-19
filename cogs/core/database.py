@@ -329,6 +329,14 @@ class Database(commands.Cog):
 
         return videos
 
+    async def get_user(self, user_id):
+
+        user = await self.db.fetchrow('SELECT * FROM users WHERE user_id = $1',
+                                      user_id)
+        if not user:
+            return 'User doesn\'t exist'
+        return user
+
     async def get_prefix(self, guild):
 
         prefix = await self.db.fetchrow(

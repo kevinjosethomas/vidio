@@ -359,7 +359,7 @@ class Videonet(commands.Cog):
         await ctx.send(f"{self.bot.yes} **Successfully deleted your channel -** ``{channel[2]}``")
 
     @commands.command(
-        aliases=['u'],
+        aliases=['up'],
         usage='``-upload``',
         help='A command that uploads a video on the author\'s channel.')
     @commands.cooldown(1, 10, BucketType.user)
@@ -705,6 +705,43 @@ class Videonet(commands.Cog):
             color=self.bot.embed)
 
         await ctx.send(embed=subscribed_embed)
+
+    @commands.command(
+        aliases=['u', 'p'],
+        usage='``-profile {user}``',
+        help='Shows the profile of the user.')
+    async def profile(self, ctx, user: discord.User = None):
+
+        if not user:
+            user = ctx.author
+            user_id = ctx.author.id
+        else:
+            user_id = user.id
+
+        user_details = self.database.get_user(user_id)
+
+        if user_details == 'User doesn\'t exist':
+            await ctx.send(f'{self.bot.no} **This user is not videonet.**')
+            return
+
+        description = f'<@{user_details[0]}>\n' \
+                      f'**Money:** ``{user_details[1]}``'
+
+        channels = await self.database.get_channel(user_id)
+
+        if channels == "Channel doesn't exist":
+            channels = None
+        else:
+            description += '\n\n **Channels**\n'
+            for channel in channels:
+                description += f'• {channel[2]} | {channel[4]} subscribers\n'
+
+        user_embed = discord.Embed(
+            title=user.name+user.discriminator,
+            description=description,
+            color=self.bot.embed)
+
+        user_embed.set_thumbnail(url=user.avatar_url)
 
 
 def setup(bot):
