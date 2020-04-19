@@ -170,9 +170,15 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         changelog_embed.add_field(
+            name='**• Sunday, 19th April 2020**',
+            value='- Added money'
+        )
+
+        changelog_embed.add_field(
             name='**• Saturday, 18th April 2020**',
             value='- Added real subscribers (``-subscribe``)\n'
-                  '- Added ``edit_description`` command.\n'
+                  '- Added ``edit_description`` command.\n',
+            inline=False
         )
 
         changelog_embed.add_field(
@@ -190,15 +196,6 @@ class Utility(commands.Cog):
                   '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
             inline=False
         )
-
-        changelog_embed.add_field(
-            name='**• Wednesday, 15th April 2020**',
-            value='- Added ``video {video_name}`` command, to search for videos by name.\n'
-                  '- Added ``changelog`` command, to see new bot updates and changes.\n'
-                  '- Added ``search`` command, to search for youtube videos (first result)\n'
-                  '- Added ``invite`` command, provides you with a support server invite.\n'
-                  '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
-            inline=False)
 
         await ctx.send(embed=changelog_embed)
 
