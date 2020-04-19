@@ -18,6 +18,7 @@ PASSWORD = os.getenv('password')
 TOKEN = os.getenv('token')
 YT_KEY = os.getenv('yt_key')
 HOSTNAME = os.getenv('hostname')
+DBL_TOKEN = os.getenv('dbl_token')
 
 
 async def get_prefix(bot, message):
@@ -76,6 +77,7 @@ asyncio.get_event_loop().run_until_complete(database_setup())
 
 bot.YT_KEY = YT_KEY
 bot.PASSWORD = PASSWORD
+bot.DBL_TOKEN = DBL_TOKEN
 
 
 # some bot variables the bot uses for various purposes
@@ -115,6 +117,7 @@ bot.cog_list = [
     'cogs.core.database',
     'cogs.core.settings',
     'cogs.core.owner',
+    'cogs.core.topgg',
     'cogs.commands.youtube',
     'cogs.commands.utility',
     'cogs.commands.videonet']
