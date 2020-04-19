@@ -83,6 +83,11 @@ class Default(commands.Cog):
         self.database = self.bot.get_cog('Database')
 
     @commands.Cog.listener()
+    async def on_command_completion(self, ctx):
+
+        print('hi')
+
+    @commands.Cog.listener()
     async def on_ready(self):
         print(f"Videonet is back online!")
         self.bot.support_server = self.bot.get_guild(self.bot.support_server_id)
