@@ -39,7 +39,10 @@ class TopGG(commands.Cog):
         await user.send(f':heart: **Thanks for upvoting!** {self.bot.money} You got ${added_money} for helping '
                         f'videonet grow!')
 
+    @commands.Cog.listener()
+    async def on_dbl_test(self, data):
 
+        print("test vote")
 
 
 def setup(bot):
