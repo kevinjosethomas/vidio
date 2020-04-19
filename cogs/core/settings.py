@@ -86,9 +86,10 @@ class Default(commands.Cog):
     async def on_command_completion(self, ctx):
 
         replies = [
-            '**Remember to upvote the bot to get some money!**',
-            f'**Make sure you regularly check **``{ctx.prefix}changelog`` **to learn about new cool features!',
-            '**You should join the videonet support server to stay updated about new features!**']
+            '**Remember to upvote the bot to get some money! https://top.gg/bot/689210550680682560/vote**',
+            f'**Make sure you regularly check **``{ctx.prefix}changelog`` **to learn about new cool features!**',
+            '**You should join the videonet support server to stay updated about'
+            ' new features!** https://discord.gg/pGzQUvE']
 
         if random.choice([True, False, False, False]):
 
