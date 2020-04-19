@@ -177,10 +177,10 @@ class Database(commands.Cog):
         money = user[1]
 
         if is_weekend:
-            added_money = 4 * money / 100
+            added_money = math.ceil(4 * money / 100)
             money += added_money
         elif not is_weekend:
-            added_money = 2 * money / 100
+            added_money = math.ceil(2 * money / 100)
             money += added_money
 
         async with self.db.acquire() as conn:
