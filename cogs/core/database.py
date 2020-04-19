@@ -167,6 +167,29 @@ class Database(commands.Cog):
         else:
             return False
 
+    async def on_vote(self, user_id, is_weekend):
+
+        user = await self.db.fetchrow('SELECT * FROM users WHERE user_id = $1',
+                                      user_id)
+        if not user:
+            return 'User doesn\'t exist'
+
+        money = user[1]
+
+        if is_weekend:
+            added_money = 4 * money / 100
+            money += added_money
+        elif not is_weekend:
+            added_money = 2 * money / 100
+            money += added_money
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("UPDATE users SET money = $1 WHERE user_id = $2",
+                               money, user_id)
+
+        return [money, added_money]
+
     async def add_channel(self, user_id, name, description, category):
 
         if not await self.text_check([name, description, category]):
