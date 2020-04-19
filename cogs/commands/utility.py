@@ -216,7 +216,7 @@ class Utility(commands.Cog):
 
         vote_embed = discord.Embed(
             title='Vote for videonet and get some handy money!',
-            description='[Click Here to Vote](https://top.gg/bot/689210550680682560/vote)',
+            description='[Click Here to vote](https://top.gg/bot/689210550680682560/vote)',
             color=self.bot.embed)
 
         vote_embed.set_thumbnail(url=self.bot.user.avatar_url)
