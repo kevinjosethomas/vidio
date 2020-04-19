@@ -10,6 +10,7 @@ class TopGG(commands.Cog):
         self.token = self.bot.DBL_TOKEN
         self.database = self.bot.get_cog('Database')
         self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True, webhook_path='/vote', webhook_port=3004)
+        print(self.dblpy.bot.user)
 
     @commands.Cog.listener()
     async def on_guild_post(self):
