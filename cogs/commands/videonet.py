@@ -745,6 +745,30 @@ class Videonet(commands.Cog):
 
         await ctx.send(embed=user_embed)
 
+    @commands.command(
+        aliases=['shop'],
+        usage='``-store``',
+        help='Lists the things you can buy.')
+    async def store(self, ctx):
+
+        store_embed = discord.Embed(
+            title='videonet store',
+            description=f'Buy some cheats! Use ``{ctx.prefix}buy {{index}}`` to buy what you want.',
+            color=self.bot.embed
+        )
+
+        store_embed.add_field(
+            name='1. Decent Advertisement',
+            value='Costs $(subscribers)'
+        )
+
+        store_embed.add_field(
+            name='2. Average Advertisement',
+            value='Costs $(0.75 * subscribers)'
+        )
+
+        await ctx.send(embed=store_embed)
+
 
 def setup(bot):
     bot.add_cog(Videonet(bot))
