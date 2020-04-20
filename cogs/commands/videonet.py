@@ -1,3 +1,4 @@
+import math
 import locale
 import asyncio
 import discord
@@ -773,13 +774,13 @@ class Videonet(commands.Cog):
 
         store_embed.add_field(
             name='1. Decent Advertisement',
-            value=f'Costs ${channels[channel_index][4]}',
+            value=f'Costs ``${math.ceil(channels[channel_index][4])}``',
             inline=False
         )
 
         store_embed.add_field(
             name='2. Average Advertisement',
-            value=f'Costs ${75 * channels[channel_index][4] / 100}',
+            value=f'Costs ``${math.ceil(75 * channels[channel_index][4] / 100)}``',
             inline=False
         )
 
