@@ -453,7 +453,7 @@ class Database(commands.Cog):
         if subscribers < 20:
             status = 'average'
             new_subscribers = random.randint(5, 10)
-            views = math.ceil(80 * subscribers / 100)
+            views = math.ceil(80 * new_subscribers / 100)
             likes = math.ceil(20 * views / 100)
             dislikes = math.ceil(10 * views / 100)
 
