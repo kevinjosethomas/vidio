@@ -17,6 +17,10 @@ class Videonet(commands.Cog):
         def author_check(msg):
             return msg.author == ctx.message.author and ctx.guild == msg.guild
 
+        if channels == "Channel doesn't exist":
+            await ctx.send(f"{self.bot.no} **This user doesn't have any channels.**")
+            return False
+
         message = f"{self.bot.youtube} **This user has multiple channels.** Use the index (number) given" \
                   f" to the channels in the list below to choose which channel you want to see.\n"
 
@@ -750,6 +754,16 @@ class Videonet(commands.Cog):
         usage='``-store``',
         help='Lists the things you can buy.')
     async def store(self, ctx):
+
+        channels = await self.database.get_channel(ctx.author.id)
+
+        if len(channels) == 1:
+            channel_index = 0
+        elif len(channels) > 1:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
 
         store_embed = discord.Embed(
             title='videonet store',
