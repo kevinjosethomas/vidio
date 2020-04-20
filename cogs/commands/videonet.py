@@ -759,12 +759,14 @@ class Videonet(commands.Cog):
 
         store_embed.add_field(
             name='1. Decent Advertisement',
-            value='Costs $(subscribers)'
+            value='Costs $(subscribers)',
+            inline=False
         )
 
         store_embed.add_field(
             name='2. Average Advertisement',
-            value='Costs $(0.75 * subscribers)'
+            value='Costs $(0.75 * subscribers)',
+            inline=False
         )
 
         await ctx.send(embed=store_embed)
