@@ -579,7 +579,7 @@ class Videonet(commands.Cog):
         aliases=['v'],
         usage='``-video``',
         help='A command that (inaccurately) searches for videos uploaded on your channel.')
-    async def video(self, ctx, video_name):
+    async def video(self, ctx, *, video_name):
 
         def author_check(msg):
             return msg.author == ctx.message.author and ctx.guild == msg.guild

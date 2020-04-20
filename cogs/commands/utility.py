@@ -66,10 +66,10 @@ class Utility(commands.Cog):
     @commands.command(
         aliases=['creds'],
         usage='``-credits``',
-        help='Lists some people and services that helped build vloger.')
+        help='Lists some people and services that helped build videonet.')
     async def credits(self, ctx):
         credits_embed = discord.Embed(
-            description='Some people and services that helped build vloger.',
+            description='Some people and services that helped build videonet.',
             color=self.bot.embed)
 
         credits_embed.add_field(
