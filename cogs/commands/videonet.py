@@ -773,15 +773,17 @@ class Videonet(commands.Cog):
 
         store_embed.add_field(
             name='1. Decent Advertisement',
-            value='Costs $(subscribers)',
+            value=f'Costs ${channels[channel_index][4]}',
             inline=False
         )
 
         store_embed.add_field(
             name='2. Average Advertisement',
-            value='Costs $(0.75 * subscribers)',
+            value=f'Costs ${75 * channels[channel_index][4] / 100}',
             inline=False
         )
+
+        store_embed.set_footer(text='Note: The prices keep changing as your channel grows.')
 
         await ctx.send(embed=store_embed)
 
