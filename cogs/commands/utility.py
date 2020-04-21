@@ -171,7 +171,8 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Tuesday, 21st April 2020**',
-            value='- Removed symbol and punctuation limitatio.\n'
+            value='- Added money leaderboard (``leaderboard money``)\n'
+                  '- Removed symbol and punctuation limitation.\n'
                   '- Fixed ``edit_description`` error.\n'
                   '- Added tutorial command.\n'
                   '- Updated help command.'
