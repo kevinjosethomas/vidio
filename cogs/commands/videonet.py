@@ -284,6 +284,9 @@ class Videonet(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def edit_description(self, ctx):
 
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
+
         user = ctx.author.id
         channels = await self.database.get_channel(user)
 
