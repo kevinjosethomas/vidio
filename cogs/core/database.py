@@ -497,7 +497,7 @@ class Database(commands.Cog):
                 if subscribers > 1000:
                     new_money = math.ceil(new_views / 10)
                     money += new_money
-                    total_money += money
+                    total_money += new_money
 
                     money = math.ceil(money)
                     total_money = math.ceil(money)
