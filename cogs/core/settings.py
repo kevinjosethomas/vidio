@@ -12,16 +12,16 @@ class MyHelpCommand(commands.HelpCommand):
             color=self.context.bot.embed)
 
         for category in mapping:
-            command = ''
+            command = ', '
 
             command_list = list(map(lambda c: c.name, set(mapping[category])))
+            print(command_list)
+            for command in command_list:
+                index = command_list.index(command)
+                command_list[index] = f'``{command}``'
+            print(command_list)
 
             command = command.join(command_list)
-            for command in command_list:
-                if command_list.index(command) == len(command_list) - 1:
-                    command_list += f'``{command}``'
-                    continue
-                command_list += f'``{command}``, '
 
             if not command_list:
                 continue
