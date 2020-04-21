@@ -20,8 +20,11 @@ class MyHelpCommand(commands.HelpCommand):
                 index = command_list.index(command)
                 command_list[index] = f'``{command}``'
             print(command_list)
+            print(command)
 
             command = command.join(command_list)
+
+            print(command)
 
             if not command_list:
                 continue
