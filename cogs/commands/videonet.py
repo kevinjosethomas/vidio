@@ -76,8 +76,7 @@ class Videonet(commands.Cog):
         name_msg = f'{self.bot.youtube} **Step 1/3: Choose a name ' \
                    'for your channel**\nLet\'s create your channel! First, ' \
                    'enter the name of your channel exactly ' \
-                   'how you want it to be. Only ``alphabets``, ``digits``, ' \
-                   '``punctuation`` and ``whitespaces`` are allowed. ' \
+                   'how you want it to be. ' \
                    '**Your channel name must not exceed 50 characters.**\n\n' \
                    'To cancel channel setup, simply type ``cancel``.'
 
@@ -97,8 +96,7 @@ class Videonet(commands.Cog):
 
         description_msg = f'{self.bot.youtube} **Step 2/3: Write a description' \
                           ' for your channel**\n Perfect! Now, write a cool description ' \
-                          'about your channel! Only ``alphabets``, ``digits``, ' \
-                          '``punctuation`` and ``whitespaces`` are allowed. ' \
+                          'about your channel! ' \
                           '**Your channel description must not exceed 250 characters.**\n\n' \
                           'To skip this, simply type ``skip``\n' \
                           'To cancel channel setup, simply type ``cancel``.'
@@ -293,8 +291,7 @@ class Videonet(commands.Cog):
 
         description_msg = f'{self.bot.youtube} **Step 1/1: Write a new description' \
                           ' for your channel**\n Write a cooler description ' \
-                          'about your channel! Only ``alphabets``, ``digits``, ' \
-                          '``punctuation`` and ``whitespaces`` are allowed. ' \
+                          'about your channel! ' \
                           '**Your channel description must not exceed 250 characters.**\n\n' \
                           'To cancel edit, simply type ``cancel``.'
 
@@ -384,9 +381,7 @@ class Videonet(commands.Cog):
                 return
 
         video_msg = f'{self.bot.youtube} ** Step 1/2 Enter a name for your video**\n' \
-                    '**Your video name must not exceed 50 characters. **' \
-                    'Only ``alphabets``, ``digits``, ``punctuation`` ' \
-                    'and ``whitespaces`` are allowed.\n\n' \
+                    '**Your video name must not exceed 50 characters. **\n\n' \
                     'To cancel video upload, simply type ``cancel``.'
 
         while True:
@@ -409,8 +404,7 @@ class Videonet(commands.Cog):
 
         description_msg = f'{self.bot.youtube} **Step 2/2: Write a description for your video**\n' \
                           'Perfect! Now, write a cool description ' \
-                          'for your video! Only ``alphabets``, ``digits``, ' \
-                          '``punctuation`` and ``whitespaces`` are allowed. ' \
+                          'for your video! ' \
                           '**Your channel description must not exceed 250 characters.**\n\n' \
                           'To skip this, simply type ``skip``\n' \
                           'To cancel channel setup, simply type ``cancel``.'
