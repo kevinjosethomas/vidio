@@ -430,10 +430,10 @@ class Database(commands.Cog):
 
         last_percentage = 1
 
-        views = math.ceil(self.bot.algorithm[status]['views'][last_percentage] * subscribers / 10)
+        views = math.ceil(self.bot.algorithm[status]['views'][last_percentage] * subscribers / 100)
 
         if subscribers > 1000:
-            money = 1 * views / 100
+            money = 1 * views / 10
             money = math.ceil(money)
         else:
             money = 0
