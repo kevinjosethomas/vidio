@@ -563,7 +563,7 @@ class Videonet(commands.Cog):
         pos = 1
 
         for entry in lb:
-            desc += f'{pos}. ``${locale.format_string("%d", entry[1], grouping=True)} ' \
+            desc += f'{pos}. ``${locale.format_string("%d", entry[1], grouping=True)}`` ' \
                     f'- <@{entry[0]}>\n'
             pos += 1
 
