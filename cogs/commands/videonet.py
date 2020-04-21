@@ -496,7 +496,8 @@ class Videonet(commands.Cog):
         if ctx.invoked_subcommand is None:
             lb_embed = discord.Embed(
                 description=f'• Subscriber Leaderboard | ``{ctx.prefix}leaderboard subscribers``\n'
-                            f'• Views Leaderboard | ``{ctx.prefix}leaderboard views``',
+                            f'• Views Leaderboard | ``{ctx.prefix}leaderboard views``\n'
+                            f'• Money Leaderboard | ``{ctx.prefix}leaderboard money``',
                 color=self.bot.embed)
             await ctx.send(embed=lb_embed)
 
@@ -544,6 +545,30 @@ class Videonet(commands.Cog):
 
         lb_embed = discord.Embed(
             title='videonet views leaderboard',
+            description=desc,
+            color=self.bot.embed)
+
+        await ctx.send(embed=lb_embed)
+
+    @leaderboard.command(
+        usage='``-leaderboard money``',
+        help='List the 10 richest users on videonet.')
+    async def money(self, ctx):
+
+        lb = await self.database.get_user_leaderboard()
+
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
+        desc = ''
+        pos = 1
+
+        for entry in lb:
+            desc += f'{pos}. ``${locale.format_string("%d", entry[1], grouping=True)} ' \
+                    f'- <@{entry[0]}>\n'
+            pos += 1
+
+        lb_embed = discord.Embed(
+            title='videonet money leaderboard',
             description=desc,
             color=self.bot.embed)
 
