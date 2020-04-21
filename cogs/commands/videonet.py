@@ -502,7 +502,7 @@ class Videonet(commands.Cog):
             await ctx.send(embed=lb_embed)
 
     @leaderboard.command(
-        aliases=['subs'],
+        aliases=['subs', 's'],
         usage='``-leaderboard subscribers``',
         help='List the 10 most subscribed users on videonet.')
     async def subscribers(self, ctx):
@@ -527,6 +527,7 @@ class Videonet(commands.Cog):
         await ctx.send(embed=lb_embed)
 
     @leaderboard.command(
+        aliases=['v'],
         usage='``-leaderboard views``',
         help='List the 10 most viewed users on videonet.')
     async def views(self, ctx):
@@ -551,6 +552,7 @@ class Videonet(commands.Cog):
         await ctx.send(embed=lb_embed)
 
     @leaderboard.command(
+        aliases=['m'],
         usage='``-leaderboard money``',
         help='List the 10 richest users on videonet.')
     async def money(self, ctx):
