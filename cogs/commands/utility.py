@@ -201,36 +201,21 @@ class Utility(commands.Cog):
         await ctx.send(embed=changelog_embed)
 
     @commands.command(
-        aliases=['inv', 'links'],
-        usage='``-invite``',
+        aliases=['inv', 'invite', 'vote'],
+        usage='``-links``',
         help='Sends an invite to the support server.')
-    async def invite(self, ctx):
+    async def links(self, ctx):
 
-        invite_embed = discord.Embed(
+        link_embed = discord.Embed(
             title='videonet invites',
-            description='[Invite the Bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&'
+            description='[Join the Support Server](https://discord.gg/pGzQUvE)\n'
+                        '[Invite the Bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&'
                         'permissions=379968&scope=bot)\n'
-                        '[Join the Support Server](https://discord.gg/pGzQUvE)\n'
                         '[Upvote the Bot](https://top.gg/bot/689210550680682560/vote)\n'
                         '[Source Code](https://github.com/codebytedev/videonet)',
             color=self.bot.embed)
 
-        await ctx.send(embed=invite_embed)
-
-    @commands.command(
-        aliases=['upvote'],
-        usage='``-vote``',
-        help='Sends a link to upvote the bot.')
-    async def vote(self, ctx):
-
-        vote_embed = discord.Embed(
-            title='Vote for videonet and get some handy money!',
-            description='[Click Here to vote](https://top.gg/bot/689210550680682560/vote)',
-            color=self.bot.embed)
-
-        vote_embed.set_thumbnail(url=self.bot.user.avatar_url)
-
-        await ctx.send(embed=vote_embed)
+        await ctx.send(embed=link_embed)
 
 
 def setup(bot):
