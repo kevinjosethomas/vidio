@@ -289,7 +289,7 @@ class Database(commands.Cog):
         if isinstance(query_id, int):
             if len(str(query_id)) >= 15:  # Provided id is a a discord snowflake.
                 channel = await self.db.fetch(
-                    "SELECT * FROM channels WHERE user_id = $1",
+                    "SELECT * FROM channels WHERE user_id = $1 ORDER BY channel_id",
                     query_id)
                 if channel:
                     return channel
@@ -298,7 +298,7 @@ class Database(commands.Cog):
 
             else:  # Provided id is a channel id.
                 channel = await self.db.fetch(
-                    "SELECT * FROM channels WHERE channel_id = $1",
+                    "SELECT * FROM channels WHERE channel_id = $1 ORDER BY channel_id",
                     query_id)
                 if channel:
                     return channel
