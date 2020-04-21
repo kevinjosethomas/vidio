@@ -177,10 +177,10 @@ class Database(commands.Cog):
         money = user[1]
 
         if is_weekend:
-            added_money = math.ceil(15 * money / 100)
+            added_money = math.ceil(8 * money / 100)
             money += added_money
         elif not is_weekend:
-            added_money = math.ceil(10 * money / 100)
+            added_money = math.ceil(5 * money / 100)
             money += added_money
 
         if added_money == 0:
