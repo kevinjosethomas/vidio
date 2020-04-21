@@ -16,7 +16,7 @@ class Videonet(commands.Cog):
     async def multi_channels(self, ctx, channels):
 
         def author_check(msg):
-            return msg.author == ctx.message.author and ctx.guild == msg.guild
+            return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
         if channels == "Channel doesn't exist":
             await ctx.send(f"{self.bot.no} **This user doesn't have any channels.**")
@@ -62,7 +62,7 @@ class Videonet(commands.Cog):
     async def create_channel(self, ctx):
 
         def author_check(msg):
-            return msg.author == ctx.message.author and ctx.guild == msg.guild
+            return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
         channels = await self.database.get_channel(ctx.author.id)
 
@@ -207,9 +207,6 @@ class Videonet(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def channel(self, ctx, *, user: discord.User = None):
 
-        def author_check(msg):
-            return msg.author == ctx.message.author and ctx.guild == msg.guild
-
         if user is None:
             user = ctx.author.id
 
@@ -220,11 +217,7 @@ class Videonet(commands.Cog):
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-        if channels == "Channel doesn't exist":
-            await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
-            return
-
-        elif len(channels) == 1:
+        if len(channels) == 1:
             channel_index = 0
 
         elif len(channels) > 1:
@@ -290,9 +283,6 @@ class Videonet(commands.Cog):
         help='A command that changes your channel description')
     @commands.cooldown(1, 10, BucketType.user)
     async def edit_description(self, ctx):
-
-        def author_check(msg):
-            return msg.author == ctx.message.author and ctx.guild == msg.guild
 
         user = ctx.author.id
         channels = await self.database.get_channel(user)
@@ -369,9 +359,6 @@ class Videonet(commands.Cog):
         help='A command that uploads a video on the author\'s channel.')
     @commands.cooldown(1, 10, BucketType.user)
     async def upload(self, ctx):
-
-        def author_check(msg):
-            return msg.author == ctx.message.author and ctx.guild == msg.guild
 
         channels = await self.database.get_channel(ctx.author.id)
 
@@ -585,9 +572,6 @@ class Videonet(commands.Cog):
         usage='``-video``',
         help='A command that (inaccurately) searches for videos uploaded on your channel.')
     async def video(self, ctx, *, video_name):
-
-        def author_check(msg):
-            return msg.author == ctx.message.author and ctx.guild == msg.guild
 
         channels = await self.database.get_channel(ctx.author.id)
 
