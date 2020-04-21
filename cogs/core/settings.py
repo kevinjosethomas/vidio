@@ -38,7 +38,7 @@ class MyHelpCommand(commands.HelpCommand):
                 inline=False)
 
         help_embed.set_footer(
-            text='For more help use >help {command} | '
+            text='For more help use -help {command} | '
                  'Join our support server - https://discord.gg/rB2EGa4')
 
         await self.context.send(embed=help_embed)
