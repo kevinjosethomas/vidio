@@ -790,7 +790,8 @@ class Videonet(commands.Cog):
             name='**what is videonet?**',
             value=f'videonet is a *new* discord bot that allows you to create a simulation of a YouTube Channel '
                   'on Discord! It\'s a simulation game that allows you to manage your very own virtual '
-                  'youtube channel! *Upload videos, earn money and find your way through the leaderboard!*'
+                  'youtube channel! *Upload videos, earn money and find your way through the leaderboard!*',
+            inline=False
         )
 
         tutorial_embed.add_field(
@@ -798,7 +799,8 @@ class Videonet(commands.Cog):
             value=f'to start your youtube simulation journey, you need to first create a channel. '
                   f'You can do that with ``{ctx.prefix}create_channel``. Read the prompts and enter '
                   f'your channel name, description and category. Once you\'ve created your channel, '
-                  f'you\'re ready to go! *Note: You can create a maximum of 3 channels.*'
+                  f'you\'re ready to go! *Note: You can create a maximum of 3 channels.*',
+            inline=False
         )
 
         tutorial_embed.add_field(
@@ -806,16 +808,18 @@ class Videonet(commands.Cog):
             value=f'you can upload videos on a channel once an hour. Use ``{ctx.prefix}upload`` to upload '
                   f'a video. Follow the prompts and then the bot is going to send an embed showing you how '
                   f'your video did! *Note: the statistics(subscribers, views, likes, dislikes, money) of '
-                  f'your video will continue changing for the next 5 days.*'
+                  f'your video will continue changing for the next 5 days.*',
+            inline=False
         )
 
         tutorial_embed.add_field(
             name='**other commands**',
             value=f'now, as you\'ve got a hang on the basics of operating videonet! '
                   f'Before you go around streaming, here are a few fun commands you should know about -\n'
-                  f'- ``{ctx.prefix}``help - Shows you a list of all the commands that you can use.\n'
-                  f'- ``{ctx.prefix}channel``  - Shows you information about your channel.\n'
-                  f'- ``{ctx.prefix}profile`` - Shows you information about your videonet account.\n'
+                  f'• ``{ctx.prefix}help`` - Shows you a list of all the commands that you can use.\n'
+                  f'• ``{ctx.prefix}channel``  - Shows you information about your channel.\n'
+                  f'• ``{ctx.prefix}profile`` - Shows you information about your videonet account.\n',
+            inline=False
         )
 
         await ctx.send(embed=tutorial_embed)

@@ -170,6 +170,12 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         changelog_embed.add_field(
+            name='**• Tuesday, 21st April 2020**',
+            value='- Added tutorial command.\n'
+                  '- Updated help command.'
+        )
+
+        changelog_embed.add_field(
             name='**• Sunday, 19th April 2020**',
             value='- Added ``-profile`` command\n'
                   '- Added money'
@@ -187,13 +193,6 @@ class Utility(commands.Cog):
             value='- Added seconds to cooldowns. \n'
                   '- Added more characters for titles and descriptions.\n'
                   '- Added channel ``delete`` command.\n'
-                  '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Thursday, 16th April 2020**',
-            value='- Added ``ban`` and ``unban`` commands, to ban users from the bot.\n'
                   '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
             inline=False
         )
