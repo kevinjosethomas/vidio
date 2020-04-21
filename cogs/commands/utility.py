@@ -171,7 +171,9 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Tuesday, 21st April 2020**',
-            value='- Added tutorial command.\n'
+            value='- Removed symbol and punctuation limitatio.\n'
+                  '- Fixed ``edit_description`` error.\n'
+                  '- Added tutorial command.\n'
                   '- Updated help command.'
         )
 
