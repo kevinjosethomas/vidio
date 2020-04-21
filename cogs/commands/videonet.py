@@ -357,7 +357,7 @@ class Videonet(commands.Cog):
         aliases=['up'],
         usage='``-upload``',
         help='A command that uploads a video on the author\'s channel.')
-    @commands.max_concurrency(1, BucketType.user)
+    @commands.max_concurrency(1, BucketType.user, wait=True)
     @commands.cooldown(1, 10, BucketType.user)
     async def upload(self, ctx):
 
