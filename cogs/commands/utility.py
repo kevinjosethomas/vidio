@@ -169,19 +169,27 @@ class Utility(commands.Cog):
             title='Changelog - videonet',
             color=self.bot.embed)
 
+        # changelog_embed.add_field(
+        #     name='**• Tuesday, 21st April 2020**',
+        #     value='- \n',
+        #     inline=False
+        # )
+
         changelog_embed.add_field(
             name='**• Tuesday, 21st April 2020**',
             value='- Added money leaderboard (``leaderboard money``)\n'
                   '- Removed symbol and punctuation limitation.\n'
                   '- Fixed ``edit_description`` error.\n'
                   '- Added tutorial command.\n'
-                  '- Updated help command.'
+                  '- Updated help command.',
+            inline=False
         )
 
         changelog_embed.add_field(
             name='**• Sunday, 19th April 2020**',
             value='- Added ``-profile`` command\n'
-                  '- Added money'
+                  '- Added money',
+            inline=False
         )
 
         changelog_embed.add_field(
