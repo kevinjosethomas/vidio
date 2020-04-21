@@ -276,6 +276,14 @@ class Database(commands.Cog):
 
         return leaderboard
 
+    async def get_user_leaderboard(self):
+
+        leaderboard = await self.db.fetch(
+            "SELECT user_id, money FROM users "
+            f"ORDER BY money DESC LIMIT 10")
+
+        return leaderboard
+
     async def get_subscribed(self, user_id):
 
         channels = await self.db.fetch("SELECT * FROM subscribers WHERE subscriber = $1",
