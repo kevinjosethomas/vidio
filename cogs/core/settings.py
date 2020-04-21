@@ -16,15 +16,7 @@ class MyHelpCommand(commands.HelpCommand):
 
             command_list = list(map(lambda c: c.name, set(mapping[category])))
 
-            for command in command_list:
-                command_index = command_list.index(command)
-                command_list[command_index] = f'``{command}``'
-
-            print(command_list)
-
             command = command.join(command_list)
-
-            print(command)
 
             if not command_list:
                 continue
