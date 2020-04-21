@@ -1,8 +1,4 @@
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/vloger-bot/videonet/blob/master/LICENSE) 
-[![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/vloger-bot/videonet/pulls)
-[![Discord Chat](https://img.shields.io/discord/689210707232686158.svg)](https://discord.gg/3MShhbr)  
-
-# videonet - *work in progress*
+# videonet - *work in progress* [![Bot Status](https://top.gg/api/widget/status/689210550680682560.svg?noavatar=True)](https://top.gg/bot/689210550680682560) [![](https://top.gg/api/widget/servers/689210550680682560.svg?noavatar=True)](https://top.gg/bot/689210550680682560)
 
 [![Invite the bot](https://img.shields.io/badge/1.0-Invite%20the%20bot-blue.svg)](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&permissions=379968&scope=bot)  
 [![Join the Support Server](https://img.shields.io/badge/codebyte-Join%20our%20Support%20Server-brightgreen.svg)](https://discord.gg/3MShhbr)
