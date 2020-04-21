@@ -215,6 +215,8 @@ class Utility(commands.Cog):
                         '[Source Code](https://github.com/codebytedev/videonet)',
             color=self.bot.embed)
 
+        link_embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+
         await ctx.send(embed=link_embed)
 
 
