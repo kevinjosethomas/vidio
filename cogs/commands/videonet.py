@@ -169,14 +169,7 @@ class Videonet(commands.Cog):
 
         query = await self.database.add_channel(ctx.author.id, name, description, category)
 
-        if query == 'Bad arguments.':
-            await ctx.send(f"{self.bot.no} **Error.** Please make "
-                           "sure your entries only have alphabets, numbers, punctuation "
-                           "and spaces.")
-            await message.delete()
-            return
-
-        elif query == 'Channel with same name exists':
+        if query == 'Channel with same name exists':
             await ctx.send(f"{self.bot.no} **You have a channel with the same name.** "
                            f"This makes it really hard for us to handle."
                            f" Please retry with a different name.")
@@ -323,12 +316,6 @@ class Videonet(commands.Cog):
 
         query = await self.database.set_description(channels[channel_index][1], description)
 
-        if query == 'Bad arguments.':
-            await ctx.send(f"{self.bot.no} **Error.** Please make "
-                           "sure your entries only have alphabets, numbers, punctuation "
-                           "and spaces.")
-            return
-
         await ctx.send(f"{self.bot.yes} **Successfully changed your channel description!**")
 
     @commands.command(
@@ -453,12 +440,6 @@ class Videonet(commands.Cog):
         await asyncio.sleep(1)
 
         video = await self.database.upload_video(ctx.author.id, channels[channel_index][1], video_name, description)
-
-        if video == 'Bad Arguments':
-            await ctx.send(f"{self.bot.no} **Error.** Please make sure your "
-                           "entries only have alphabets, numbers, punctuation and spaces.")
-            await message.delete()
-            return
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 

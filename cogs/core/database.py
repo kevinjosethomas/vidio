@@ -121,42 +121,6 @@ class Database(commands.Cog):
             }
         }
 
-    @staticmethod
-    async def text_check(text):
-
-        if isinstance(text, str):
-            if len(text) == 0:
-                return False
-            if not text:
-                return False
-            if text.isspace():
-                return False
-
-            for letter in text:
-                if letter not in string.printable:
-                    return False
-            return True
-
-        elif isinstance(text, list):
-            for word in text:
-                if isinstance(word, str):
-                    if len(word) == 0:
-                        return False
-                    if word.isspace():
-                        return False
-
-                    for letter in word:
-                        if letter not in string.printable:
-                            return False
-                    return True
-                else:
-                    raise Exception(TypeError(f'Expected str or list, received {type(word)} in {type(text)}'))
-
-            return True
-
-        else:
-            raise Exception(TypeError(f'Expected str or list, received {type(text)}'))
-
     async def check_banned(self, user_id):
 
         bans = await self.db.fetch("SELECT * FROM bans WHERE user_id = $1",
@@ -195,9 +159,6 @@ class Database(commands.Cog):
         return [money, added_money]
 
     async def add_channel(self, user_id, name, description, category):
-
-        if not await self.text_check([name, description, category]):
-            return 'Bad Arguments'
 
         async with self.db.acquire() as conn:
             user = await self.bot.db.fetch(
@@ -376,9 +337,6 @@ class Database(commands.Cog):
 
     async def set_prefix(self, guild, prefix):
 
-        if not await self.text_check(prefix):
-            return 'Bad Arguments'
-
         async with self.db.acquire() as conn:
             c_prefix = await self.db.fetchrow(
                 "SELECT prefix FROM guilds WHERE guild_id = $1",
@@ -397,18 +355,12 @@ class Database(commands.Cog):
 
     async def set_description(self, cid, description):
 
-        if not await self.text_check(description):
-            return 'Bad Arguments'
-
         async with self.db.acquire() as conn:
 
             await conn.execute("UPDATE channels SET description = $1 WHERE channel_id = $2",
                                description, cid)
 
     async def upload_video(self, user_id, channel, name, description):
-
-        if not await self.text_check([name, description]):
-            return 'Bad Arguments'
 
         choices = ['fail', 'poor', 'average', 'good', 'trending']
         status = random.choices(choices, weights=[20, 20, 50, 9.9999, 0.0001])[0]
