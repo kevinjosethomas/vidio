@@ -788,9 +788,9 @@ class Videonet(commands.Cog):
 
         tutorial_embed.add_field(
             name='**what is videonet?**',
-            value=f'videonet is a *new* discord bot that allows you to create a simulation of a YouTube Channel '
-                  'on Discord! It\'s a simulation game that allows you to manage your very own virtual '
-                  'youtube channel! *Upload videos, earn money and find your way through the leaderboard!*',
+            value=f'**videonet** is a *new* discord bot that allows you to create a simulation of a *YouTube Channel* '
+                  'on Discord! It\'s a simulation game that allows you to manage your very own **virtual '
+                  'youtube channel**! *Upload videos, earn money and find your way through the leaderboard!*',
             inline=False
         )
 
@@ -814,11 +814,11 @@ class Videonet(commands.Cog):
 
         tutorial_embed.add_field(
             name='**other commands**',
-            value=f'now, as you\'ve got a hang on the basics of operating videonet! '
+            value=f'now, as you\'ve got a hang on the basics of operating **videonet**! '
                   f'Before you go around streaming, here are a few fun commands you should know about -\n'
                   f'• ``{ctx.prefix}help`` - Shows you a list of all the commands that you can use.\n'
                   f'• ``{ctx.prefix}channel``  - Shows you information about your channel.\n'
-                  f'• ``{ctx.prefix}profile`` - Shows you information about your videonet account.\n',
+                  f'• ``{ctx.prefix}profile`` - Shows you information about your **videonet** account.\n',
             inline=False
         )
 
