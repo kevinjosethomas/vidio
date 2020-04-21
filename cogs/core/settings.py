@@ -24,6 +24,8 @@ class MyHelpCommand(commands.HelpCommand):
 
             command = command.join(command_list)
 
+            print(command)
+
             if not command_list:
                 continue
 
