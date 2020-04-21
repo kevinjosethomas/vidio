@@ -201,12 +201,21 @@ class Utility(commands.Cog):
         await ctx.send(embed=changelog_embed)
 
     @commands.command(
-        aliases=['inv'],
+        aliases=['inv', 'links'],
         usage='``-invite``',
         help='Sends an invite to the support server.')
     async def invite(self, ctx):
 
-        await ctx.send(f'{self.bot.yes} **https://discord.gg/3MShhbr**')
+        invite_embed = discord.Embed(
+            title='videonet invites',
+            description='[Invite the Bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&'
+                        'permissions=379968&scope=bot)\n'
+                        '[Join the Support Server](https://discord.gg/pGzQUvE)\n'
+                        '[Upvote the Bot](https://top.gg/bot/689210550680682560/vote)\n'
+                        '[Source Code](https://github.com/codebytedev/videonet)',
+            color=self.bot.embed)
+
+        await ctx.send(embed=invite_embed)
 
     @commands.command(
         aliases=['upvote'],
