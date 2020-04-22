@@ -161,18 +161,12 @@ class Database(commands.Cog):
     async def buy_average_ad(self, user_id, channel_id):
 
         user = await self.get_user(user_id)
-        print(user)
         user_money = user[1]
-        print(user_money)
-        print(type(user_money))
 
         channel = await self.get_channel(channel_id)
-        print(channel)
         subscribers = channel[0][4]
-        print(subscribers)
-        print(type(subscribers))
 
-        if subscribers > user:
+        if subscribers > user_money:
             return 'Not enough money'
 
         subscriber_percentage = random.randint(3, 8)
