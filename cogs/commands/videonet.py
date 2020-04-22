@@ -802,7 +802,25 @@ class Videonet(commands.Cog):
         help='Purchases a average advertisement.')
     async def average_ad(self, ctx):
 
-        await ctx.send("You're not getting any ads lolol")
+        channels = await self.database.get_channel(ctx.author.id)
+
+        if len(channels) == 1:
+            channel_index = 0
+        else:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
+
+        status = await self.database.buy_average_ad(ctx.author.id, channels[channel_index][1])
+        if status == 'Not enough money':
+            await ctx.send(f'{self.bot.no} **You do not have enough money to buy an average advertisement.**'
+                           f'An average advertisement costs {channels[channel_index][4]}.')
+            return
+
+        await ctx.send(f'**{self.bot.yes} Successfully bought an average advertisement.** '
+                       f'You got ``{status["new_subs"]}`` new subscribers and it costed you $``{status["cost"]}``')
+
 
     @store.command(
         aliases=['3'],
