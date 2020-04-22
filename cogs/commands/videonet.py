@@ -803,11 +803,15 @@ class Videonet(commands.Cog):
     async def average_ad(self, ctx):
 
         channels = await self.database.get_channel(ctx.author.id)
+        print(channels)
+        print(len(channels))
 
         if len(channels) == 1:
             channel_index = 0
         else:
             channel_index = await self.multi_channels(ctx, channels)
+
+        print(channel_index)
 
         if channel_index is False:
             return
