@@ -177,7 +177,8 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Wednesday, 22nd April 2020**',
-            value='- Added decent advertisements.\n'
+            value='- Added subbot.\n'
+                  '- Added decent advertisements.\n'
                   '- Added average advertisements.\n',
             inline=False
         )
