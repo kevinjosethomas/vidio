@@ -743,48 +743,74 @@ class Videonet(commands.Cog):
 
         await ctx.send(embed=user_embed)
 
-    @commands.command(
-        aliases=['shop'],
+    @commands.group(
+        aliases=['shop', 'buy'],
         usage='``-store``',
         help='Lists the things you can buy.')
     async def store(self, ctx):
 
-        channels = await self.database.get_channel(ctx.author.id)
+        if ctx.invoked_subcommand is None:
 
-        if len(channels) == 1:
-            channel_index = 0
-        elif len(channels) > 1:
-            channel_index = await self.multi_channels(ctx, channels)
+            channels = await self.database.get_channel(ctx.author.id)
 
-        if channel_index is False:
-            return
+            if len(channels) == 1:
+                channel_index = 0
+            elif len(channels) > 1:
+                channel_index = await self.multi_channels(ctx, channels)
 
-        store_embed = discord.Embed(
-            title='videonet store',
-            description=f'Buy some cheats! Use ``{ctx.prefix}buy {{index}}`` to buy what you want.',
-            color=self.bot.embed
-        )
+            if channel_index is False:
+                return
 
-        store_embed.add_field(
-            name='1. Decent Advertisement',
-            value=f'Costs ``${3 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 1``',
-            inline=False
-        )
+            store_embed = discord.Embed(
+                title='videonet store',
+                description=f'Buy some cheats! Use ``{ctx.prefix}buy {{index}}`` to buy what you want.',
+                color=self.bot.embed
+            )
 
-        store_embed.add_field(
-            name='2. Average Advertisement',
-            value=f'Costs ``${1 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 2``',
-            inline=False
-        )
+            store_embed.add_field(
+                name='1. Decent Advertisement',
+                value=f'Costs ``${3 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 1``',
+                inline=False
+            )
 
-        store_embed.add_field(
-            name='3. Sub Bot',
-            value=f'Costs ``$5 / sub`` | ``{ctx.prefix}buy 3 {{subscribers}}``'
-        )
+            store_embed.add_field(
+                name='2. Average Advertisement',
+                value=f'Costs ``${1 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 2``',
+                inline=False
+            )
 
-        store_embed.set_footer(text='Note: The prices keep changing as your channel grows.')
+            store_embed.add_field(
+                name='3. Sub Bot',
+                value=f'Costs ``$5 / sub`` | ``{ctx.prefix}buy 3 {{subscribers}}``'
+            )
 
-        await ctx.send(embed=store_embed)
+            store_embed.set_footer(text='Note: The prices keep changing as your channel grows.')
+
+            await ctx.send(embed=store_embed)
+
+    @store.command(
+        aliases=['1'],
+        usage='``-buy 1``',
+        help='Purchases a decent advertisement.')
+    async def decent_ad(self, ctx):
+
+        await ctx.send("You're not getting any ads lolol")
+
+    @store.command(
+        aliases=['2'],
+        usage='``-buy 2``',
+        help='Purchases a average advertisement.')
+    async def average_ad(self, ctx):
+
+        await ctx.send("You're not getting any ads lolol")
+
+    @store.command(
+        aliases=['3'],
+        usage='``-buy 3``',
+        help='Purchases subbot.')
+    async def subbot(self, ctx, amount: int):
+
+        await ctx.send("You're not getting any subs lolol")
 
     @commands.command(
         aliases=['how'],
