@@ -176,6 +176,13 @@ class Utility(commands.Cog):
         # )
 
         changelog_embed.add_field(
+            name='**• Wednesday, 22nd April 2020**',
+            value='- Added decent advertisements.\n'
+                  '- Added average advertisements.\n',
+            inline=False
+        )
+
+        changelog_embed.add_field(
             name='**• Tuesday, 21st April 2020**',
             value='- Added money leaderboard (``leaderboard money``)\n'
                   '- Removed symbol and punctuation limitation.\n'
@@ -196,15 +203,6 @@ class Utility(commands.Cog):
             name='**• Saturday, 18th April 2020**',
             value='- Added real subscribers (``-subscribe``)\n'
                   '- Added ``edit_description`` command.\n',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Friday, 17th April 2020**',
-            value='- Added seconds to cooldowns. \n'
-                  '- Added more characters for titles and descriptions.\n'
-                  '- Added channel ``delete`` command.\n'
-                  '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯',
             inline=False
         )
 

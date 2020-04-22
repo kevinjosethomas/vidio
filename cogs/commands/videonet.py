@@ -809,8 +809,8 @@ class Videonet(commands.Cog):
 
         status = await self.database.buy_average_ad(user_id, channel_id)
         if status == 'Not enough money':
-            await ctx.send(f'{self.bot.no} **You do not have enough money to buy a decent advertisement.**'
-                           f'An average advertisement costs {channels[channel_index][4]}.')
+            await ctx.send(f'{self.bot.no} **You do not have enough money to buy a decent advertisement. **'
+                           f'An average advertisement costs ``${channels[channel_index][4]}``.')
             return
 
         await ctx.send(f'**{self.bot.yes} Successfully bought a decent advertisement.** '
