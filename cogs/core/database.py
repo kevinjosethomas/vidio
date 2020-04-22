@@ -161,10 +161,12 @@ class Database(commands.Cog):
     async def buy_average_ad(self, user_id, channel_id):
 
         user = await self.get_user(user_id)
+        print(user)
         user_money = user[1]
 
         channel = await self.get_channel(channel_id)
-        subscribers = channel[4]
+        print(channel)
+        subscribers = channel[0][4]
 
         if subscribers > user:
             return 'Not enough money'
