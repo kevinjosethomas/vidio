@@ -163,10 +163,14 @@ class Database(commands.Cog):
         user = await self.get_user(user_id)
         print(user)
         user_money = user[1]
+        print(user_money)
+        print(type(user_money))
 
         channel = await self.get_channel(channel_id)
         print(channel)
         subscribers = channel[0][4]
+        print(subscribers)
+        print(type(subscribers))
 
         if subscribers > user:
             return 'Not enough money'
