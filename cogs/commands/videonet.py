@@ -847,10 +847,31 @@ class Videonet(commands.Cog):
     @store.command(
         aliases=['3'],
         usage='``-buy 3``',
-        help='Purchases subbot.')
-    async def subbot(self, ctx, subscribers: int):
+        help='Buys subbot - input subscribers')
+    async def subbot(self, ctx, subscriber_amount: int):
 
-        await ctx.send("You're not getting any subs lolol")
+        user_id = ctx.author.id
+        channels = await self.database.get_channel(user_id)
+
+        if len(channels) == 1:
+            channel_index = 0
+        else:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
+
+        channel_id = channels[channel_index][1]
+
+        status = await self.database.buy_subbot(user_id, channel_id, subscriber_amount)
+
+        if status == 'Not enough money':
+            await ctx.send(f'{self.bot.no} **You do not have enough money to buy a subbot.**'
+                           f'``{subscriber_amount}`` subscribers would cost ``${subscriber_amount * 5}``')
+            return
+
+        await ctx.send(f'**{self.bot.yes} Successfully bought subbot.** '
+                       f'You got ``{status["new_subs"]}`` new subscribers and it costed $``{status["cost"]}``')
 
     @commands.command(
         aliases=['how'],

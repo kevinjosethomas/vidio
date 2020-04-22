@@ -214,6 +214,32 @@ class Database(commands.Cog):
 
         return {'new_subs': new_subscribers, 'cost': cost}
 
+    async def buy_subbot(self, user_id, channel_id, amount):
+
+        user = await self.get_user(user_id)
+        user_money = user[1]
+
+        channel = await self.get_channel(channel_id)
+        subscribers = channel[0][4]
+
+        cost = amount * 5
+
+        if cost > user_money:
+            return 'Not enough money'
+
+        subscribers += amount
+        new_user_money = user_money - cost
+
+        async with self.db.acquire() as conn:
+
+            await self.db.execute("UPDATE channels SET subscribers = $1 WHERE channel_id = $2",
+                                  subscribers, channel_id)
+
+            await self.db.execute("UPDATE users SET money = $1 WHERE user_id = $2",
+                                  new_user_money, user_id)
+
+        return {'new_subs': amount, 'cost': cost}
+
     async def add_channel(self, user_id, name, description, category):
 
         async with self.db.acquire() as conn:
