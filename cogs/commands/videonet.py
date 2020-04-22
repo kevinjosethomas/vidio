@@ -808,7 +808,7 @@ class Videonet(commands.Cog):
         aliases=['3'],
         usage='``-buy 3``',
         help='Purchases subbot.')
-    async def subbot(self, ctx, amount: int):
+    async def subbot(self, ctx, subscribers: int):
 
         await ctx.send("You're not getting any subs lolol")
 

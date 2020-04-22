@@ -158,6 +158,31 @@ class Database(commands.Cog):
 
         return [money, added_money]
 
+    async def buy_average_ad(self, ctx, user_id, channel_id):
+
+        user = await self.get_user(user_id)
+        user_money = user[1]
+
+        channel = await self.get_channel(channel_id)
+        subscribers = channel[4]
+
+        if subscribers > user:
+            return 'Not enough money'
+
+        subscriber_percentage = random.randint(3, 8)
+
+        user_money = math.ceil(user_money - subscribers)
+        subscribers += math.ceil(subscriber_percentage * subscribers / 100)
+
+        async with self.db.acquire() as conn:
+
+            await self.db.execute("UPDATE channels SET subscribers = $1 WHERE channel_id = $2",
+                                  subscribers, channel_id)
+
+            await self.db.execute("UPDATE users SET money = $1 WHERE user_id = $2",
+                                  user_money, user_id)
+
+
     async def add_channel(self, user_id, name, description, category):
 
         async with self.db.acquire() as conn:
