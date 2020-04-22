@@ -500,7 +500,7 @@ class Database(commands.Cog):
                     total_money += new_money
 
                     money = math.ceil(money)
-                    total_money = math.ceil(money)
+                    total_money = math.ceil(total_money)
 
                 new_subscribers = math.ceil(self.bot.algorithm[status]['subscribers'] * views / 100)
 
