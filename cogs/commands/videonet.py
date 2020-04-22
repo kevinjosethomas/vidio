@@ -767,14 +767,19 @@ class Videonet(commands.Cog):
 
         store_embed.add_field(
             name='1. Decent Advertisement',
-            value=f'Costs ``${3 * math.ceil(channels[channel_index][4])}``',
+            value=f'Costs ``${3 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 1``',
             inline=False
         )
 
         store_embed.add_field(
             name='2. Average Advertisement',
-            value=f'Costs ``${1 * math.ceil(channels[channel_index][4])}``',
+            value=f'Costs ``${1 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 2``',
             inline=False
+        )
+
+        store_embed.add_field(
+            name='3. Sub Bot',
+            value=f'Costs ``$5 / sub`` | ``{ctx.prefix}buy 3 {{subscribers}}``'
         )
 
         store_embed.set_footer(text='Note: The prices keep changing as your channel grows.')
