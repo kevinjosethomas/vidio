@@ -9,6 +9,7 @@ import os
 import dotenv
 import asyncpg
 import asyncio
+import logging
 from discord.ext import commands
 
 
@@ -78,6 +79,13 @@ asyncio.get_event_loop().run_until_complete(database_setup())
 bot.YT_KEY = YT_KEY
 bot.PASSWORD = PASSWORD
 bot.DBL_TOKEN = DBL_TOKEN
+
+
+bot.logger = logging.getLogger('discord')
+logging.basicConfig(level=logging.INFO)
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+bot.logger.addHandler(handler)
 
 
 # some bot variables the bot uses for various purposes

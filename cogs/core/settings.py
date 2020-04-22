@@ -1,6 +1,8 @@
 import random
+import logging
 import discord
 import traceback
+from datetime import datetime
 from discord.ext import commands, tasks
 
 
@@ -85,6 +87,11 @@ class Default(commands.Cog):
                 'aliases': ['h'],
                 'usage': '``-help {command}``'})
         self.database = self.bot.get_cog('Database')
+
+    @commands.Cog.listener()
+    async def on_command(self, ctx):
+
+        self.bot.logger.info(f'COMMAND {ctx.command} EXECUTED BY {ctx.author} AT {datetime.now()}')
 
     @commands.Cog.listener()
     async def on_command_completion(self, ctx):
@@ -261,6 +268,7 @@ class Default(commands.Cog):
                 value=f'```{traceback_text}```',
                 inline=False)
             print(traceback_text)
+            self.bot.logger.error(traceback_text)
             await error_channel.send(embed=error_embed)
             return
 
