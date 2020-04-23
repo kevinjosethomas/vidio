@@ -97,18 +97,19 @@ class Default(commands.Cog):
     async def on_command_completion(self, ctx):
 
         replies = [
-            '**Remember to upvote the bot to get some money! https://top.gg/bot/689210550680682560/vote**',
-            f'**Make sure you regularly check **``{ctx.prefix}changelog`` **to learn about new cool features!**',
-            '**You should join the videonet support server to stay updated about'
-            ' new features!** https://discord.gg/pGzQUvE']
+            'Upvote the bot to get some money! https://top.gg/bot/689210550680682560/vote',
+            f'Regularly ``{ctx.prefix}changelog`` to learn about new cool features!',
+            'Join the vidio support server to stay updated about '
+            'new features!** https://discord.gg/pGzQUvE',
+            f'Use ``{ctx.prefix}voteReminder on`` to enable bot vote reminders!']
 
         if random.choice([True, False, False, False, False]):
 
-            await ctx.send(random.choice(replies))
+            await ctx.send(f'**Tip:** {random.choice(replies)}')
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f"Videonet is back online!")
+        print(f"vidio is back online!")
         self.bot.start_time = datetime.now()
         self.bot.support_server = self.bot.get_guild(self.bot.support_server_id)
         self.change_presence.start()
