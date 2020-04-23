@@ -504,7 +504,7 @@ class Videonet(commands.Cog):
     @leaderboard.command(
         aliases=['subs', 's'],
         usage='``-leaderboard subscribers``',
-        help='List the 10 most subscribed users on videonet.')
+        help='List the 10 most subscribed users on vidio.')
     async def subscribers(self, ctx):
 
         lb = await self.database.get_leaderboard('subscribers')
@@ -520,7 +520,7 @@ class Videonet(commands.Cog):
             pos += 1
 
         lb_embed = discord.Embed(
-            title='videonet subscriber leaderboard',
+            title='vidio subscriber leaderboard',
             description=desc,
             color=self.bot.embed)
 
@@ -529,7 +529,7 @@ class Videonet(commands.Cog):
     @leaderboard.command(
         aliases=['v'],
         usage='``-leaderboard views``',
-        help='List the 10 most viewed users on videonet.')
+        help='List the 10 most viewed users on vidio.')
     async def views(self, ctx):
 
         lb = await self.database.get_leaderboard('total_views')
@@ -545,7 +545,7 @@ class Videonet(commands.Cog):
             pos += 1
 
         lb_embed = discord.Embed(
-            title='videonet views leaderboard',
+            title='vidio views leaderboard',
             description=desc,
             color=self.bot.embed)
 
@@ -554,7 +554,7 @@ class Videonet(commands.Cog):
     @leaderboard.command(
         aliases=['m'],
         usage='``-leaderboard money``',
-        help='List the 10 richest users on videonet.')
+        help='List the 10 richest users on vidio.')
     async def money(self, ctx):
 
         lb = await self.database.get_user_leaderboard()
@@ -570,7 +570,7 @@ class Videonet(commands.Cog):
             pos += 1
 
         lb_embed = discord.Embed(
-            title='videonet money leaderboard',
+            title='vidio money leaderboard',
             description=desc,
             color=self.bot.embed)
 
@@ -602,7 +602,7 @@ class Videonet(commands.Cog):
         videos = await self.database.get_video(channel_id, video_name)
 
         if videos == 'No videos':
-            await ctx.send(f'{self.bot.no} **Unknown video.** Could not find a video with that name on videonet.')
+            await ctx.send(f'{self.bot.no} **Unknown video.** Could not find a video with that name on vidio.')
             return
 
         description = ''
@@ -719,7 +719,7 @@ class Videonet(commands.Cog):
         user_details = await self.database.get_user(user_id)
 
         if user_details == 'User doesn\'t exist':
-            await ctx.send(f'{self.bot.no} **This user is not videonet.**')
+            await ctx.send(f'{self.bot.no} **This user is not vidio.**')
             return
 
         description = f'<@{user_details[0]}>\n' \
@@ -762,7 +762,7 @@ class Videonet(commands.Cog):
                 return
 
             store_embed = discord.Embed(
-                title='videonet store',
+                title='vidio store',
                 description=f'Buy some cheats! Use ``{ctx.prefix}buy {{index}}`` to buy what you want.',
                 color=self.bot.embed
             )
@@ -880,12 +880,12 @@ class Videonet(commands.Cog):
     async def tutorial(self, ctx):
 
         tutorial_embed = discord.Embed(
-            title='videonet tutorial',
+            title='vidio tutorial',
             color=self.bot.embed)
 
         tutorial_embed.add_field(
-            name='**what is videonet?**',
-            value=f'**videonet** is a *new* discord bot that allows you to create a simulation of a *YouTube Channel* '
+            name='**what is vidio?**',
+            value=f'**vidio** is a *new* discord bot that allows you to create a simulation of a *YouTube Channel* '
                   'on Discord! It\'s a simulation game that allows you to manage your very own **virtual '
                   'youtube channel**! *Upload videos, earn money and find your way through the leaderboard!*',
             inline=False
@@ -911,11 +911,11 @@ class Videonet(commands.Cog):
 
         tutorial_embed.add_field(
             name='**other commands**',
-            value=f'now, as you\'ve got a hang on the basics of operating **videonet**! '
+            value=f'now, as you\'ve got a hang on the basics of operating **vidio**! '
                   f'Before you go around streaming, here are a few fun commands you should know about -\n'
                   f'• ``{ctx.prefix}help`` - Shows you a list of all the commands that you can use.\n'
                   f'• ``{ctx.prefix}channel``  - Shows you information about your channel.\n'
-                  f'• ``{ctx.prefix}profile`` - Shows you information about your **videonet** account.\n',
+                  f'• ``{ctx.prefix}profile`` - Shows you information about your **vidio** account.\n',
             inline=False
         )
 

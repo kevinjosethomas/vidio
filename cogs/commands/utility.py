@@ -15,17 +15,17 @@ class Utility(commands.Cog):
     async def info(self, ctx):
 
         info_embed = discord.Embed(
-            title='Videonet - Information',
-            description='**videonet** is a new youtube simulator discord bot with new features coming out regularly!'
-                        ' videonet allows you and the members of your server to create a simulation of a '
-                        f'youtube channel on Discord!\n\n videonet is in {len(self.bot.guilds)} servers and has made a '
+            title='vidio - Information',
+            description='**vidio** is a new youtube simulator discord bot with new features coming out regularly!'
+                        ' vidio allows you and the members of your server to create a simulation of a '
+                        f'youtube channel on Discord!\n\n vidio is in {len(self.bot.guilds)} servers and has made a '
                         f'total of {await self.database.get_channels_count()} channel simulations!',
             color=self.bot.embed)
 
         info_embed.set_footer(text=f'Check out {ctx.prefix}help, {ctx.prefix}credits and {ctx.prefix}stats for '
                                    f'more information!')
 
-        info_embed.set_author(name='videonet', icon_url=self.bot.user.avatar_url)
+        info_embed.set_author(name='vidio', icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=info_embed)
 
@@ -43,7 +43,7 @@ class Utility(commands.Cog):
             f'**Latency:** ``{round(self.bot.latency * 1000, 2)} ms``\n',
             color=self.bot.embed)
 
-        emb.set_author(name='videonet', icon_url='https://i.imgur.com/7mf0D6z.png')
+        emb.set_author(name='vidio', icon_url='https://i.imgur.com/7mf0D6z.png')
 
         await ctx.send(embed=emb)
 
@@ -66,10 +66,10 @@ class Utility(commands.Cog):
     @commands.command(
         aliases=['creds'],
         usage='``-credits``',
-        help='Lists some people and services that helped build videonet.')
+        help='Lists some people and services that helped build vidio.')
     async def credits(self, ctx):
         credits_embed = discord.Embed(
-            description='Some people and services that helped build videonet.',
+            description='Some people and services that helped build vidio.',
             color=self.bot.embed)
 
         credits_embed.add_field(
@@ -84,9 +84,9 @@ class Utility(commands.Cog):
 
         credits_embed.add_field(
             name='Other',
-            value='A special thanks to thebrownbatman for helping out with the videonet algorithm and it\'s formulas.')
+            value='A special thanks to thebrownbatman for helping out with the vidio algorithm and it\'s formulas.')
 
-        credits_embed.set_author(name='videonet', icon_url='https://i.imgur.com/7mf0D6z.png')
+        credits_embed.set_author(name='vidio', icon_url='https://i.imgur.com/7mf0D6z.png')
 
         await ctx.send(embed=credits_embed)
 
@@ -115,7 +115,7 @@ class Utility(commands.Cog):
     @commands.command(
         aliases=['s'],
         usage='``-suggest``',
-        help='Broadcasts your suggestion to the videonet support server.')
+        help='Broadcasts your suggestion to the vidio support server.')
     @commands.cooldown(1, 10, BucketType.user)
     async def suggest(self, ctx, *, suggestion):
 
@@ -131,7 +131,7 @@ class Utility(commands.Cog):
         suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator, icon_url=ctx.author.avatar_url)
 
         message = await suggestions_channel.send(embed=suggestion_embed)
-        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the videonet support server!**')
+        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the vidio support server!**')
 
         await message.add_reaction(self.bot.yes)
         await message.add_reaction(self.bot.no)
@@ -139,7 +139,7 @@ class Utility(commands.Cog):
     @commands.command(
         aliases=['report'],
         usage='``-bug``',
-        help='Send your bug to the videonet support server!')
+        help='Send your bug to the vidio support server!')
     @commands.cooldown(1, 10, BucketType.user)
     async def bug(self, ctx, *, bug):
 
@@ -157,7 +157,7 @@ class Utility(commands.Cog):
             icon_url=ctx.author.avatar_url)
 
         await bugs_channel.send(embed=bug_embed)
-        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the videonet support server!**')
+        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the vidio support server!**')
 
     @commands.command(
         aliases=['changes'],
@@ -166,7 +166,7 @@ class Utility(commands.Cog):
     async def changelog(self, ctx):
 
         changelog_embed = discord.Embed(
-            title='Changelog - videonet',
+            title='Changelog - vidio',
             color=self.bot.embed)
 
         # changelog_embed.add_field(
@@ -216,12 +216,12 @@ class Utility(commands.Cog):
     async def links(self, ctx):
 
         link_embed = discord.Embed(
-            title='videonet invites',
+            title='vidio invites',
             description='[Join the Support Server](https://discord.gg/pGzQUvE)\n'
                         '[Invite the Bot](https://discordapp.com/api/oauth2/authorize?client_id=689210550680682560&'
                         'permissions=379968&scope=bot)\n'
                         '[Upvote the Bot](https://top.gg/bot/689210550680682560/vote)\n'
-                        '[Source Code](https://github.com/codebytedev/videonet)',
+                        '[Source Code](https://github.com/codebytedev/vidio)',
             color=self.bot.embed)
 
         link_embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
