@@ -235,16 +235,15 @@ class Utility(commands.Cog):
                 hs = 'hours'
             else:
                 hs = 'hour'
-            message += f'{str(hours)} {hs}, '
+            message += f'{str(hours)} {hs} and'
 
         if minutes > 1:
             ms = 'minutes'
         else:
-            ms = 'minutes'
-        message += minutes
+            ms = 'minute'
+        message += f'{str(minutes)} {ms}.'
 
         await ctx.send(message)
-
 
     @commands.command(
         aliases=['inv', 'invite', 'vote'],
