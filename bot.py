@@ -1,5 +1,5 @@
 """
-This file has the basic setup and configuration for the videonet discord bot.
+This file has the basic setup and configuration for the vidio discord bot.
 It loads the token, creates and runs bot instances, loads it's cogs and prefixes
 and defines a bunch of bot variables including emojis.
 """
@@ -69,7 +69,7 @@ async def database_setup():
     bot.db = await asyncpg.create_pool(
         user='postgres',
         password=PASSWORD,
-        database='videonet',
+        database='vidio',
         host=HOSTNAME)
 
 # Calls the database_setup function.
