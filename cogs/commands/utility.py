@@ -218,7 +218,7 @@ class Utility(commands.Cog):
         uptime = datetime.now() - self.bot.start_time
 
         days = uptime.days
-        hours = uptime.days % 24
+        hours = uptime.seconds // 60 // 60
         minutes = uptime.seconds // 60
 
         message = '**vidio** has been online for '
