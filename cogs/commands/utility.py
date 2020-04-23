@@ -219,7 +219,7 @@ class Utility(commands.Cog):
 
         days = uptime.days
         hours = uptime.seconds // 60 // 60
-        minutes = uptime.seconds // 60
+        minutes = uptime.seconds // 60 % 60
 
         message = '**vidio** has been online for '
 
@@ -235,7 +235,7 @@ class Utility(commands.Cog):
                 hs = 'hours'
             else:
                 hs = 'hour'
-            message += f'{str(hours)} {hs} and'
+            message += f'{str(hours)} {hs} and '
 
         if minutes > 1:
             ms = 'minutes'
