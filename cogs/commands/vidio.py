@@ -283,7 +283,7 @@ class Vidio(commands.Cog):
 
         if len(channels) == 1:
             channel_index = 0
-        elif len(channels) > 1:
+        else:
             channel_index = await self.multi_channels(ctx, channels)
 
         if channel_index is False:
@@ -302,7 +302,7 @@ class Vidio(commands.Cog):
             description = await self.bot.wait_for('message', check=author_check, timeout=180)
 
             if description.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
+                await ctx.send(f'{self.bot.yes} **Successfully canceled channel editing process...**')
                 return
 
             if len(description.content) > 250:
@@ -314,6 +314,52 @@ class Vidio(commands.Cog):
         query = await self.database.set_description(channels[channel_index][1], description)
 
         await ctx.send(f"{self.bot.yes} **Successfully changed your channel description!**")
+
+    @commands.command(
+        aliases=['set_name'],
+        usage='``-edit_name``',
+        help='A command that changes your channel name.')
+    async def edit_name(self, ctx):
+
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
+
+        user = ctx.author.id
+        channels = await self.database.get_channel(user)
+
+        if len(channels) == 1:
+            channel_index = 0
+        else:
+            channel_index = await self.multi_channels(ctx, channels)
+
+        if channel_index is False:
+            return
+
+        description_msg = f'{self.bot.youtube} **Step 1/1: Enter a new channel name' \
+                          ' for your channel**\n Enter a cooler name ' \
+                          'for your channel! ' \
+                          '**Your channel name must not exceed 50 characters.**\n\n' \
+                          'To cancel edit, simply type ``cancel``.'
+
+        while True:
+
+            await ctx.send(description_msg)
+
+            name = await self.bot.wait_for('message', check=author_check, timeout=180)
+
+            if name.content.lower() == 'cancel':
+                await ctx.send(f'{self.bot.yes} **Successfully canceled channel editing process...**')
+                return
+
+            if len(name.content) > 50:
+                continue
+
+            name = name.content
+            break
+
+        query = await self.database.set_channel_name(channels[channel_index][1], name)
+
+        await ctx.send(f"{self.bot.yes} **Successfully changed your channel name!**")
 
     @commands.command(
         aliases=['dc'],
