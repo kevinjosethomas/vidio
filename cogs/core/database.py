@@ -469,7 +469,7 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
 
             await conn.execute("UPDATE users SET vote_reminder = $1, last_reminded = $2 WHERE user_id = $3",
-                         status, last_vote, user_id)
+                               status, last_vote, user_id)
 
         return True
 
