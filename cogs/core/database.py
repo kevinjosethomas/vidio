@@ -456,7 +456,8 @@ class Database(commands.Cog):
     async def set_vote_reminder(self, user_id, status):
 
         already_active = await self.db.fetchrow("SELECT vote_reminder FROM users WHERE user_id = $1",
-                                          user_id)
+                                                user_id)
+        print(already_active)
         if already_active == status:
             return 'Already active'
 
