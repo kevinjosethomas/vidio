@@ -357,6 +357,13 @@ class Vidio(commands.Cog):
             name = name.content
             break
 
+        for channel in channels:
+            if channel[2].lower() == name.lower():
+                await ctx.send(f"{self.bot.no} **You have a channel with the same name.** "
+                               f"This makes it really hard for us to handle. "
+                               f"Please retry with a different name.")
+                return
+
         query = await self.database.set_channel_name(channels[channel_index][1], name)
 
         await ctx.send(f"{self.bot.yes} **Successfully changed your channel name!**")
