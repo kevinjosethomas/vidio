@@ -233,9 +233,9 @@ class Utility(commands.Cog):
         help='Configure voting reminders!')
     async def voteReminder(self, ctx, status):
 
-        if status.lower == 'enable' or status.lower == 'on':
+        if status.lower() == 'enable' or status.lower() == 'on':
             status = True
-        elif status.lower == 'disable' or status.lower == 'off':
+        elif status.lower() == 'disable' or status.lower() == 'off':
             status = False
         else:
             await ctx.send(f'{self.bot.no} **Invalid Input.** Valid inputs are - ``enable | on | disable | off``')
