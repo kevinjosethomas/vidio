@@ -156,6 +156,9 @@ class Database(commands.Cog):
             await conn.execute("UPDATE users SET money = $1 WHERE user_id = $2",
                                money, user_id)
 
+            await conn.execute("INSERT INTO votes (user_id, timestamp) VALUES ($1, $2)",
+                               user_id, datetime.now())
+
         return [money, added_money]
 
     async def buy_decent_ad(self, user_id, channel_id):
