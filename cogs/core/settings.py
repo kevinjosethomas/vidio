@@ -104,7 +104,6 @@ class Default(commands.Cog):
             f'Use ``{ctx.prefix}voteReminder on`` to enable bot vote reminders!']
 
         if random.choice([True, False, False, False, False]):
-
             await ctx.send(f'**Tip:** {random.choice(replies)}')
 
     @commands.Cog.listener()

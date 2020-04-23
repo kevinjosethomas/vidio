@@ -87,40 +87,9 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 bot.logger.addHandler(handler)
 
-
-# some bot variables the bot uses for various purposes
-bot.embed = 0x2f3136
-
-# some emojis used by the bot
-bot.bug = '🐛'
-bot.money = '💵'
-bot.views = '👀'
-bot.pencil = '📝'
-bot.category = '📂'
-bot.real_subscribers = '🤝'
-bot.likes = '<:likes:694721324517556255>'
-bot.subscribers = '<:live:693869294051655721>'
-bot.dislikes = '<:dislikes:694721324483870760>'
-
-bot.fail = '🔴'
-bot.average = '⚪'
-bot.success = '🟢'
-
-bot.no = '<:no:692399981910556733>'
-bot.yes = '<:yes:692399981834928138>'
-
-bot.youtube = '<:youtube:693484343074619423>'
-bot.heartbeat = '<a:ping:692399981935722607>'
-bot.loading = '<a:loading:693852613812158494>'
-
-# some channels the bot uses
-bot.bugs_channel_id = 696014942083612742
-bot.error_channel_id = 692405881115246603
-bot.support_server_id = 689210707232686158
-bot.suggestions_channel_id = 696014954532438116
-
 # defines the list of cogs in the bot
 bot.cog_list = [
+    'cogs.core.data',
     'cogs.core.database',
     'cogs.core.settings',
     'cogs.core.owner',
