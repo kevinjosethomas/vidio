@@ -7,6 +7,8 @@
 CREATE TABLE IF NOT EXISTS users (
     user_id BIGINT PRIMARY KEY,
     money BIGINT
+    vote_reminder BOOLEAN
+    last_reminded timestamp
 );
 
 
@@ -86,3 +88,8 @@ CREATE TABLE IF NOT EXISTS guilds (
 CREATE TABLE IF NOT EXISTS bans (
     user_id BIGINT
 );
+
+CREATE TABLE IF NOT EXISTS votes (
+    user_id BIGINT REFERENCES users (user_id),
+    timestamp timestamp
+)
