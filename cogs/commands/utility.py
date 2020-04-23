@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from datetime import datetime, timedelta
 from discord.ext.commands.cooldowns import BucketType
 
 
@@ -208,6 +209,42 @@ class Utility(commands.Cog):
         )
 
         await ctx.send(embed=changelog_embed)
+
+    @commands.command(
+        usage='``-uptime``',
+        help='Shows you how long the bot has been online for.')
+    async def uptime(self, ctx):
+
+        uptime = datetime.now() - self.bot.start_time
+
+        days = uptime.days
+        hours = uptime.days % 24
+        minutes = uptime.seconds // 60
+
+        message = '**vidio** has been online for '
+
+        if days:
+            if days > 1:
+                ds = 'days'
+            else:
+                ds = 'day'
+            message += f'{str(days)} {ds}, '
+
+        if hours:
+            if hours > 1:
+                hs = 'hours'
+            else:
+                hs = 'hour'
+            message += f'{str(hours)} {hs}, '
+
+        if minutes > 1:
+            ms = 'minutes'
+        else:
+            ms = 'minutes'
+        message += minutes
+
+        await ctx.send(message)
+
 
     @commands.command(
         aliases=['inv', 'invite', 'vote'],
