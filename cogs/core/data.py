@@ -38,6 +38,8 @@ class Data(commands.Cog):
         self.bot.support_server_id = 689210707232686158
         self.bot.suggestions_channel_id = 696014954532438116
 
+        self.bot.support_server = self.bot.get_guild(self.bot.support_server_id)
+
 
 def setup(bot):
     bot.add_cog(Data(bot))
