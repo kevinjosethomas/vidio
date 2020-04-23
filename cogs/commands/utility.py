@@ -176,6 +176,12 @@ class Utility(commands.Cog):
         # )
 
         changelog_embed.add_field(
+            name='**• Thursday, 23rd April 2020**',
+            value='- Changed the name of the bot to **vidio**.\n',
+            inline=False
+        )
+
+        changelog_embed.add_field(
             name='**• Wednesday, 22nd April 2020**',
             value='- Added subbot.\n'
                   '- Added decent advertisements.\n'
@@ -200,13 +206,6 @@ class Utility(commands.Cog):
             inline=False
         )
 
-        changelog_embed.add_field(
-            name='**• Saturday, 18th April 2020**',
-            value='- Added real subscribers (``-subscribe``)\n'
-                  '- Added ``edit_description`` command.\n',
-            inline=False
-        )
-
         await ctx.send(embed=changelog_embed)
 
     @commands.command(
@@ -227,6 +226,33 @@ class Utility(commands.Cog):
         link_embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=link_embed)
+
+    @commands.command(
+        aliases=['voteRemind', 'vote_reminder', 'vote_remind'],
+        usage='``-voteReminder {enable | on | disable | off}``',
+        help='Configure voting reminders!')
+    async def voteReminder(self, ctx, status):
+
+        if status.lower == 'enable' or status.lower == 'on':
+            status = True
+        elif status.lower == 'disable' or status.lower == 'off':
+            status = False
+        else:
+            await ctx.send(f'{self.bot.no} **Invalid Input.** Valid inputs are - ``enable | on | disable | off``')
+            return
+
+        success = await self.database.set_vote_reminder(ctx.author.id, status)
+
+        if success == 'Already active':
+            if status is False:
+                status = 'disabled'
+            else:
+                status = 'enabled'
+            await ctx.send(f'{self.bot.no} **Vote reminders are already {status}.**')
+
+        elif success:
+            await ctx.send(f'{self.bot.yes} **Successfully enabled vote reminders!** '
+                           f'You will now be reminded to vote around every 12 hours!')
 
 
 def setup(bot):

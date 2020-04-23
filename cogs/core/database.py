@@ -453,6 +453,25 @@ class Database(commands.Cog):
             await conn.execute("UPDATE channels SET description = $1 WHERE channel_id = $2",
                                description, cid)
 
+    async def set_vote_reminder(self, user_id, status):
+
+        already_active = self.db.fetchrow("SELECT vote_reminder FROM users WHERE user_id = $1",
+                                          user_id)
+        if already_active == status:
+            return 'Already active'
+
+        last_vote = self.db.fetchrow("SELECT timestamp FROM votes WHERE user_id = $1 ORDER BY timestamp DESC LIMIT 1",
+                                     user_id)
+        if not last_vote:
+            last_vote = datetime.now()
+
+        async with self.db.acquire() as conn:
+
+            conn.execute("UPDATE users SET vote_reminder = $1, last_reminded = $2 WHERE user_id = $3",
+                         status, last_vote, user_id)
+
+        return True
+
     async def upload_video(self, user_id, channel, name, description):
 
         choices = ['fail', 'poor', 'average', 'good', 'trending']
@@ -640,6 +659,11 @@ class Database(commands.Cog):
                     message = f'{self.bot.heartbeat} **Hey! It\'s been 12 hours since you last upvoted **vidio**! ' \
                               f'Upvote the bot and get some cool prizes!'
                 await user_object.send(message)
+
+                async with self.db.acquire() as conn:
+
+                    conn.execute("UPDATE users SET last_reminded = $1 WHERE user_id = $2",
+                                 datetime.now(), user[0])
 
     @update_videos.before_loop
     async def before_updating(self):
