@@ -453,6 +453,13 @@ class Database(commands.Cog):
             await conn.execute("UPDATE channels SET description = $1 WHERE channel_id = $2",
                                description, cid)
 
+    async def set_channel_name(self, cid, name):
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("UPDATE channels SET name = $1 WHERE channel_id = $2",
+                               name, cid)
+
     async def set_vote_reminder(self, user_id, status):
 
         already_active = await self.db.fetchrow("SELECT vote_reminder FROM users WHERE user_id = $1",
