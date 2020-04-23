@@ -358,6 +358,8 @@ class Vidio(commands.Cog):
             break
 
         for channel in channels:
+            print(channel[2])
+            print(name)
             if channel[2].lower() == name.lower():
                 await ctx.send(f"{self.bot.no} **You have a channel with the same name.** "
                                f"This makes it really hard for us to handle. "
