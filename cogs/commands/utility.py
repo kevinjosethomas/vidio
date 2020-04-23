@@ -251,6 +251,10 @@ class Utility(commands.Cog):
             await ctx.send(f'{self.bot.no} **Vote reminders are already {status}.**')
 
         elif success:
+            if status is False:
+                status = 'disabled'
+            else:
+                status = 'enabled'
             await ctx.send(f'{self.bot.yes} **Successfully enabled vote reminders!** '
                            f'You will now be reminded to vote around every 12 hours!')
 
