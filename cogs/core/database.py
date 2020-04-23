@@ -455,19 +455,20 @@ class Database(commands.Cog):
 
     async def set_vote_reminder(self, user_id, status):
 
-        already_active = self.db.fetchrow("SELECT vote_reminder FROM users WHERE user_id = $1",
+        already_active = await self.db.fetchrow("SELECT vote_reminder FROM users WHERE user_id = $1",
                                           user_id)
         if already_active == status:
             return 'Already active'
 
-        last_vote = self.db.fetchrow("SELECT timestamp FROM votes WHERE user_id = $1 ORDER BY timestamp DESC LIMIT 1",
-                                     user_id)
+        last_vote = await self.db.fetchrow(
+            "SELECT timestamp FROM votes WHERE user_id = $1 ORDER BY timestamp DESC LIMIT 1",
+            user_id)
         if not last_vote:
             last_vote = datetime.now()
 
         async with self.db.acquire() as conn:
 
-            conn.execute("UPDATE users SET vote_reminder = $1, last_reminded = $2 WHERE user_id = $3",
+            await conn.execute("UPDATE users SET vote_reminder = $1, last_reminded = $2 WHERE user_id = $3",
                          status, last_vote, user_id)
 
         return True
