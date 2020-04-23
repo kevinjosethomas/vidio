@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from discord.ext.commands.cooldowns import BucketType
 
 
-class Videonet(commands.Cog):
+class Vidio(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -923,4 +923,4 @@ class Videonet(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Videonet(bot))
+    bot.add_cog(Vidio(bot))

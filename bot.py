@@ -127,7 +127,7 @@ bot.cog_list = [
     'cogs.core.topgg',
     'cogs.commands.youtube',
     'cogs.commands.utility',
-    'cogs.commands.videonet']
+    'cogs.commands.vidio']
 
 # loads all the cogs from the cog list
 for cog in bot.cog_list:
