@@ -2,7 +2,7 @@ import math
 import string
 import random
 import asyncpg
-from datetime import datetime
+from datetime import datetime, timedelta
 from discord.ext import commands, tasks
 
 
@@ -616,6 +616,30 @@ class Database(commands.Cog):
 
         except Exception as e:
             print(e)
+
+    @tasks.loop(minutes=10)
+    async def remind_voters(self):
+
+        users = await self.db.fetch("SELECT * FROM votes WHERE now() - timestamp > make_interval(hours := 12) ")
+
+        for user in users:
+
+            await self.db.fetchrow("SELECT * FROM users WHERE user_id = $1",
+                                   user[0])
+
+            if user[2] and (datetime.now() - user[3]) > timedelta(hours=12):
+
+                user_object = self.bot.get_user(user[0])
+                if not user_object:
+                    continue
+
+                if datetime.today().weekday() == 5 or datetime.today().weekday() == 6:
+                    message = f'{self.bot.heartbeat} **Hey! It\'s been 12 hours since you last upvoted **vidio**! ' \
+                              f'You don\'t want to miss out today, it\'s a weekend, so vote prizes are doubled!'
+                else:
+                    message = f'{self.bot.heartbeat} **Hey! It\'s been 12 hours since you last upvoted **vidio**! ' \
+                              f'Upvote the bot and get some cool prizes!'
+                await user_object.send(message)
 
     @update_videos.before_loop
     async def before_updating(self):
