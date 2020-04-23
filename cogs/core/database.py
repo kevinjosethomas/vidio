@@ -457,7 +457,7 @@ class Database(commands.Cog):
 
         already_active = await self.db.fetchrow("SELECT vote_reminder FROM users WHERE user_id = $1",
                                                 user_id)
-        print(already_active)
+        already_active = already_active[0]
         if already_active == status:
             return 'Already active'
 
