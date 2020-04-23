@@ -177,7 +177,8 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Thursday, 23rd April 2020**',
-            value='- Changed the name of the bot to **vidio**.\n',
+            value='- Added voteReminder command.\n'
+                  '- Changed the name of the bot to **vidio**.\n',
             inline=False
         )
 
