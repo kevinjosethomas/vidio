@@ -100,7 +100,7 @@ class Default(commands.Cog):
             'Upvote the bot to get some money! https://top.gg/bot/689210550680682560/vote',
             f'Regularly ``{ctx.prefix}changelog`` to learn about new cool features!',
             'Join the vidio support server to stay updated about '
-            'new features!** https://discord.gg/pGzQUvE',
+            'new features! https://discord.gg/pGzQUvE',
             f'Use ``{ctx.prefix}voteReminder on`` to enable bot vote reminders!']
 
         if random.choice([True, False, False, False, False]):
