@@ -178,7 +178,9 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Monday, 27th April 2020**',
-            value='- Removed cooldowns from most commands.\n',
+            value='- Increased chance of good videos and reduced chance of fail videos.\n'
+                  '- Reduced decent advertisement price.\n'
+                  '- Removed cooldowns from most commands.\n',
             inline=False
         )
 
