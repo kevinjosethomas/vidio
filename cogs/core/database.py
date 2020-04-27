@@ -168,7 +168,7 @@ class Database(commands.Cog):
 
         channel = await self.get_channel(channel_id)
         subscribers = channel[0][4]
-        cost = 3 * subscribers
+        cost = 2 * subscribers
 
         if cost > user_money:
             return 'Not enough money'
@@ -484,7 +484,7 @@ class Database(commands.Cog):
     async def upload_video(self, user_id, channel, name, description):
 
         choices = ['fail', 'poor', 'average', 'good', 'trending']
-        status = random.choices(choices, weights=[20, 20, 50, 9.9999, 0.0001])[0]
+        status = random.choices(choices, weights=[15, 20, 50, 14.9999, 0.0001])[0]
 
         channel_data = await self.db.fetchrow(
             "SELECT channel_id, name, subscribers, total_views FROM channels WHERE user_id = $1 AND channel_id = $2",

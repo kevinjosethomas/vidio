@@ -177,6 +177,12 @@ class Utility(commands.Cog):
         # )
 
         changelog_embed.add_field(
+            name='**• Monday, 27th April 2020**',
+            value='- Removed cooldowns from most commands.\n',
+            inline=False
+        )
+
+        changelog_embed.add_field(
             name='**• Thursday, 23rd April 2020**',
             value='- Added ``edit_name`` command.\n'
                   '- Added ``voteReminder`` command.\n'
@@ -199,13 +205,6 @@ class Utility(commands.Cog):
                   '- Fixed ``edit_description`` error.\n'
                   '- Added tutorial command.\n'
                   '- Updated help command.',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Sunday, 19th April 2020**',
-            value='- Added ``-profile`` command\n'
-                  '- Added money',
             inline=False
         )
 

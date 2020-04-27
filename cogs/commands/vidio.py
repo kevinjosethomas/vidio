@@ -195,7 +195,6 @@ class Vidio(commands.Cog):
         aliases=['c'],
         usage='``-channel``',
         help='A simple command that returns the user\'s channel information!')
-    @commands.cooldown(1, 10, BucketType.user)
     async def channel(self, ctx, *, user: discord.User = None):
 
         if user is None:
@@ -398,7 +397,6 @@ class Vidio(commands.Cog):
         usage='``-upload``',
         help='A command that uploads a video on the author\'s channel.')
     @commands.max_concurrency(1, BucketType.user, wait=True)
-    @commands.cooldown(1, 10, BucketType.user)
     async def upload(self, ctx):
 
         def author_check(msg):
@@ -822,7 +820,7 @@ class Vidio(commands.Cog):
 
             store_embed.add_field(
                 name='1. Decent Advertisement',
-                value=f'Costs ``${3 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 1``',
+                value=f'Costs ``${2 * math.ceil(channels[channel_index][4])}`` | ``{ctx.prefix}buy 1``',
                 inline=False
             )
 

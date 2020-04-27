@@ -121,7 +121,7 @@ class Default(commands.Cog):
             return False
 
         if not self.bot.is_ready():
-            await ctx.send(f'**{random.choice(["Hold up", "Wait a moment"])}!** videonet is still starting up!')
+            await ctx.send(f'**{random.choice(["Hold up", "Wait a moment"])}!** vidio is still starting up!')
             return
 
         return True
