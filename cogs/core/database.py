@@ -150,6 +150,8 @@ class Database(commands.Cog):
         print(award)
 
         for i in awards:
+            print(i)
+            print(type(i))
             print(i.values())
             print(i.keys())
             print(i.items())
