@@ -152,13 +152,13 @@ class Database(commands.Cog):
         for i in awards:
             print(i)
             print(type(i))
-            print(i.values())
-            print(i.keys())
-            print(i.items())
-            print(i == award)
-            print(award in i.values())
-            print(award in i.keys())
-            print(award in i.items())
+            # print(i.values())
+            # print(i.keys())
+            # print(i.items())
+            # print(i == award)
+            # print(award in i.values())
+            # print(award in i.keys())
+            # print(award in i.items())
 
         if award in awards.values():
             return
