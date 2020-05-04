@@ -146,7 +146,7 @@ class Database(commands.Cog):
 
         awards = await self.db.fetch("SELECT award FROM awards WHERE channel_id = $1",
                                      channel.get('channel_id'))
-        if award in awards:
+        if award in awards[0]:
             return
 
         async with self.db.acquire() as conn:
