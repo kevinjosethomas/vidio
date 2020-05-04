@@ -160,7 +160,7 @@ class Database(commands.Cog):
             # print(award in i.keys())
             # print(award in i.items())
 
-        if award in awards.values():
+        if award in awards:
             return
 
         async with self.db.acquire() as conn:
