@@ -398,8 +398,8 @@ class Database(commands.Cog):
 
     async def get_awards(self, channel_id):
 
-        awards = await self.db.fetch("SELECT * FROM awards WHERE channel_id = $1",
-                            channel_id)
+        awards = await self.db.fetch("SELECT award FROM awards WHERE channel_id = $1",
+                                     channel_id)
 
         return awards
 

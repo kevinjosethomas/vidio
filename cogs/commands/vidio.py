@@ -232,7 +232,7 @@ class Vidio(commands.Cog):
         award_str = ''
 
         for award in awards:
-            award_str += f"{eval(f'self.bot.{award}')} "
+            award_str += f"{eval(f'self.bot.{award.value()}')} "
 
         user = self.bot.get_user(user)
 
