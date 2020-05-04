@@ -131,6 +131,33 @@ class Database(commands.Cog):
         else:
             return False
 
+    async def check_award(self, ctx, channel):
+
+        if 100000 <= channel.get('subscribers') < 1000000:
+            award = 'silver'
+        elif 1000000 <= channel.get('subscribers') < 10000000:
+            award = 'gold'
+        elif 10000000 <= channel.get('subscribers') < 100000000:
+            award = 'diamond'
+        elif 100000000 < channel.get('subscribers'):
+            award = 'ruby'
+        else:
+            return
+
+        awards = await self.db.fetch("SELECT award FROM awards WHERE channel_id = $1",
+                                     channel.get('channel_id'))
+        if award in awards:
+            return
+
+        async with self.db.acquire() as conn:
+
+            await self.db.execute("INSERT INTO awards (channel_id, award) VALUES ($1, $2)",
+                                  channel.get('channel_id'), award)
+
+            await ctx.send(f':tada: **<@{ctx.author.id}> just got the :{award}_play_button: {award} play button!**')
+
+        return
+
     async def on_vote(self, user_id, is_weekend):
 
         user = await self.db.fetchrow('SELECT * FROM users WHERE user_id = $1',
@@ -161,7 +188,7 @@ class Database(commands.Cog):
 
         return [money, added_money]
 
-    async def buy_decent_ad(self, user_id, channel_id):
+    async def buy_decent_ad(self, ctx, user_id, channel_id):
 
         user = await self.get_user(user_id)
         user_money = user[1]
@@ -189,7 +216,7 @@ class Database(commands.Cog):
 
         return {'new_subs': new_subscribers, 'cost': cost}
 
-    async def buy_average_ad(self, user_id, channel_id):
+    async def buy_average_ad(self, ctx, user_id, channel_id):
 
         user = await self.get_user(user_id)
         user_money = user[1]
@@ -215,9 +242,15 @@ class Database(commands.Cog):
             await self.db.execute("UPDATE users SET money = $1 WHERE user_id = $2",
                                   new_user_money, user_id)
 
+        data_channel = {
+            'channel_id': channel_id,
+            'subscribers': subscribers}
+
+        await self.check_award(ctx, data_channel)
+
         return {'new_subs': new_subscribers, 'cost': cost}
 
-    async def buy_subbot(self, user_id, channel_id, amount):
+    async def buy_subbot(self, ctx, user_id, channel_id, amount):
 
         user = await self.get_user(user_id)
         user_money = user[1]
@@ -240,6 +273,12 @@ class Database(commands.Cog):
 
             await self.db.execute("UPDATE users SET money = $1 WHERE user_id = $2",
                                   new_user_money, user_id)
+
+        data_channel = {
+            'channel_id': channel_id,
+            'subscribers': subscribers}
+
+        await self.check_award(ctx, data_channel)
 
         return {'new_subs': amount, 'cost': cost}
 
@@ -481,7 +520,7 @@ class Database(commands.Cog):
 
         return True
 
-    async def upload_video(self, user_id, channel, name, description):
+    async def upload_video(self, ctx, user_id, channel, name, description):
 
         choices = ['fail', 'poor', 'average', 'good', 'trending']
         status = random.choices(choices, weights=[15, 20, 50, 14.9999, 0.0001])[0]
@@ -549,6 +588,12 @@ class Database(commands.Cog):
             await conn.execute(
                 "UPDATE users SET money = $1 WHERE user_id = $2",
                 total_money, user_id)
+
+        data_channel = {
+            'channel_id': channel_id,
+            'subscribers': subscribers}
+
+        await self.check_award(ctx, data_channel)
 
         return {'status': status,
                 'channel': channel_name,

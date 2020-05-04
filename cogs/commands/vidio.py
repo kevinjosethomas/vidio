@@ -484,7 +484,7 @@ class Vidio(commands.Cog):
 
         await asyncio.sleep(1)
 
-        video = await self.database.upload_video(ctx.author.id, channels[channel_index][1], video_name, description)
+        video = await self.database.upload_video(ctx, ctx.author.id, channels[channel_index][1], video_name, description)
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
@@ -858,7 +858,7 @@ class Vidio(commands.Cog):
 
         channel_id = channels[channel_index][1]
 
-        status = await self.database.buy_average_ad(user_id, channel_id)
+        status = await self.database.buy_decent_ad(ctx, user_id, channel_id)
         if status == 'Not enough money':
             await ctx.send(f'{self.bot.no} **You do not have enough money to buy a decent advertisement. **'
                            f'An average advertisement costs ``${channels[channel_index][4]}``.')
@@ -886,7 +886,7 @@ class Vidio(commands.Cog):
 
         channel_id = channels[channel_index][1]
 
-        status = await self.database.buy_average_ad(user_id, channel_id)
+        status = await self.database.buy_average_ad(ctx, user_id, channel_id)
         if status == 'Not enough money':
             await ctx.send(f'{self.bot.no} **You do not have enough money to buy an average advertisement.**'
                            f'An average advertisement costs {channels[channel_index][4]}.')
@@ -914,7 +914,7 @@ class Vidio(commands.Cog):
 
         channel_id = channels[channel_index][1]
 
-        status = await self.database.buy_subbot(user_id, channel_id, subscriber_amount)
+        status = await self.database.buy_subbot(ctx, user_id, channel_id, subscriber_amount)
 
         if status == 'Not enough money':
             await ctx.send(f'{self.bot.no} **You do not have enough money to buy a subbot.**'

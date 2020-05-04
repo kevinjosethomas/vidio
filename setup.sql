@@ -6,8 +6,8 @@
 --      - money, the amount of money the user has.
 CREATE TABLE IF NOT EXISTS users (
     user_id BIGINT PRIMARY KEY,
-    money BIGINT
-    vote_reminder BOOLEAN
+    money BIGINT,
+    vote_reminder BOOLEAN,
     last_reminded timestamp
 );
 
@@ -99,6 +99,6 @@ CREATE TABLE IF NOT EXISTS votes (
 );
 
 CREATE TABLE IF NOT EXISTS awards (
-    channel_id INT,
+    channel_id INT REFERENCES channels (channel_id) ON DELETE CASCADE ON UPDATE CASCADE,
     award TEXT
 );
