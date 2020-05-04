@@ -89,7 +89,16 @@ CREATE TABLE IF NOT EXISTS bans (
     user_id BIGINT
 );
 
+
+-- - creates votes table which holds -
+--      - user_id, the user who voted
+--      - timestamp, the time voted
 CREATE TABLE IF NOT EXISTS votes (
     user_id BIGINT REFERENCES users (user_id),
     timestamp timestamp
-)
+);
+
+CREATE TABLE IF NOT EXISTS awards (
+    channel_id INT,
+    award TEXT
+);
