@@ -227,13 +227,20 @@ class Vidio(commands.Cog):
         real_subscribers = await self.database.get_subscribers(channels[channel_index][1])
         real_subscribers = len(real_subscribers)
 
+        awards = await self.database.get_awards(channels[channel_index][1])
+
+        award_str = ''
+
+        for award in awards:
+            award_str += f"{eval(f'self.bot.{award}')} "
+
         user = self.bot.get_user(user)
 
         subs = locale.format_string("%d", subs, grouping=True)
         total_views = locale.format_string("%d", total_views, grouping=True)
 
         yt_embed = discord.Embed(
-            title=f'**{name}**',
+            title=f'**{name}** {award_str}',
             description=f'{self.bot.subscribers} **Subscribers:** {subs}\n'
                         f'{self.bot.real_subscribers} **Real Subscribers:** {real_subscribers}\n\n'
                         f'{self.bot.views} **Total Views:** {total_views}\n'

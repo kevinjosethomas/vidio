@@ -396,6 +396,13 @@ class Database(commands.Cog):
         else:
             raise TypeError(f'Expected int, received {type(query_id)}')
 
+    async def get_awards(self, channel_id):
+
+        awards = await self.db.fetch("SELECT * FROM awards WHERE channel_id = $1",
+                            channel_id)
+
+        return awards
+
     async def get_leaderboard(self, by):
 
         leaderboard = await self.db.fetch(
