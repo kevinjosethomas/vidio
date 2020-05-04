@@ -147,28 +147,18 @@ class Database(commands.Cog):
         awards = await self.db.fetch("SELECT award FROM awards WHERE channel_id = $1",
                                      channel.get('channel_id'))
 
-        print(award)
-
-        for i in awards:
-            print(i)
-            print(type(i))
-            print(i.values())
-            print(i.keys())
-            print(i.items())
-            print(i == award)
-            print(award in i.values())
-            print(award in i.keys())
-            print(award in i.items())
-
-        if award in awards:
-            return
+        for awarded in awards:
+            if award == awarded:
+                return
 
         async with self.db.acquire() as conn:
 
             await self.db.execute("INSERT INTO awards (channel_id, award) VALUES ($1, $2)",
                                   channel.get('channel_id'), award)
 
-            await ctx.send(f':tada: **<@{ctx.author.id}> just got the :{award}_play_button: {award} play button!**')
+            emoji = eval(f'self.bot.{award}')
+
+            await ctx.send(f':tada: **<@{ctx.author.id}> just got the {emoji} {award} play button!**')
 
         return
 
