@@ -148,9 +148,15 @@ class Database(commands.Cog):
                                      channel.get('channel_id'))
 
         print(award)
-        print(awards.values())
-        print(awards.keys())
-        print(awards.items())
+
+        for i in awards:
+            print(i.values())
+            print(i.keys())
+            print(i.items())
+            print(i == award)
+            print(award in i.values())
+            print(award in i.keys())
+            print(award in i.items())
 
         if award in awards.values():
             return
