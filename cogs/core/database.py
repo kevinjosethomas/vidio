@@ -148,6 +148,8 @@ class Database(commands.Cog):
                                      channel.get('channel_id'))
         if award in awards[0]:
             return
+        print(award)
+        print(awards)
 
         async with self.db.acquire() as conn:
 
