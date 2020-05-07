@@ -487,10 +487,6 @@ class Vidio(commands.Cog):
             description = description.content
             break
 
-        message = await ctx.send(f"{self.bot.loading} Validating your entries and uploading your video.")
-
-        await asyncio.sleep(1)
-
         video = await self.database.upload_video(ctx, ctx.author.id, channels[channel_index][1], video_name, description)
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
@@ -532,7 +528,6 @@ class Vidio(commands.Cog):
                  'Note: The statistics of your video will continue changing for the next 5 days.'
         )
 
-        await message.delete()
         await ctx.send(embed=video_embed)
 
     @upload.error
