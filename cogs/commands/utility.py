@@ -177,6 +177,12 @@ class Utility(commands.Cog):
         # )
 
         changelog_embed.add_field(
+            name='**• Thursday, 7th May 2020**',
+            value='- Added play buttons.\n',
+            inline=False
+        )
+
+        changelog_embed.add_field(
             name='**• Monday, 27th April 2020**',
             value='- Increased chance of good videos and reduced chance of fail videos.\n'
                   '- Reduced decent advertisement price.\n'
@@ -189,24 +195,6 @@ class Utility(commands.Cog):
             value='- Added ``edit_name`` command.\n'
                   '- Added ``voteReminder`` command.\n'
                   '- Changed the name of the bot to **vidio**.\n',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Wednesday, 22nd April 2020**',
-            value='- Added subbot.\n'
-                  '- Added decent advertisements.\n'
-                  '- Added average advertisements.\n',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Tuesday, 21st April 2020**',
-            value='- Added money leaderboard (``leaderboard money``)\n'
-                  '- Removed symbol and punctuation limitation.\n'
-                  '- Fixed ``edit_description`` error.\n'
-                  '- Added tutorial command.\n'
-                  '- Updated help command.',
             inline=False
         )
 
