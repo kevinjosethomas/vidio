@@ -178,7 +178,8 @@ class Utility(commands.Cog):
 
         changelog_embed.add_field(
             name='**• Thursday, 7th May 2020**',
-            value='- Added play buttons.\n',
+            value='- Removed wait after uploading.\n'
+                  '- Added play buttons.\n',
             inline=False
         )
 

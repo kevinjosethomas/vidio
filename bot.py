@@ -111,7 +111,7 @@ bot.average = '⚪'
 bot.success = '🟢'
 
 bot.no = '<:no:692399981910556733>'
-bot.yes = '<:yes:692399981834928138>'
+bot.yes = '<:no:708060636919365696>'
 
 bot.youtube = '<:youtube:693484343074619423>'
 bot.heartbeat = '<a:ping:692399981935722607>'
