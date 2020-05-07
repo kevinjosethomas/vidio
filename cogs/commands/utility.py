@@ -129,7 +129,8 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         suggestion_embed.set_footer(text="Make your own suggestions with -suggest!")
-        suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator, icon_url=ctx.author.avatar_url)
+        suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator+' | '+ctx.author.id,
+                                    icon_url=ctx.author.avatar_url)
 
         message = await suggestions_channel.send(embed=suggestion_embed)
         await ctx.send(f'{self.bot.yes} **Sent your suggestion to the vidio support server!**')
@@ -154,7 +155,7 @@ class Utility(commands.Cog):
 
         bug_embed.set_footer(text="Report your bug with -bug")
         bug_embed.set_author(
-            name=ctx.author.name + '#' + ctx.author.discriminator,
+            name=ctx.author.name + '#' + ctx.author.discriminator+' | '+ctx.author.id,
             icon_url=ctx.author.avatar_url)
 
         await bugs_channel.send(embed=bug_embed)
