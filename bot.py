@@ -110,7 +110,7 @@ bot.fail = '🔴'
 bot.average = '⚪'
 bot.success = '🟢'
 
-bot.no = '<:no:708060636919365696>''
+bot.no = '<:no:708060636919365696>'
 bot.yes = '<:no:708060636919365696>'
 
 bot.youtube = '<:youtube:693484343074619423>'
