@@ -200,16 +200,6 @@ class Default(commands.Cog):
         elif isinstance(error, commands.NoPrivateMessage):
             return
 
-        elif isinstance(error, discord.Forbidden):
-            await ctx.author.send(f"{self.bot.no} **vidio doesn't have permissions to send messages** in the channel "
-                                  f"where you initiated ``{ctx.command}``")
-            return
-
-        elif isinstance(error.original, asyncio.TimeoutError):
-            await ctx.send(f'{self.bot.yes} **Canceled process...** (Timed Out)')
-            ctx.handled = True
-            return
-
         try:
             if isinstance(error.original, commands.ExtensionNotFound):
                 unknown_error_embed = discord.Embed(
@@ -241,6 +231,17 @@ class Default(commands.Cog):
                     description=f"{self.bot.no} **The provided cog is not loaded (or doesn't exist).**",
                     color=self.bot.embed)
                 await ctx.send(embed=unknown_error_embed)
+                return
+
+            elif isinstance(error.original, discord.Forbidden):
+                await ctx.author.send(
+                    f"{self.bot.no} **vidio doesn't have permissions to send messages** in the channel "
+                    f"where you initiated ``{ctx.command}``")
+                return
+
+            elif isinstance(error.original, asyncio.TimeoutError):
+                await ctx.send(f'{self.bot.yes} **Canceled process...** (Timed Out)')
+                ctx.handled = True
                 return
 
         except AttributeError:
