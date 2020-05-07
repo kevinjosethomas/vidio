@@ -1,3 +1,4 @@
+import asyncio
 import random
 import logging
 import discord
@@ -197,6 +198,11 @@ class Default(commands.Cog):
             return
 
         elif isinstance(error, commands.NoPrivateMessage):
+            return
+
+        elif isinstance(error.original, asyncio.TimeoutError):
+            await ctx.send(f'{self.bot.yes} **Canceled process...** (Timed Out)')
+            ctx.handled = True
             return
 
         try:
