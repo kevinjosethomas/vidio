@@ -3,48 +3,63 @@ import random
 import logging
 import discord
 import traceback
-from datetime import datetime
-from discord.ext import commands, tasks
+from discord.ext import commands, tasks, menus
 
+
+class HelpMenu(menus.Menu):
+
+    async def send_inital_message(self, ctx, channel):
+        return await ctx.send("Hello")
 
 class MyHelpCommand(commands.HelpCommand):
 
     async def send_bot_help(self, mapping):
+        help_menu = HelpMenu()
+        await help_menu.start(self.context)
+        return
 
-        help_embed = discord.Embed(
-            color=self.context.bot.embed)
-
-        for category in mapping:
-            command = ', '
-
-            command_list = list(map(lambda c: c.name, set(mapping[category])))
-
-            for command_name in command_list:
-                index = command_list.index(command_name)
-                command_list[index] = f'``{command_name}``'
-
-            command = command.join(command_list)
-
-            if not command_list:
-                continue
-
-            if category is None:
-                help_embed.add_field(
-                    name='Uncategorized',
-                    value=command,
-                    inline=False)
-                continue
-
-            help_embed.add_field(
-                name=category.qualified_name,
-                value=command,
-                inline=False)
-
-        help_embed.set_footer(
-            text='For more help use -help {command} | '
-                 'Join our support server - https://discord.gg/rB2EGa4')
-
-        await self.context.send(embed=help_embed)
+        # command_list = []
+        #
+        # for category in mapping:
+        #
+        #     if not category:
+        #         continue
+        #
+        #     if category.qualified_name.lower() != 'utility' and category.qualified_name.lower() != 'vidio':
+        #         continue
+        #
+        #     command_list.append(
+        #         {category.qualified_name:
+        #             list(map(lambda c: [c.name, c.aliases, c.usage, c.help], set(mapping[category])))})
+        #
+        # description = ''
+        #
+        # for category in command_list:
+        #
+        #     category = command_list[command_list.index(category)]
+        #     description += f'**{list(category.keys())[0]}**\n'
+        #     print(description)
+        #     print(category)
+        #     print(list(category.values()))
+        #
+        #     for command in list(category.values())[0]:
+        #         print(command)
+        #         command_str = f'``{command[0]}`` {"(``{}``)".format("".join(command[1])) if command[1] else ""}\n' \
+        #                       f'{command[3]}\n\n'
+        #         description += command_str
+        #
+        #     description += '\n\n'
+        #
+        #
+        # help_embed = discord.Embed(
+        #     description=description,
+        #     color=self.context.bot.embed)
+        #
+        # help_embed.set_footer(
+        #     text='For more help use -help {command} | '
+        #          'Join our support server - https://discord.gg/rB2EGa4')
+        #
+        # await self.context.send(embed=help_embed)
 
     async def send_command_help(self, command):
 
