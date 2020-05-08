@@ -129,7 +129,6 @@ bot.cog_list = [
     'cogs.core.settings',
     'cogs.core.owner',
     'cogs.core.topgg',
-    'cogs.commands.youtube',
     'cogs.commands.utility',
     'cogs.commands.vidio']
 
