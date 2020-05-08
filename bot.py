@@ -113,7 +113,7 @@ bot.success = '🟢'
 bot.no = '<:no:708060636919365696>'
 bot.yes = '<:yes:708060632171413525>'
 
-bot.youtube = '<:youtube:693484343074619423>'
+bot.youtube = '<:youtube:708330611756105768>'
 bot.heartbeat = '<a:ping:692399981935722607>'
 bot.loading = '<a:loading:693852613812158494>'
 

@@ -3,63 +3,97 @@ import random
 import logging
 import discord
 import traceback
+from datetime import datetime
 from discord.ext import commands, tasks, menus
 
 
 class HelpMenu(menus.Menu):
 
-    async def send_inital_message(self, ctx, channel):
-        return await ctx.send("Hello")
+    async def send_initial_message(self, ctx, channel):
+
+        help_embed = discord.Embed(
+            description='**React to this message with -**\n\n'
+                        f'{self.bot.youtube} for **simulation** commands\n\n'
+                        f':tools: for **utility** commands',
+            color=self.bot.embed)
+
+        return await ctx.send(embed=help_embed)
+
+    # @menus.button('\N{THUMBS UP SIGN}')
+    # async def on_thumbs_up(self, payload):
+    #     await self.message.edit(content=f'Thanks {self.ctx.author}!')
+    #
+    # @menus.button('\N{THUMBS DOWN SIGN}')
+    # async def on_thumbs_down(self, payload):
+    #     await self.message.edit(content=f"That's not nice {self.ctx.author}...")
+
+    @menus.button(f'<:youtube:708330611756105768>')
+    async def on_simulation(self, payload):
+
+        description = '**tutorial** ``(how)``\nA basic tutorial on how to use the bot.\n\n' \
+                      '**create_channel** ``(cc)``\nCreates a channel simulation with your user account. (prompts)\n\n' \
+                      '**upload** ``(up)``\nUploads a video on the selected channel. (prompts)\n\n' \
+                      '**profile** ``(p, bal, user)``\nDisplays current balance and list of channels that belong to the user.\n\n' \
+                      '**channel** ``(c)``\nShows metrics about the selected channel. (prompts)\n\n' \
+                      '**leaderboard** ``(lb)``\nShows the top 10 users of various metrics.\n\n' \
+                      '**store** ``(shop, buy)``\nLists the things you can buy, also used to buy stuff from the store\n\n' \
+                      '**video** ``(v, vid)``\nA command that shows statistics about a selected video.\n\n' \
+                      '**subscribe** ``(sub)``\n A command that subscribes to the selected channel. (prompts)\n\n' \
+                      '**unsubscribe** ``(unsub)``\nA command that unsubscribes from the selected channel. (prompts)\n\n' \
+                      '**edit_description** ``(edit_dsc)``\nChanges your selected channel\'s description. (prompts)\n\n' \
+                      '**edit_name** ``(edit_name)``\nChanges your selected channel\'s name. (prompts)\n\n' \
+                      '**delete_channel** ``(dc)``\nDeletes the selected channel. (prompts)'
+
+        help_embed = discord.Embed(
+            title=f'{self.bot.youtube} Simulation Commands',
+            description=description,
+            color=self.bot.embed
+        )
+        await self.message.edit(embed=help_embed)
+
+    @menus.button('🛠️')
+    async def on_utility(self, payload):
+        pass
+
 
 class MyHelpCommand(commands.HelpCommand):
 
     async def send_bot_help(self, mapping):
-        help_menu = HelpMenu()
-        await help_menu.start(self.context)
-        return
 
-        # command_list = []
-        #
-        # for category in mapping:
-        #
-        #     if not category:
-        #         continue
-        #
-        #     if category.qualified_name.lower() != 'utility' and category.qualified_name.lower() != 'vidio':
-        #         continue
-        #
-        #     command_list.append(
-        #         {category.qualified_name:
-        #             list(map(lambda c: [c.name, c.aliases, c.usage, c.help], set(mapping[category])))})
-        #
-        # description = ''
-        #
-        # for category in command_list:
-        #
-        #     category = command_list[command_list.index(category)]
-        #     description += f'**{list(category.keys())[0]}**\n'
-        #     print(description)
-        #     print(category)
-        #     print(list(category.values()))
-        #
-        #     for command in list(category.values())[0]:
-        #         print(command)
-        #         command_str = f'``{command[0]}`` {"(``{}``)".format("".join(command[1])) if command[1] else ""}\n' \
-        #                       f'{command[3]}\n\n'
-        #         description += command_str
-        #
-        #     description += '\n\n'
-        #
-        #
-        # help_embed = discord.Embed(
-        #     description=description,
-        #     color=self.context.bot.embed)
-        #
-        # help_embed.set_footer(
-        #     text='For more help use -help {command} | '
-        #          'Join our support server - https://discord.gg/rB2EGa4')
-        #
-        # await self.context.send(embed=help_embed)
+        help_embed = discord.Embed(
+            color=self.context.bot.embed)
+
+        for category in mapping:
+            command = ', '
+
+            command_list = list(map(lambda c: c.name, set(mapping[category])))
+
+            for command_name in command_list:
+                index = command_list.index(command_name)
+                command_list[index] = f'``{command_name}``'
+
+            command = command.join(command_list)
+
+            if not command_list:
+                continue
+
+            if category is None:
+                help_embed.add_field(
+                    name='Uncategorized',
+                    value=command,
+                    inline=False)
+                continue
+
+            help_embed.add_field(
+                name=category.qualified_name,
+                value=command,
+                inline=False)
+
+        help_embed.set_footer(
+            text='For more help use -help {command} | '
+                 'Join our support server - https://discord.gg/rB2EGa4')
+
+        await self.context.send(embed=help_embed)
 
     async def send_command_help(self, command):
 
@@ -100,9 +134,15 @@ class Default(commands.Cog):
         self.bot = bot
         self.bot.help_command = MyHelpCommand(
             command_attrs={
-                'aliases': ['h'],
-                'usage': '``-help {command}``'})
+                'name': 'uglyhelp',
+                'aliases': ['uh'],
+                'usage': '``-uhelp {command}``'})
         self.database = self.bot.get_cog('Database')
+
+    @commands.command()
+    async def help(self, ctx):
+        help_menu = HelpMenu()
+        await help_menu.start(ctx)
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
