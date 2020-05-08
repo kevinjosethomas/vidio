@@ -14,18 +14,11 @@ class HelpMenu(menus.Menu):
         help_embed = discord.Embed(
             description='**React to this message with -**\n\n'
                         f'{self.bot.youtube} for **simulation** commands\n\n'
-                        f':tools: for **utility** commands',
+                        f':tools: for **utility** commands\n\n'
+                        f':octagonal_sign: to return here',
             color=self.bot.embed)
 
         return await ctx.send(embed=help_embed)
-
-    # @menus.button('\N{THUMBS UP SIGN}')
-    # async def on_thumbs_up(self, payload):
-    #     await self.message.edit(content=f'Thanks {self.ctx.author}!')
-    #
-    # @menus.button('\N{THUMBS DOWN SIGN}')
-    # async def on_thumbs_down(self, payload):
-    #     await self.message.edit(content=f"That's not nice {self.ctx.author}...")
 
     @menus.button(f'<:youtube:708330611756105768>')
     async def on_simulation(self, payload):
@@ -53,7 +46,25 @@ class HelpMenu(menus.Menu):
 
     @menus.button('🛠️')
     async def on_utility(self, payload):
-        pass
+
+        description = "**prefix** ``(sp, setprefix, set_prefix)``\nChanges the bot prefix for your guild.\n\n" \
+                      "**changelog** ``(changes)``\nShows a list of major changes made to the bot.\n\n" \
+                      "**credits** ``(creds)``\nLists some amazing people who helped build vidio.\n\n" \
+                      "**info**\nProvides you with some cool information about vidio.\n\n" \
+                      "**links** ``(inv, vote, invite)``\nLists some important links for vidio.\n\n" \
+                      "**bug** ``(report)``\nReport a bug that is broadcasted to the support server.\n\n" \
+                      "**suggest** ``(s)``\nSuggest a vidio feature that is broadcasted to the support server.\n\n" \
+                      "**statistics** ``(stats)``\nReturns some statistics about the vidio bot.\n\n" \
+                      "**uptime**\nReturns how much time the bot has been online for.\n\n" \
+                      "**ping** ``(pong)``\nReturns the bot's latency in milliseconds.\n\n" \
+                      "**voteReminder** ``(vr)``\nToggles the voting reminder for vidio."
+
+        help_embed = discord.Embed(
+            title=f':tools: Utility Commands',
+            description=description,
+            color=self.bot.embed
+        )
+        await self.message.edit(embed=help_embed)
 
 
 class MyHelpCommand(commands.HelpCommand):

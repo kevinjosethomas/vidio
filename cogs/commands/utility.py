@@ -257,7 +257,7 @@ class Utility(commands.Cog):
         await ctx.send(embed=link_embed)
 
     @commands.command(
-        aliases=['voteRemind', 'vote_reminder', 'vote_remind'],
+        aliases=['vr'],
         usage='``-voteReminder {enable | on | disable | off}``',
         help='Configure voting reminders!')
     async def voteReminder(self, ctx, status):
