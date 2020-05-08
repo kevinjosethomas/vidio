@@ -129,7 +129,7 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         suggestion_embed.set_footer(text="Make your own suggestions with -suggest!")
-        suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator+' | '+ctx.author.id,
+        suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator+' | '+str(ctx.author.id),
                                     icon_url=ctx.author.avatar_url)
 
         message = await suggestions_channel.send(embed=suggestion_embed)
@@ -155,7 +155,7 @@ class Utility(commands.Cog):
 
         bug_embed.set_footer(text="Report your bug with -bug")
         bug_embed.set_author(
-            name=ctx.author.name + '#' + ctx.author.discriminator+' | '+ctx.author.id,
+            name=ctx.author.name + '#' + ctx.author.discriminator+' | '+str(ctx.author.id),
             icon_url=ctx.author.avatar_url)
 
         await bugs_channel.send(embed=bug_embed)
