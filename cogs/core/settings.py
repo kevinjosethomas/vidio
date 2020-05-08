@@ -66,6 +66,18 @@ class HelpMenu(menus.Menu):
         )
         await self.message.edit(embed=help_embed)
 
+    @menus.button('🛑')
+    async def on_stop(self, payload):
+
+        help_embed = discord.Embed(
+            description='**React to this message with -**\n\n'
+                        f'{self.bot.youtube} for **simulation** commands\n\n'
+                        f':tools: for **utility** commands\n\n'
+                        f':octagonal_sign: to return here',
+            color=self.bot.embed)
+
+        await self.message.edit(embed=help_embed)
+
 
 class MyHelpCommand(commands.HelpCommand):
 
