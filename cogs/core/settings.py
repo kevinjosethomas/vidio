@@ -162,7 +162,8 @@ class Default(commands.Cog):
                 'usage': '``-uhelp {command}``'})
         self.database = self.bot.get_cog('Database')
 
-    @commands.command()
+    @commands.command(
+        aliases=['h'])
     async def help(self, ctx):
         help_menu = HelpMenu()
         await help_menu.start(ctx)
@@ -228,8 +229,7 @@ class Default(commands.Cog):
                 type=discord.ActivityType.watching),
             discord.Activity(
                 name=f'{len(self.bot.users)} users play.',
-                type=discord.ActivityType.watching),
-            discord.Game(name='with VillagerBot')
+                type=discord.ActivityType.watching)
         ]
         await self.bot.change_presence(activity=random.choice(presences))
 
