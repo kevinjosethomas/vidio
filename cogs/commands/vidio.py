@@ -275,7 +275,7 @@ class Vidio(commands.Cog):
         ctx.handled = False
 
     @commands.command(
-        aliases=['edit_dsc', 'set_dsc', 'set_description'],
+        aliases=['edit_dsc'],
         usage='``-edit_description``',
         help='A command that changes your channel description')
     @commands.cooldown(1, 10, BucketType.user)
@@ -400,7 +400,7 @@ class Vidio(commands.Cog):
         await ctx.send(f"{self.bot.yes} **Successfully deleted your channel -** ``{channel[2]}``")
 
     @commands.command(
-        aliases=['up'],
+        aliases=['u'],
         usage='``-upload``',
         help='A command that uploads a video on the author\'s channel.')
     @commands.max_concurrency(1, BucketType.user, wait=True)
@@ -487,10 +487,6 @@ class Vidio(commands.Cog):
             description = description.content
             break
 
-        message = await ctx.send(f"{self.bot.loading} Validating your entries and uploading your video.")
-
-        await asyncio.sleep(1)
-
         video = await self.database.upload_video(ctx, ctx.author.id, channels[channel_index][1], video_name, description)
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
@@ -532,7 +528,6 @@ class Vidio(commands.Cog):
                  'Note: The statistics of your video will continue changing for the next 5 days.'
         )
 
-        await message.delete()
         await ctx.send(embed=video_embed)
 
     @upload.error
@@ -635,7 +630,7 @@ class Vidio(commands.Cog):
         await ctx.send(embed=lb_embed)
 
     @commands.command(
-        aliases=['v'],
+        aliases=['v', 'vid'],
         usage='``-video``',
         help='A command that (inaccurately) searches for videos uploaded on your channel.')
     async def video(self, ctx, *, video_name):
@@ -829,7 +824,7 @@ class Vidio(commands.Cog):
         await ctx.send(embed=subscribed_embed)
 
     @commands.command(
-        aliases=['u', 'p'],
+        aliases=['user', 'p', 'bal'],
         usage='``-profile {user}``',
         help='Shows the profile of the user.')
     async def profile(self, ctx, user: discord.User = None):

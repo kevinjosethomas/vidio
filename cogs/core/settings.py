@@ -1,9 +1,82 @@
+import asyncio
 import random
 import logging
 import discord
 import traceback
 from datetime import datetime
-from discord.ext import commands, tasks
+from discord.ext import commands, tasks, menus
+
+
+class HelpMenu(menus.Menu):
+
+    async def send_initial_message(self, ctx, channel):
+
+        help_embed = discord.Embed(
+            description='**React to this message with -**\n\n'
+                        f'{self.bot.youtube} for **simulation** commands\n\n'
+                        f':tools: for **utility** commands\n\n'
+                        f':octagonal_sign: to return here',
+            color=self.bot.embed)
+
+        return await ctx.send(embed=help_embed)
+
+    @menus.button(f'<:youtube:708330611756105768>')
+    async def on_simulation(self, payload):
+
+        description = '**tutorial** ``(how)``\nA basic tutorial on how to use the bot.\n\n' \
+                      '**create_channel** ``(cc)``\nCreates a channel simulation with your user account. (prompts)\n\n' \
+                      '**upload** ``(up)``\nUploads a video on the selected channel. (prompts)\n\n' \
+                      '**profile** ``(p, bal, user)``\nDisplays current balance and list of channels that belong to the user.\n\n' \
+                      '**channel** ``(c)``\nShows metrics about the selected channel. (prompts)\n\n' \
+                      '**leaderboard** ``(lb)``\nShows the top 10 users of various metrics.\n\n' \
+                      '**store** ``(shop, buy)``\nLists the things you can buy, also used to buy stuff from the store\n\n' \
+                      '**video** ``(v, vid)``\nA command that shows statistics about a selected video.\n\n' \
+                      '**subscribe** ``(sub)``\n A command that subscribes to the selected channel. (prompts)\n\n' \
+                      '**unsubscribe** ``(unsub)``\nA command that unsubscribes from the selected channel. (prompts)\n\n' \
+                      '**edit_description** ``(edit_dsc)``\nChanges your selected channel\'s description. (prompts)\n\n' \
+                      '**edit_name** ``(edit_name)``\nChanges your selected channel\'s name. (prompts)\n\n' \
+                      '**delete_channel** ``(dc)``\nDeletes the selected channel. (prompts)'
+
+        help_embed = discord.Embed(
+            title=f'{self.bot.youtube} Simulation Commands',
+            description=description,
+            color=self.bot.embed
+        )
+        await self.message.edit(embed=help_embed)
+
+    @menus.button('🛠️')
+    async def on_utility(self, payload):
+
+        description = "**prefix** ``(sp, setprefix, set_prefix)``\nChanges the bot prefix for your guild.\n\n" \
+                      "**changelog** ``(changes)``\nShows a list of major changes made to the bot.\n\n" \
+                      "**credits** ``(creds)``\nLists some amazing people who helped build vidio.\n\n" \
+                      "**info**\nProvides you with some cool information about vidio.\n\n" \
+                      "**links** ``(inv, vote, invite)``\nLists some important links for vidio.\n\n" \
+                      "**bug** ``(report)``\nReport a bug that is broadcasted to the support server.\n\n" \
+                      "**suggest** ``(s)``\nSuggest a vidio feature that is broadcasted to the support server.\n\n" \
+                      "**statistics** ``(stats)``\nReturns some statistics about the vidio bot.\n\n" \
+                      "**uptime**\nReturns how much time the bot has been online for.\n\n" \
+                      "**ping** ``(pong)``\nReturns the bot's latency in milliseconds.\n\n" \
+                      "**voteReminder** ``(vr)``\nToggles the voting reminder for vidio."
+
+        help_embed = discord.Embed(
+            title=f':tools: Utility Commands',
+            description=description,
+            color=self.bot.embed
+        )
+        await self.message.edit(embed=help_embed)
+
+    @menus.button('🛑')
+    async def on_stop(self, payload):
+
+        help_embed = discord.Embed(
+            description='**React to this message with -**\n\n'
+                        f'{self.bot.youtube} for **simulation** commands\n\n'
+                        f':tools: for **utility** commands\n\n'
+                        f':octagonal_sign: to return here',
+            color=self.bot.embed)
+
+        await self.message.edit(embed=help_embed)
 
 
 class MyHelpCommand(commands.HelpCommand):
@@ -84,9 +157,16 @@ class Default(commands.Cog):
         self.bot = bot
         self.bot.help_command = MyHelpCommand(
             command_attrs={
-                'aliases': ['h'],
-                'usage': '``-help {command}``'})
+                'name': 'uglyhelp',
+                'aliases': ['uh'],
+                'usage': '``-uhelp {command}``'})
         self.database = self.bot.get_cog('Database')
+
+    @commands.command(
+        aliases=['h'])
+    async def help(self, ctx):
+        help_menu = HelpMenu()
+        await help_menu.start(ctx)
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
@@ -149,8 +229,7 @@ class Default(commands.Cog):
                 type=discord.ActivityType.watching),
             discord.Activity(
                 name=f'{len(self.bot.users)} users play.',
-                type=discord.ActivityType.watching),
-            discord.Game(name='with VillagerBot')
+                type=discord.ActivityType.watching)
         ]
         await self.bot.change_presence(activity=random.choice(presences))
 
@@ -230,6 +309,17 @@ class Default(commands.Cog):
                     description=f"{self.bot.no} **The provided cog is not loaded (or doesn't exist).**",
                     color=self.bot.embed)
                 await ctx.send(embed=unknown_error_embed)
+                return
+
+            elif isinstance(error.original, discord.Forbidden):
+                await ctx.author.send(
+                    f"{self.bot.no} **vidio doesn't have permissions to send messages** in the channel "
+                    f"where you initiated ``{ctx.command}``")
+                return
+
+            elif isinstance(error.original, asyncio.TimeoutError):
+                await ctx.send(f'{self.bot.yes} **Canceled process...** (Timed Out)')
+                ctx.handled = True
                 return
 
         except AttributeError:

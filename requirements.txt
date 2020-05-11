@@ -1,3 +1,4 @@
+git+https://github.com/Rapptz/discord-ext-menus
 youtube-data-api
 python-dotenv
 discord.py

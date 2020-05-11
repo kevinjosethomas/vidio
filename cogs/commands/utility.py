@@ -129,7 +129,8 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         suggestion_embed.set_footer(text="Make your own suggestions with -suggest!")
-        suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator, icon_url=ctx.author.avatar_url)
+        suggestion_embed.set_author(name=ctx.author.name+'#'+ctx.author.discriminator+' | '+str(ctx.author.id),
+                                    icon_url=ctx.author.avatar_url)
 
         message = await suggestions_channel.send(embed=suggestion_embed)
         await ctx.send(f'{self.bot.yes} **Sent your suggestion to the vidio support server!**')
@@ -154,7 +155,7 @@ class Utility(commands.Cog):
 
         bug_embed.set_footer(text="Report your bug with -bug")
         bug_embed.set_author(
-            name=ctx.author.name + '#' + ctx.author.discriminator,
+            name=ctx.author.name + '#' + ctx.author.discriminator+' | '+str(ctx.author.id),
             icon_url=ctx.author.avatar_url)
 
         await bugs_channel.send(embed=bug_embed)
@@ -177,6 +178,13 @@ class Utility(commands.Cog):
         # )
 
         changelog_embed.add_field(
+            name='**• Thursday, 7th May 2020**',
+            value='- Removed wait after uploading.\n'
+                  '- Added play buttons.\n',
+            inline=False
+        )
+
+        changelog_embed.add_field(
             name='**• Monday, 27th April 2020**',
             value='- Increased chance of good videos and reduced chance of fail videos.\n'
                   '- Reduced decent advertisement price.\n'
@@ -189,24 +197,6 @@ class Utility(commands.Cog):
             value='- Added ``edit_name`` command.\n'
                   '- Added ``voteReminder`` command.\n'
                   '- Changed the name of the bot to **vidio**.\n',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Wednesday, 22nd April 2020**',
-            value='- Added subbot.\n'
-                  '- Added decent advertisements.\n'
-                  '- Added average advertisements.\n',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Tuesday, 21st April 2020**',
-            value='- Added money leaderboard (``leaderboard money``)\n'
-                  '- Removed symbol and punctuation limitation.\n'
-                  '- Fixed ``edit_description`` error.\n'
-                  '- Added tutorial command.\n'
-                  '- Updated help command.',
             inline=False
         )
 
@@ -267,7 +257,7 @@ class Utility(commands.Cog):
         await ctx.send(embed=link_embed)
 
     @commands.command(
-        aliases=['voteRemind', 'vote_reminder', 'vote_remind'],
+        aliases=['vr'],
         usage='``-voteReminder {enable | on | disable | off}``',
         help='Configure voting reminders!')
     async def voteReminder(self, ctx, status):
