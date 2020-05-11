@@ -124,7 +124,7 @@ class Utility(commands.Cog):
         suggestions_channel = support_server.get_channel(self.bot.suggestions_channel_id)
 
         suggestion_embed = discord.Embed(
-            title=f'{self.bot.pencil} New Suggesstion!',
+            title=f'{self.bot.pencil} New Suggestion!',
             description=suggestion,
             color=self.bot.embed)
 

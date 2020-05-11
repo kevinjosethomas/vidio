@@ -717,6 +717,7 @@ class Vidio(commands.Cog):
         money = locale.format_string('%d', video[12], grouping=True)
         likes = locale.format_string('%d', video[7], grouping=True)
         dislikes = locale.format_string('%d', video[8], grouping=True)
+        description = video[3]
 
         if status == 'successful' or status == 'good':
             status_quote = f'{self.bot.success} Status'
@@ -741,6 +742,7 @@ class Vidio(commands.Cog):
                         f'{self.bot.dislikes} **Dislikes:** {dislikes}\n\n'
                         f'{self.bot.description} **Description:** {description}',
             color=self.bot.embed)
+        video_embed.set_footer(text='⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')
 
         await ctx.send(embed=video_embed)
 
