@@ -85,32 +85,6 @@ bot.logger.addHandler(handler)
 # some bot variables the bot uses for various purposes
 bot.embed = 0x2f3136
 
-# some emojis used by the bot
-bot.bug = '🐛'
-bot.money = '💵'
-bot.views = '👀'
-bot.pencil = '📝'
-bot.category = '📂'
-bot.real_subscribers = '🤝'
-bot.silver = '<:silver_play_button:706842448650829887>'
-bot.gold = '<:gold_play_button:706842730776625172>'
-bot.diamond = '<:diamond_play_button:706842448751755355>'
-bot.ruby = '<:ruby_play_button:706955526272974859>'
-bot.likes = '<:likes:694721324517556255>'
-bot.subscribers = '<:live:693869294051655721>'
-bot.dislikes = '<:dislikes:694721324483870760>'
-
-bot.fail = '🔴'
-bot.average = '⚪'
-bot.success = '🟢'
-
-bot.no = '<:no:708060636919365696>'
-bot.yes = '<:yes:708060632171413525>'
-
-bot.youtube = '<:youtube:708330611756105768>'
-bot.heartbeat = '<a:ping:692399981935722607>'
-bot.loading = '<a:loading:693852613812158494>'
-
 # some channels the bot uses
 bot.bugs_channel_id = 696014942083612742
 bot.error_channel_id = 692405881115246603

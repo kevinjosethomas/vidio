@@ -520,7 +520,7 @@ class Vidio(commands.Cog):
                         f'{self.bot.EMOJIS["money"]} **Money:** ${money}\n\n'
                         f'{self.bot.EMOJIS["likes"]} **Likes:** {likes}\n'
                         f'{self.bot.EMOJIS["dislikes"]} **Dislikes:** {dislikes}\n\n'
-                        f'{self.bot.EMOJIS["description"]} **Description:** {description}',
+                        f':notepad_spiral: **Description:** {description}',
             color=self.bot.embed)
 
         video_embed.set_footer(
@@ -740,7 +740,7 @@ class Vidio(commands.Cog):
                         f'{self.bot.EMOJIS["money"]} **Money:** ${money}\n\n'
                         f'{self.bot.EMOJIS["likes"]} **Likes:** {likes}\n'
                         f'{self.bot.EMOJIS["dislikes"]} **Dislikes:** {dislikes}\n\n'
-                        f'{self.bot.EMOJIS["description"]} **Description:** {description}',
+                        f':notepad_spiral: **Description:** {description}',
             color=self.bot.embed)
         video_embed.set_footer(text='⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')
 
