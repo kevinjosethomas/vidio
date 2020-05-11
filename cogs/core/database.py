@@ -313,10 +313,18 @@ class Database(commands.Cog):
 
     async def add_ban(self, user_id):
 
+        banned = await self.db.fetch("SELECT * FROM bans WHERE user_id = $1",
+                                     user_id)
+
+        if banned:
+            return False
+
         async with self.db.acquire() as conn:
 
             await conn.execute("INSERT INTO bans (user_id) VALUES ($1)",
                                user_id)
+
+            return True
 
     async def add_subscriber(self, user_id, channel_id):
 
@@ -354,10 +362,18 @@ class Database(commands.Cog):
 
     async def remove_ban(self, user_id):
 
+        banned = await self.db.fetch("SELECT * FROM bans WHERE user_id = $1",
+                                     user_id)
+
+        if not banned:
+            return False
+
         async with self.db.acquire() as conn:
 
             await conn.execute("DELETE FROM bans WHERE user_id = $1",
                                user_id)
+
+            return True
 
     async def remove_channel(self, user_id, cid):
 

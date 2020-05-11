@@ -177,7 +177,11 @@ class Owner(commands.Cog):
     @commands.is_owner()
     async def ban(self, ctx, *, user: discord.User):
 
-        await self.database.add_ban(user.id)
+        banned = await self.database.add_ban(user.id)
+
+        if not banned:
+            await ctx.send(f'{self.bot.no} **<@{user.id}> is already banned.**')
+            return
         await ctx.send(f"{self.bot.yes} **Successfully banned -** <@{user.id}>")
 
     @commands.command(
@@ -187,7 +191,11 @@ class Owner(commands.Cog):
     @commands.is_owner()
     async def unban(self, ctx, *, user: discord.User):
 
-        await self.database.remove_ban(user.id)
+        unbanned = await self.database.remove_ban(user.id)
+
+        if not unbanned:
+            await ctx.send(f'{self.bot.no} **<@{user.id}> is not banned.**')
+            return
         await ctx.send(f"{self.bot.yes} **Successfully unbanned -** <@{user.id}>")
 
     @commands.command(
