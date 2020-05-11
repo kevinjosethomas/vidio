@@ -742,7 +742,7 @@ class Vidio(commands.Cog):
                         f'{self.bot.description} **Description:** {description}',
             color=self.bot.embed)
 
-        await ctx.send(embed=videos_embed)
+        await ctx.send(embed=video_embed)
 
     @commands.command(
         aliases=['sub'],
