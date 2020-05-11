@@ -209,7 +209,7 @@ class Owner(commands.Cog):
 
         memory_embed = discord.Embed(
             description=f"Memory in use: ``{round(memory * .001 * 1.04858, 2)}mb``",
-            color=self.bot.embed
+            color=self.bot.embed)
         await ctx.send(embed=memory_embed)
 
 
