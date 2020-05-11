@@ -1,6 +1,7 @@
 import os
 import asyncio
 import discord
+import resource
 import traceback
 from datetime import datetime
 from discord.ext import commands
@@ -197,6 +198,20 @@ class Owner(commands.Cog):
     async def pull(self, ctx):
         os.system('git pull')
         await ctx.send(f'{self.bot.yes} **Successfully pulled latest from Github!**')
+
+    @commands.command(
+        aliases=['ram', 'mem'],
+        usage='``-memory``',
+        help='Returns how much memory the bot is using.')
+    async def memory(self, ctx):
+
+        memory = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+
+        memory_embed = discord.Embed(
+            description=f"Memory in use: ``{round(memory * .001 * 1.04858, 2)}mb``",
+            color=self.bot.embed
+        await ctx.send(embed=memory_embed)
+
 
     # @commands.command(
     #     usage=f'``>restart``',
