@@ -665,7 +665,7 @@ class Vidio(commands.Cog):
 
         index = 1
         for video in videos:
-            description += f'{index} {video[2]}\n'
+            description += f'``{index}.`` {video[2]}\n'
             index += 1
 
         if len(description) > 2043:
