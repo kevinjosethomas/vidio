@@ -91,6 +91,9 @@ with open('data/global.json') as GLOBAL:
 with open('data/emojis.json') as EMOJIS:
     bot.EMOJIS = json.load(EMOJIS)
 
+with open('data/comments.json') as COMMENTS:
+    bot.COMMENTS = json.load(COMMENTS)
+
 
 # defines the list of cogs in the bot
 bot.cog_list = [
