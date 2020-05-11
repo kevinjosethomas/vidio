@@ -640,6 +640,9 @@ class Vidio(commands.Cog):
         help='A command that (inaccurately) searches for videos uploaded on your channel.')
     async def video(self, ctx, *, video_name):
 
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
+
         channels = await self.database.get_channel(ctx.author.id)
 
         if channels == "Channel doesn't exist":
@@ -647,15 +650,15 @@ class Vidio(commands.Cog):
             return
 
         if len(channels) == 1:
-            channel_index = 0
+            video_index = 0
 
         elif len(channels) > 1:
-            channel_index = await self.multi_channels(ctx, channels)
+            video_index = await self.multi_channels(ctx, channels)
 
-        if channel_index is False:
+        if video_index is False:
             return
 
-        channel_id = channels[channel_index][1]
+        channel_id = channels[video_index][1]
 
         videos = await self.database.get_video(channel_id, video_name)
 
@@ -665,15 +668,78 @@ class Vidio(commands.Cog):
 
         description = ''
 
+        index = 1
         for video in videos:
-            description += f'• {video[2]}\n'
+            description += f'{index} {video[2]}\n'
+            index += 1
 
         if len(description) > 2043:
             description = description[:2043]
 
         videos_embed = discord.Embed(
-            title=f'We found ``{len(videos)}`` video(s) related to ``{video_name}``',
+            title=f'We found ``{len(videos)}`` video(s) related to ``{video_name}`` '
+                  f'Choose one with the provided index. Type ``cancel`` to cancel.',
             description=description)
+
+        while True:
+
+            await ctx.send(embed=videos_embed)
+
+            video_index = await self.bot.wait_for('message', check=author_check, timeout=60)
+
+            if video_index.content == 'cancel':
+                await ctx.send(f'{self.bot.yes} Successfully '
+                               'canceled video search process...')
+                return
+
+            try:
+                if int(video_index.content) > len(channels) or int(video_index.content) <= 0:
+                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    continue
+            except ValueError:
+                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                continue
+
+            try:
+                video_index = int(video_index.content) - 1
+            except IndexError:
+                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                continue
+            break
+
+        video = videos[video_index]
+
+        status = video[4]
+        channel_name = video[2]
+        new_subs = locale.format_string('%d', video[5], grouping=True)
+        views = locale.format_string('%d', video[6], grouping=True)
+        money = locale.format_string('%d', video[12], grouping=True)
+        likes = locale.format_string('%d', video[7], grouping=True)
+        dislikes = locale.format_string('%d', video[8], grouping=True)
+
+        if status == 'successful' or status == 'good':
+            status_quote = f'{self.bot.success} Status'
+        elif status == 'average':
+            status_quote = f'{self.bot.average} Status'
+        elif status == 'poor' or status == 'fail':
+            status_quote = f'{self.bot.fail} Status'
+        else:
+            status_quote = 'Status'
+
+        if not str(new_subs).startswith('-'):
+            new_subs = f"+{new_subs}"
+
+        video_embed = discord.Embed(
+            title=video_name,
+            description=f'{self.bot.youtube} **Channel:** {channel_name}\n'
+                        f'**{status_quote}:** {status.capitalize()}\n\n'
+                        f'{self.bot.subscribers} **Subscribers:** {new_subs}\n'
+                        f'{self.bot.views} **Views:** {views}\n'
+                        f'{self.bot.money} **Money:** ${money}\n\n'
+                        f'{self.bot.likes} **Likes:** {likes}\n'
+                        f'{self.bot.dislikes} **Dislikes:** {dislikes}\n\n'
+                        f'{self.bot.description} **Description:** {description}',
+            color=self.bot.embed)
 
         await ctx.send(embed=videos_embed)
 
