@@ -1,11 +1,5 @@
-"""
-This file has the basic setup and configuration for the vidio discord bot.
-It loads the token, creates and runs bot instances, loads it's cogs and prefixes
-and defines a bunch of bot variables including emojis.
-"""
-
-
 import os
+import json
 import dotenv
 import asyncpg
 import asyncio
@@ -122,6 +116,14 @@ bot.bugs_channel_id = 696014942083612742
 bot.error_channel_id = 692405881115246603
 bot.support_server_id = 689210707232686158
 bot.suggestions_channel_id = 696014954532438116
+
+
+with open('data/global.json') as GLOBAL:
+    bot.GLOBAL = json.load(GLOBAL)
+
+with open('data/emojis.json') as EMOJIS:
+    bot.EMOJIS = json.load(EMOJIS)
+
 
 # defines the list of cogs in the bot
 bot.cog_list = [

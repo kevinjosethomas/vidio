@@ -13,7 +13,7 @@ class HelpMenu(menus.Menu):
 
         help_embed = discord.Embed(
             description='**React to this message with -**\n\n'
-                        f'{self.bot.youtube} for **simulation** commands\n\n'
+                        f'{self.bot.EMOJIS["youtube"]} for **simulation** commands\n\n'
                         f':tools: for **utility** commands\n\n'
                         f':octagonal_sign: to return here',
             color=self.bot.embed)
@@ -38,7 +38,7 @@ class HelpMenu(menus.Menu):
                       '**delete_channel** ``(dc)``\nDeletes the selected channel. (prompts)'
 
         help_embed = discord.Embed(
-            title=f'{self.bot.youtube} Simulation Commands',
+            title=f'{self.bot.EMOJIS["youtube"]} Simulation Commands',
             description=description,
             color=self.bot.embed
         )
@@ -71,7 +71,7 @@ class HelpMenu(menus.Menu):
 
         help_embed = discord.Embed(
             description='**React to this message with -**\n\n'
-                        f'{self.bot.youtube} for **simulation** commands\n\n'
+                        f'{self.bot.EMOJIS["youtube"]} for **simulation** commands\n\n'
                         f':tools: for **utility** commands\n\n'
                         f':octagonal_sign: to return here',
             color=self.bot.embed)
@@ -267,7 +267,7 @@ class Default(commands.Cog):
 
         elif isinstance(error, commands.MissingPermissions):
             missing_permissions_embed = discord.Embed(
-                description=f'{self.bot.no} **You do not have the necessary permissions to run this command.**'
+                description=f'{self.bot.EMOJIS["no"]} **You do not have the necessary permissions to run this command.**'
             )
             missing_permissions_embed.set_footer(
                 text=f'Required Permissions: {", ".join(error.missing_perms)}')
@@ -281,7 +281,7 @@ class Default(commands.Cog):
         try:
             if isinstance(error.original, commands.ExtensionNotFound):
                 unknown_error_embed = discord.Embed(
-                    description=f'{self.bot.no} **The provided cog does not exist.**',
+                    description=f'{self.bot.EMOJIS["no"]} **The provided cog does not exist.**',
                     color=self.bot.embed)
                 await ctx.send(embed=unknown_error_embed)
                 return
@@ -289,7 +289,7 @@ class Default(commands.Cog):
             elif isinstance(error.original, commands.ExtensionError) \
                     or isinstance(error.original, commands.ExtensionFailed):
                 unknown_error_embed = discord.Embed(
-                    description=f'{self.bot.no} **Unknown cog error. Please try again later**',
+                    description=f'{self.bot.EMOJIS["no"]} **Unknown cog error. Please try again later**',
                     color=self.bot.embed)
                 unknown_error_embed.set_footer(
                     text='If this issue persists, '
@@ -299,26 +299,26 @@ class Default(commands.Cog):
 
             elif isinstance(error.original, commands.ExtensionAlreadyLoaded):
                 unknown_error_embed = discord.Embed(
-                    description=f'{self.bot.no} **The provided cog does is already loaded..**',
+                    description=f'{self.bot.EMOJIS["no"]} **The provided cog does is already loaded..**',
                     color=self.bot.embed)
                 await ctx.send(embed=unknown_error_embed)
                 return
 
             elif isinstance(error.original, commands.ExtensionNotLoaded):
                 unknown_error_embed = discord.Embed(
-                    description=f"{self.bot.no} **The provided cog is not loaded (or doesn't exist).**",
+                    description=f"{self.bot.EMOJIS['no']} **The provided cog is not loaded (or doesn't exist).**",
                     color=self.bot.embed)
                 await ctx.send(embed=unknown_error_embed)
                 return
 
             elif isinstance(error.original, discord.Forbidden):
                 await ctx.author.send(
-                    f"{self.bot.no} **vidio doesn't have permissions to send messages** in the channel "
+                    f"{self.bot.EMOJIS['no']} **vidio doesn't have permissions to send messages** in the channel "
                     f"where you initiated ``{ctx.command}``")
                 return
 
             elif isinstance(error.original, asyncio.TimeoutError):
-                await ctx.send(f'{self.bot.yes} **Canceled process...** (Timed Out)')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Canceled process...** (Timed Out)')
                 ctx.handled = True
                 return
 
@@ -327,7 +327,7 @@ class Default(commands.Cog):
 
         else:
             unknown_error_embed = discord.Embed(
-                description=f'{self.bot.no} **Unknown error. Please try again later**',
+                description=f'{self.bot.EMOJIS["no"]} **Unknown error. Please try again later**',
                 color=self.bot.embed
             )
             unknown_error_embed.set_footer(
@@ -341,7 +341,7 @@ class Default(commands.Cog):
             lines = traceback.format_exception(etype, error, trace, verbosity)
             traceback_text = ''.join(lines)
 
-            error_channel = self.bot.support_server.get_channel(self.bot.error_channel_id)
+            error_channel = self.bot.support_server.get_channel(self.bot.GLOBAL["error_channel_id"])
 
             input = ctx.message.content
 

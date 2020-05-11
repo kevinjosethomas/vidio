@@ -19,10 +19,10 @@ class Vidio(commands.Cog):
             return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
         if channels == "Channel doesn't exist":
-            await ctx.send(f"{self.bot.no} **This user doesn't have any channels.**")
+            await ctx.send(f"{self.bot.EMOJIS['no']} **This user doesn't have any channels.**")
             return False
 
-        message = f"{self.bot.youtube} **This user has multiple channels.** Use the index (number) given" \
+        message = f"{self.bot.EMOJIS['youtube']} **This user has multiple channels.** Use the index (number) given" \
                   f" to the channels in the list below to choose which channel you want to see.\n"
 
         for channel in channels:
@@ -35,21 +35,21 @@ class Vidio(commands.Cog):
             channel_index = await self.bot.wait_for('message', check=author_check, timeout=120)
 
             if channel_index.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel search process...**')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully canceled channel search process...**')
                 return False
 
             try:
                 if int(channel_index.content) > len(channels) or int(channel_index.content) <= 0:
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid index provided.** Please try again.")
                     continue
             except ValueError:
-                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid index provided.** Please try again.")
                 continue
 
             try:
                 channel_index = int(channel_index.content) - 1
             except IndexError:
-                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid index provided.** Please try again.")
                 continue
             break
         return channel_index
@@ -70,10 +70,10 @@ class Vidio(commands.Cog):
             channels = None
         elif len(channels) >= 3:
             await ctx.send(
-                f"{self.bot.no} **You cannot create more than 3 channels.**")
+                f"{self.bot.EMOJIS['no']} **You cannot create more than 3 channels.**")
             return
 
-        name_msg = f'{self.bot.youtube} **Step 1/3: Choose a name ' \
+        name_msg = f'{self.bot.EMOJIS["youtube"]} **Step 1/3: Choose a name ' \
                    'for your channel**\nLet\'s create your channel! First, ' \
                    'enter the name of your channel exactly ' \
                    'how you want it to be. ' \
@@ -85,7 +85,7 @@ class Vidio(commands.Cog):
             name = await self.bot.wait_for('message', check=author_check, timeout=120)
 
             if name.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully canceled channel creation process...**')
                 return
 
             if len(name.content) > 50:
@@ -94,7 +94,7 @@ class Vidio(commands.Cog):
             name = name.content
             break
 
-        description_msg = f'{self.bot.youtube} **Step 2/3: Write a description' \
+        description_msg = f'{self.bot.EMOJIS["youtube"]} **Step 2/3: Write a description' \
                           ' for your channel**\n Perfect! Now, write a cool description ' \
                           'about your channel! ' \
                           '**Your channel description must not exceed 250 characters.**\n\n' \
@@ -108,7 +108,7 @@ class Vidio(commands.Cog):
             description = await self.bot.wait_for('message', check=author_check, timeout=180)
 
             if description.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully canceled channel creation process...**')
                 return
 
             if description.content.lower() == 'skip':
@@ -134,7 +134,7 @@ class Vidio(commands.Cog):
 
         category_str = ',\n'.join(categories)
 
-        category_msg = f'{self.bot.youtube} **Step 3/3: Choose your channel ' \
+        category_msg = f'{self.bot.EMOJIS["youtube"]} **Step 3/3: Choose your channel ' \
                        ' category**\n Nice! Now choose a category from this list!\n' \
                        f'{category_str}\n\n To skip this, simply type ``skip``\n' \
                        'To cancel channel setup, simply type ``cancel``.'
@@ -146,7 +146,7 @@ class Vidio(commands.Cog):
             category = await self.bot.wait_for('message', check=author_check, timeout=120)
 
             if category.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully canceled channel creation process...**')
                 return
 
             if category.content.lower() == 'skip':
@@ -168,14 +168,14 @@ class Vidio(commands.Cog):
         query = await self.database.add_channel(ctx.author.id, name, description, category)
 
         if query == 'Channel with same name exists':
-            await ctx.send(f"{self.bot.no} **You have a channel with the same name.** "
+            await ctx.send(f"{self.bot.EMOJIS['no']} **You have a channel with the same name.** "
                            f"This makes it really hard for us to handle."
                            f" Please retry with a different name.")
             await message.delete()
             return
 
         elif query == 'Successful':
-            await ctx.send(f"{self.bot.yes} **Successfully created your channel!** "
+            await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully created your channel!** "
                            f"Check it out with ``{ctx.prefix}channel``!")
             await message.delete()
 
@@ -184,7 +184,7 @@ class Vidio(commands.Cog):
 
         try:
             if isinstance(error.original, asyncio.TimeoutError):
-                await ctx.send(f'{self.bot.yes} **Canceled channel creation process...** (Timed Out)')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Canceled channel creation process...** (Timed Out)')
                 ctx.handled = True
                 return
             ctx.handled = False
@@ -241,10 +241,10 @@ class Vidio(commands.Cog):
 
         yt_embed = discord.Embed(
             title=f'**{name}** {award_str}',
-            description=f'{self.bot.subscribers} **Subscribers:** {subs}\n'
-                        f'{self.bot.real_subscribers} **Real Subscribers:** {real_subscribers}\n\n'
-                        f'{self.bot.views} **Total Views:** {total_views}\n'
-                        f'{self.bot.category} **Category:** {category}\n'
+            description=f'{self.bot.EMOJIS["subscribers"]} **Subscribers:** {subs}\n'
+                        f'{self.bot.EMOJIS["real_subscribers"]} **Real Subscribers:** {real_subscribers}\n\n'
+                        f'{self.bot.EMOJIS["views"]} **Total Views:** {total_views}\n'
+                        f'{self.bot.EMOJIS["category"]} **Category:** {category}\n'
                         f':calendar_spiral: **Created on:** {date}\n\n'
                         f':notepad_spiral: **Description:** {description}',
             color=self.bot.embed)
@@ -258,14 +258,14 @@ class Vidio(commands.Cog):
     async def channel_error(self, ctx, error):
 
         if isinstance(error, commands.BadArgument):
-            await ctx.send(f"{self.bot.no} **Unknown user -** ``{ctx.message.content.split()[1]}``")
+            await ctx.send(f"{self.bot.EMOJIS['no']} **Unknown user -** ``{ctx.message.content.split()[1]}``")
             ctx.handled = True
             return
         ctx.handled = False
 
         try:
             if isinstance(error.original, asyncio.TimeoutError):
-                await ctx.send(f'{self.bot.yes} **Canceled channel viewing process...** (Timed Out)')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Canceled channel viewing process...** (Timed Out)')
                 ctx.handled = True
                 return
             ctx.handled = False
@@ -295,7 +295,7 @@ class Vidio(commands.Cog):
         if channel_index is False:
             return
 
-        description_msg = f'{self.bot.youtube} **Step 1/1: Write a new description' \
+        description_msg = f'{self.bot.EMOJIS["youtube"]} **Step 1/1: Write a new description' \
                           ' for your channel**\n Write a cooler description ' \
                           'about your channel! ' \
                           '**Your channel description must not exceed 250 characters.**\n\n' \
@@ -308,7 +308,7 @@ class Vidio(commands.Cog):
             description = await self.bot.wait_for('message', check=author_check, timeout=180)
 
             if description.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel editing process...**')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully canceled channel editing process...**')
                 return
 
             if len(description.content) > 250:
@@ -319,7 +319,7 @@ class Vidio(commands.Cog):
 
         query = await self.database.set_description(channels[channel_index][1], description)
 
-        await ctx.send(f"{self.bot.yes} **Successfully changed your channel description!**")
+        await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully changed your channel description!**")
 
     @commands.command(
         aliases=['set_name'],
@@ -341,7 +341,7 @@ class Vidio(commands.Cog):
         if channel_index is False:
             return
 
-        description_msg = f'{self.bot.youtube} **Step 1/1: Enter a new channel name' \
+        description_msg = f'{self.bot.EMOJIS["youtube"]} **Step 1/1: Enter a new channel name' \
                           ' for your channel**\n Enter a cooler name ' \
                           'for your channel! ' \
                           '**Your channel name must not exceed 50 characters.**\n\n' \
@@ -354,7 +354,7 @@ class Vidio(commands.Cog):
             name = await self.bot.wait_for('message', check=author_check, timeout=180)
 
             if name.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel editing process...**')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully canceled channel editing process...**')
                 return
 
             if len(name.content) > 50:
@@ -365,14 +365,14 @@ class Vidio(commands.Cog):
 
         for channel in channels:
             if channel[2].lower() == name.lower():
-                await ctx.send(f"{self.bot.no} **You have a channel with the same name.** "
+                await ctx.send(f"{self.bot.EMOJIS['no']} **You have a channel with the same name.** "
                                f"This makes it really hard for us to handle. "
                                f"Please retry with a different name.")
                 return
 
         query = await self.database.set_channel_name(channels[channel_index][1], name)
 
-        await ctx.send(f"{self.bot.yes} **Successfully changed your channel name!**")
+        await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully changed your channel name!**")
 
     @commands.command(
         aliases=['dc'],
@@ -397,7 +397,7 @@ class Vidio(commands.Cog):
 
         await self.database.remove_channel(channel[0], channel[1])
 
-        await ctx.send(f"{self.bot.yes} **Successfully deleted your channel -** ``{channel[2]}``")
+        await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully deleted your channel -** ``{channel[2]}``")
 
     @commands.command(
         aliases=['u'],
@@ -412,7 +412,7 @@ class Vidio(commands.Cog):
         channels = await self.database.get_channel(ctx.author.id)
 
         if channels == "Channel doesn't exist":
-            await ctx.send(f"{self.bot.no} **You don't have a channel.** You must create a channel to upload videos.")
+            await ctx.send(f"{self.bot.EMOJIS['no']} **You don't have a channel.** You must create a channel to upload videos.")
             return
 
         if len(channels) == 1:
@@ -438,7 +438,7 @@ class Vidio(commands.Cog):
                 await ctx.send(embed=cooldown_embed)
                 return
 
-        video_msg = f'{self.bot.youtube} ** Step 1/2 Enter a name for your video**\n' \
+        video_msg = f'{self.bot.EMOJIS["youtube"]} ** Step 1/2 Enter a name for your video**\n' \
                     '**Your video name must not exceed 50 characters. **\n\n' \
                     'To cancel video upload, simply type ``cancel``.'
 
@@ -449,18 +449,18 @@ class Vidio(commands.Cog):
             video_name = await self.bot.wait_for('message', check=author_check, timeout=60)
 
             if video_name.content == 'cancel':
-                await ctx.send(f'{self.bot.yes} Successfully '
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} Successfully '
                                'canceled video upload process...')
                 return
 
             if len(video_name.content) > 50:
-                await ctx.send(f"{self.bot.no} **Your title is too long.** Please try again.")
+                await ctx.send(f"{self.bot.EMOJIS['no']} **Your title is too long.** Please try again.")
                 continue
 
             video_name = video_name.content
             break
 
-        description_msg = f'{self.bot.youtube} **Step 2/2: Write a description for your video**\n' \
+        description_msg = f'{self.bot.EMOJIS["youtube"]} **Step 2/2: Write a description for your video**\n' \
                           'Perfect! Now, write a cool description ' \
                           'for your video! ' \
                           '**Your channel description must not exceed 250 characters.**\n\n' \
@@ -474,7 +474,7 @@ class Vidio(commands.Cog):
             description = await self.bot.wait_for('message', check=author_check, timeout=180)
 
             if description.content.lower() == 'cancel':
-                await ctx.send(f'{self.bot.yes} **Successfully canceled channel creation process...**')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully canceled channel creation process...**')
                 return
 
             if description.content.lower() == 'skip':
@@ -500,11 +500,11 @@ class Vidio(commands.Cog):
         dislikes = locale.format_string('%d', video['dislikes'], grouping=True)
 
         if status == 'successful' or status == 'good':
-            status_quote = f'{self.bot.success} Status'
+            status_quote = f'{self.bot.EMOJIS["success"]} Status'
         elif status == 'average':
-            status_quote = f'{self.bot.average} Status'
+            status_quote = f'{self.bot.EMOJIS["average"]} Status'
         elif status == 'poor' or status == 'fail':
-            status_quote = f'{self.bot.fail} Status'
+            status_quote = f'{self.bot.EMOJIS["fail"]} Status'
         else:
             status_quote = 'Status'
 
@@ -513,14 +513,14 @@ class Vidio(commands.Cog):
 
         video_embed = discord.Embed(
             title=video_name,
-            description=f'{self.bot.youtube} **Channel:** {channel_name}\n'
+            description=f'{self.bot.EMOJIS["youtube"]} **Channel:** {channel_name}\n'
                         f'**{status_quote}:** {status.capitalize()}\n\n'
-                        f'{self.bot.subscribers} **Subscribers:** {new_subs}\n'
-                        f'{self.bot.views} **Views:** {views}\n'
-                        f'{self.bot.money} **Money:** ${money}\n\n'
-                        f'{self.bot.likes} **Likes:** {likes}\n'
-                        f'{self.bot.dislikes} **Dislikes:** {dislikes}\n\n'
-                        f'{self.bot.description} **Description:** {description}',
+                        f'{self.bot.EMOJIS["subscribers"]} **Subscribers:** {new_subs}\n'
+                        f'{self.bot.EMOJIS["views"]} **Views:** {views}\n'
+                        f'{self.bot.EMOJIS["money"]} **Money:** ${money}\n\n'
+                        f'{self.bot.EMOJIS["likes"]} **Likes:** {likes}\n'
+                        f'{self.bot.EMOJIS["dislikes"]} **Dislikes:** {dislikes}\n\n'
+                        f'{self.bot.EMOJIS["description"]} **Description:** {description}',
             color=self.bot.embed)
 
         video_embed.set_footer(
@@ -535,7 +535,7 @@ class Vidio(commands.Cog):
 
         try:
             if isinstance(error.original, asyncio.TimeoutError):
-                await ctx.send(f'{self.bot.yes} **Canceled video upload process...** (Timed Out)')
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} **Canceled video upload process...** (Timed Out)')
                 ctx.handled = True
                 return
             ctx.handled = False
@@ -569,7 +569,7 @@ class Vidio(commands.Cog):
 
         for entry in lb:
             desc += f'{pos}. ``{locale.format_string("%d", entry[2], grouping=True)} ' \
-                    f'subs`` {self.bot.subscribers} {entry[1]} - <@{entry[0]}>\n'
+                    f'subs`` {self.bot.EMOJIS["subscribers"]} {entry[1]} - <@{entry[0]}>\n'
             pos += 1
 
         lb_embed = discord.Embed(
@@ -594,7 +594,7 @@ class Vidio(commands.Cog):
 
         for entry in lb:
             desc += f'{pos}. ``{locale.format_string("%d", entry[3], grouping=True)} ' \
-                    f'views`` {self.bot.views} {entry[1]} - <@{entry[0]}>\n'
+                    f'views`` {self.bot.EMOJIS["views"]} {entry[1]} - <@{entry[0]}>\n'
             pos += 1
 
         lb_embed = discord.Embed(
@@ -641,7 +641,7 @@ class Vidio(commands.Cog):
         channels = await self.database.get_channel(ctx.author.id)
 
         if channels == "Channel doesn't exist":
-            await ctx.send(f"{self.bot.no} **You don't have a channel.** You must create a channel to upload videos.")
+            await ctx.send(f"{self.bot.EMOJIS['no']} **You don't have a channel.** You must create a channel to upload videos.")
             return
 
         if len(channels) == 1:
@@ -658,7 +658,7 @@ class Vidio(commands.Cog):
         videos = await self.database.get_video(channel_id, video_name)
 
         if videos == 'No videos':
-            await ctx.send(f'{self.bot.no} **Unknown video.** Could not find a video with that name on vidio.')
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **Unknown video.** Could not find a video with that name on vidio.')
             return
 
         description = ''
@@ -683,7 +683,7 @@ class Vidio(commands.Cog):
             video_index = await self.bot.wait_for('message', check=author_check, timeout=60)
 
             if video_index.content == 'cancel':
-                await ctx.send(f'{self.bot.yes} Successfully '
+                await ctx.send(f'{self.bot.EMOJIS["yes"]} Successfully '
                                'canceled video search process...')
                 return
 
@@ -693,18 +693,18 @@ class Vidio(commands.Cog):
                 print(int(video_index.content))
                 if int(video_index.content) > len(videos) or int(video_index.content) <= 0:
                     print('Error1')
-                    await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                    await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid index provided.** Please try again.")
                     continue
             except ValueError:
                 print('Error2')
-                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid index provided.** Please try again.")
                 continue
 
             try:
                 video_index = int(video_index.content) - 1
             except IndexError:
                 print('Error3')
-                await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
+                await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid index provided.** Please try again.")
                 continue
             break
 
@@ -720,11 +720,11 @@ class Vidio(commands.Cog):
         description = video[3]
 
         if status == 'successful' or status == 'good':
-            status_quote = f'{self.bot.success} Status'
+            status_quote = f'{self.bot.EMOJIS["success"]} Status'
         elif status == 'average':
-            status_quote = f'{self.bot.average} Status'
+            status_quote = f'{self.bot.EMOJIS["average"]} Status'
         elif status == 'poor' or status == 'fail':
-            status_quote = f'{self.bot.fail} Status'
+            status_quote = f'{self.bot.EMOJIS["fail"]} Status'
         else:
             status_quote = 'Status'
 
@@ -733,14 +733,14 @@ class Vidio(commands.Cog):
 
         video_embed = discord.Embed(
             title=video_name,
-            description=f'{self.bot.youtube} **Channel:** {channel_name}\n'
+            description=f'{self.bot.EMOJIS["youtube"]} **Channel:** {channel_name}\n'
                         f'**{status_quote}:** {status.capitalize()}\n\n'
-                        f'{self.bot.subscribers} **Subscribers:** {new_subs}\n'
-                        f'{self.bot.views} **Views:** {views}\n'
-                        f'{self.bot.money} **Money:** ${money}\n\n'
-                        f'{self.bot.likes} **Likes:** {likes}\n'
-                        f'{self.bot.dislikes} **Dislikes:** {dislikes}\n\n'
-                        f'{self.bot.description} **Description:** {description}',
+                        f'{self.bot.EMOJIS["subscribers"]} **Subscribers:** {new_subs}\n'
+                        f'{self.bot.EMOJIS["views"]} **Views:** {views}\n'
+                        f'{self.bot.EMOJIS["money"]} **Money:** ${money}\n\n'
+                        f'{self.bot.EMOJIS["likes"]} **Likes:** {likes}\n'
+                        f'{self.bot.EMOJIS["dislikes"]} **Dislikes:** {dislikes}\n\n'
+                        f'{self.bot.EMOJIS["description"]} **Description:** {description}',
             color=self.bot.embed)
         video_embed.set_footer(text='⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')
 
@@ -756,13 +756,13 @@ class Vidio(commands.Cog):
         author = ctx.author.id
 
         if user == ctx.author.id:
-            await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You cannot subscribe to your own channels.**')
             return
 
         channels = await self.database.get_channel(user)
 
         if channels == "Channel doesn't exist":
-            await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
+            await ctx.send(f"{self.bot.EMOJIS['no']} **This user doesn't have a channel.**")
             return
 
         if len(channels) == 1:
@@ -776,15 +776,15 @@ class Vidio(commands.Cog):
         status = await self.database.add_subscriber(author, channels[channel_index][1])
 
         if status == 'Already subscribed to this user':
-            await ctx.send(f'{self.bot.no} **You are already subscribed to this user.** '
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You are already subscribed to this user.** '
                            f'You can\'t subscribe to the same person twice.')
             return
         elif status == 'You cannot subscribe to your own channels.':
-            await ctx.send(f'{self.bot.no} **You cannot subscribe to your own channels.**')
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You cannot subscribe to your own channels.**')
             return
 
         subscribed_embed = discord.Embed(
-            description=f'{self.bot.yes} Successfully subscribed to **{channels[channel_index][2]}** '
+            description=f'{self.bot.EMOJIS["yes"]} Successfully subscribed to **{channels[channel_index][2]}** '
                         f'<@{channels[channel_index][0]}>',
             color=self.bot.embed)
 
@@ -800,13 +800,13 @@ class Vidio(commands.Cog):
         author = ctx.author.id
 
         if user == ctx.author.id:
-            await ctx.send(f'{self.bot.no} **You cannot unsubscribe from your own channels.**')
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You cannot unsubscribe from your own channels.**')
             return
 
         channels = await self.database.get_channel(user)
 
         if channels == "Channel doesn't exist":
-            await ctx.send(f"{self.bot.no} **This user doesn't have a channel.**")
+            await ctx.send(f"{self.bot.EMOJIS['no']} **This user doesn't have a channel.**")
             return
 
         if len(channels) == 1:
@@ -820,12 +820,12 @@ class Vidio(commands.Cog):
         status = await self.database.remove_subscriber(author, channels[channel_index][1])
 
         if status == 'Subscription doesn\'t exist':
-            await ctx.send(f'{self.bot.no} **You are not subscribed to this channel.** You can\'t '
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You are not subscribed to this channel.** You can\'t '
                            f'unsubscribe from a channel you were never subscribed to.')
             return
 
         subscribed_embed = discord.Embed(
-            description=f'{self.bot.yes} Successfully subscribed to **{channels[channel_index][2]}** '
+            description=f'{self.bot.EMOJIS["yes"]} Successfully subscribed to **{channels[channel_index][2]}** '
                         f'<@{channels[channel_index][0]}>',
             color=self.bot.embed)
 
@@ -846,7 +846,7 @@ class Vidio(commands.Cog):
         user_details = await self.database.get_user(user_id)
 
         if user_details == 'User doesn\'t exist':
-            await ctx.send(f'{self.bot.no} **This user is not vidio.**')
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **This user is not vidio.**')
             return
 
         description = f'<@{user_details[0]}>\n' \
@@ -936,11 +936,11 @@ class Vidio(commands.Cog):
 
         status = await self.database.buy_decent_ad(ctx, user_id, channel_id)
         if status == 'Not enough money':
-            await ctx.send(f'{self.bot.no} **You do not have enough money to buy a decent advertisement. **'
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You do not have enough money to buy a decent advertisement. **'
                            f'An average advertisement costs ``${channels[channel_index][4]}``.')
             return
 
-        await ctx.send(f'**{self.bot.yes} Successfully bought a decent advertisement.** '
+        await ctx.send(f'**{self.bot.EMOJIS["yes"]} Successfully bought a decent advertisement.** '
                        f'You got ``{status["new_subs"]}`` new subscribers and it costed $``{status["cost"]}``')
 
     @store.command(
@@ -964,11 +964,11 @@ class Vidio(commands.Cog):
 
         status = await self.database.buy_average_ad(ctx, user_id, channel_id)
         if status == 'Not enough money':
-            await ctx.send(f'{self.bot.no} **You do not have enough money to buy an average advertisement.**'
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You do not have enough money to buy an average advertisement.**'
                            f'An average advertisement costs {channels[channel_index][4]}.')
             return
 
-        await ctx.send(f'**{self.bot.yes} Successfully bought an average advertisement.** '
+        await ctx.send(f'**{self.bot.EMOJIS["yes"]} Successfully bought an average advertisement.** '
                        f'You got ``{status["new_subs"]}`` new subscribers and it costed $``{status["cost"]}``')
 
     @store.command(
@@ -993,11 +993,11 @@ class Vidio(commands.Cog):
         status = await self.database.buy_subbot(ctx, user_id, channel_id, subscriber_amount)
 
         if status == 'Not enough money':
-            await ctx.send(f'{self.bot.no} **You do not have enough money to buy a subbot.**'
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **You do not have enough money to buy a subbot.**'
                            f'``{subscriber_amount}`` subscribers would cost ``${subscriber_amount * 5}``')
             return
 
-        await ctx.send(f'**{self.bot.yes} Successfully bought subbot.** '
+        await ctx.send(f'**{self.bot.EMOJIS["yes"]} Successfully bought subbot.** '
                        f'You got ``{status["new_subs"]}`` new subscribers and it costed $``{status["cost"]}``')
 
     @commands.command(

@@ -59,7 +59,7 @@ class Utility(commands.Cog):
             reply = "Ping"
 
         ping_embed = discord.Embed(
-            description=f'{self.bot.heartbeat} **{reply}!** ``{round(self.bot.latency * 1000, 2)} ms``',
+            description=f'{self.bot.EMOJIS["heartbeat"]} **{reply}!** ``{round(self.bot.latency * 1000, 2)} ms``',
             color=self.bot.embed
         )
         await ctx.send(embed=ping_embed)
@@ -100,18 +100,18 @@ class Utility(commands.Cog):
     async def prefix(self, ctx, *, prefix):
 
         if len(prefix) > 10:
-            await ctx.send(f"{self.bot.no} **Your prefix is too long!** (Maximum length - 10)")
+            await ctx.send(f"{self.bot.EMOJIS['no']} **Your prefix is too long!** (Maximum length - 10)")
             return
 
         prefix = await self.database.set_prefix(ctx.guild, prefix)
 
         if prefix == 'Bad Arguments':
-            await ctx.send(f"{self.bot.no} **Error.** Please make "
+            await ctx.send(f"{self.bot.EMOJIS['no']} **Error.** Please make "
                            "sure your prefix only have alphabets, numbers, punctuation "
                            "and spaces.")
             return
 
-        await ctx.send(f"{self.bot.yes} **Successfully set this bot's prefix to -** ``{prefix}``!")
+        await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully set this bot's prefix to -** ``{prefix}``!")
 
     @commands.command(
         aliases=['s'],
@@ -120,8 +120,8 @@ class Utility(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def suggest(self, ctx, *, suggestion):
 
-        support_server = self.bot.get_guild(self.bot.support_server_id)
-        suggestions_channel = support_server.get_channel(self.bot.suggestions_channel_id)
+        support_server = self.bot.get_guild(self.bot.GLOBAL["support_server_id"])
+        suggestions_channel = support_server.get_channel(self.bot.GLOBAL["suggestions_channel_id"])
 
         suggestion_embed = discord.Embed(
             title=f'{self.bot.pencil} New Suggestion!',
@@ -133,10 +133,10 @@ class Utility(commands.Cog):
                                     icon_url=ctx.author.avatar_url)
 
         message = await suggestions_channel.send(embed=suggestion_embed)
-        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the vidio support server!**')
+        await ctx.send(f'{self.bot.EMOJIS["yes"]} **Sent your suggestion to the vidio support server!**')
 
-        await message.add_reaction(self.bot.yes)
-        await message.add_reaction(self.bot.no)
+        await message.add_reaction(self.bot.EMOJIS["yes"])
+        await message.add_reaction(self.bot.EMOJIS["no"])
 
     @commands.command(
         aliases=['report'],
@@ -145,8 +145,8 @@ class Utility(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def bug(self, ctx, *, bug):
 
-        support_server = self.bot.get_guild(self.bot.support_server_id)
-        bugs_channel = support_server.get_channel(self.bot.bugs_channel_id)
+        support_server = self.bot.get_guild(self.bot.GLOBAL["support_server_id"])
+        bugs_channel = support_server.get_channel(self.bot.GLOBAL["bugs_channel_id"])
 
         bug_embed = discord.Embed(
             title=f'{self.bot.bug} New Bug!',
@@ -159,7 +159,7 @@ class Utility(commands.Cog):
             icon_url=ctx.author.avatar_url)
 
         await bugs_channel.send(embed=bug_embed)
-        await ctx.send(f'{self.bot.yes} **Sent your suggestion to the vidio support server!**')
+        await ctx.send(f'{self.bot.EMOJIS["yes"]} **Sent your suggestion to the vidio support server!**')
 
     @commands.command(
         aliases=['changes'],
@@ -267,7 +267,7 @@ class Utility(commands.Cog):
         elif status.lower() == 'disable' or status.lower() == 'off':
             status = False
         else:
-            await ctx.send(f'{self.bot.no} **Invalid Input.** Valid inputs are - ``enable | on | disable | off``')
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **Invalid Input.** Valid inputs are - ``enable | on | disable | off``')
             return
 
         success = await self.database.set_vote_reminder(ctx.author.id, status)
@@ -277,14 +277,14 @@ class Utility(commands.Cog):
                 status = 'disabled'
             elif status is True:
                 status = 'enabled'
-            await ctx.send(f'{self.bot.no} **Vote reminders are already {status}.**')
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **Vote reminders are already {status}.**')
 
         elif success:
             if status is False:
                 status = 'disabled'
             elif status is True:
                 status = 'enabled'
-            await ctx.send(f'{self.bot.yes} **Successfully {status} vote reminders!** '
+            await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully {status} vote reminders!** '
                            f'You will now be reminded to vote around every 12 hours!')
 
 
