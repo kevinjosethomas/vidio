@@ -85,13 +85,6 @@ bot.logger.addHandler(handler)
 # some bot variables the bot uses for various purposes
 bot.embed = 0x2f3136
 
-# some channels the bot uses
-bot.bugs_channel_id = 696014942083612742
-bot.error_channel_id = 692405881115246603
-bot.support_server_id = 689210707232686158
-bot.suggestions_channel_id = 696014954532438116
-
-
 with open('data/global.json') as GLOBAL:
     bot.GLOBAL = json.load(GLOBAL)
 
