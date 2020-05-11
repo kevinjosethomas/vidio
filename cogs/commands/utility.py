@@ -172,10 +172,18 @@ class Utility(commands.Cog):
             color=self.bot.embed)
 
         # changelog_embed.add_field(
-        #     name='**• Tuesday, 21st April 2020**',
+        #     name='**• Monday, 11th May 2020**',
         #     value='- \n',
         #     inline=False
         # )
+
+        changelog_embed.add_field(
+            name='**• Monday, 11th May 2020**',
+            value='- Added video search command with statistics\n'
+                  '- Moved old help command to -uglyhelp or -uh\n'
+                  '- Made a new help command.\n',
+            inline=False
+        )
 
         changelog_embed.add_field(
             name='**• Thursday, 7th May 2020**',
@@ -189,14 +197,6 @@ class Utility(commands.Cog):
             value='- Increased chance of good videos and reduced chance of fail videos.\n'
                   '- Reduced decent advertisement price.\n'
                   '- Removed cooldowns from most commands.\n',
-            inline=False
-        )
-
-        changelog_embed.add_field(
-            name='**• Thursday, 23rd April 2020**',
-            value='- Added ``edit_name`` command.\n'
-                  '- Added ``voteReminder`` command.\n'
-                  '- Changed the name of the bot to **vidio**.\n',
             inline=False
         )
 
