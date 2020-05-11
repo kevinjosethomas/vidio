@@ -692,15 +692,18 @@ class Vidio(commands.Cog):
                 print(video_index.content)
                 print(int(video_index.content))
                 if int(video_index.content) > len(channels) or int(video_index.content) <= 0:
+                    print('Error1')
                     await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                     continue
             except ValueError:
+                print('Error2')
                 await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                 continue
 
             try:
                 video_index = int(video_index.content) - 1
             except IndexError:
+                print('Error3')
                 await ctx.send(f"{self.bot.no} **Invalid index provided.** Please try again.")
                 continue
             break
