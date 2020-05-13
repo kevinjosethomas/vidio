@@ -79,8 +79,8 @@ class Vidio(commands.Cog):
             self.bot.soccer_indexes[ctx.author.id] = index
 
             sent_message = await ctx.send(final_message)
+
             task = await asyncio.create_task(self.soccer_edit(ctx, sent_message, message))
-            await task
 
             await ctx.send("Hi")
 
