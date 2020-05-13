@@ -94,6 +94,7 @@ with open('data/emojis.json') as EMOJIS:
 with open('data/comments.json') as COMMENTS:
     bot.COMMENTS = json.load(COMMENTS)
 
+bot.soccer_indexes = {}
 
 # defines the list of cogs in the bot
 bot.cog_list = [
