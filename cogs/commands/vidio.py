@@ -59,6 +59,9 @@ class Vidio(commands.Cog):
     @commands.is_owner()
     async def games(self, ctx):
 
+        def author_check(msg):
+            return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
+
         game_list = ['soccer']
         game = random.choice(game_list)
 
@@ -74,6 +77,16 @@ class Vidio(commands.Cog):
                 final_message = message + f'  ``1``   ``2``   ``3``\n:goal: :goal: :goal:\n{self.bot.EMOJIS["blank"]} {self.bot.EMOJIS["blank"]} :shield:'
 
             await ctx.send(final_message)
+
+            while True:
+                input_index = await self.bot.wait_for('message', check=author_check, timeout=30)
+
+    async def soccer_edit(self, message):
+
+        while True:
+            index = random.randint(1, 3)
+            
+
 
     @commands.command(
         aliases=['cc'],
@@ -181,7 +194,7 @@ class Vidio(commands.Cog):
 
             break
 
-        message = await ctx.send(f"{self.bot.loading} Validating "
+        message = await ctx.send(f"{self.bot.EMOJIS['loading']} Validating "
                                  f"your entries and creating your channel.")
 
         await asyncio.sleep(1)
