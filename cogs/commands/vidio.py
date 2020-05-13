@@ -55,8 +55,6 @@ class Vidio(commands.Cog):
             break
         return channel_index
 
-    @commands.command()
-    @commands.is_owner()
     async def games(self, ctx):
 
         def author_check(msg):
@@ -562,6 +560,8 @@ class Vidio(commands.Cog):
 
             description = description.content
             break
+
+        await self.games(ctx)
 
         video = await self.database.upload_video(ctx, ctx.author.id, channels[channel_index][1], video_name, description)
 
