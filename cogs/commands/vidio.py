@@ -93,23 +93,23 @@ class Vidio(commands.Cog):
                 try:
                     input_index = int(input_index.content)
                 except ValueError:
-                    await ctx.send(f"{self.bot.no} **Invalid Input.** You missed by a few "
+                    await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid Input.** You missed by a few "
                                    f"{'inches' if random.randint(1, 2) == 1 else 'metres'}, try harder next time.")
                     task.cancel()
                     return False
 
                 if input_index > 3 or input_index < 1:
-                    await ctx.send(f"{self.bot.no} **Invalid Input.** You missed by a few "
+                    await ctx.send(f"{self.bot.EMOJIS['no']} **Invalid Input.** You missed by a few "
                                    f"{'inches' if random.randint(1, 2) == 1 else 'metres'}, try harder next time.")
                     task.cancel()
                     return False
 
                 if input_index != self.bot.soccer_indexes[ctx.author.id]:
                     self.bot.soccer_indexes.pop(ctx.author.id)
-                    await ctx.send(f"{self.bot.yes} **Congratulations!** You shot a successful goal!")
+                    await ctx.send(f"{self.bot.EMOJIS['yes']} **Congratulations!** You shot a successful goal!")
                     return True
                 else:
-                    await ctx.send(f"{self.bot.no} **You missed by a few "
+                    await ctx.send(f"{self.bot.EMOJIS['no']} **You missed by a few "
                                    f"{'inches' if random.randint(1, 2) == 1 else 'metres'},** try harder next time.")
                     task.cancel()
                     return False
