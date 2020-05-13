@@ -82,15 +82,13 @@ class Vidio(commands.Cog):
 
             task = self.bot.loop.create_task(self.soccer_edit(ctx, sent_message, message))
 
-            await ctx.send("Hi")
-
             while True:
 
                 try:
                     input_index = await self.bot.wait_for('message', check=author_check, timeout=30)
                 except asyncio.TimeoutError:
                     await ctx.send("Congratulations you got it wrong.")
-                    await task.cancel()
+                    task.cancel()
                     return False
 
                 await ctx.send("yo")
