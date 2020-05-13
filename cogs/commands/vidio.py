@@ -82,20 +82,33 @@ class Vidio(commands.Cog):
             task = await asyncio.create_task(self.soccer_edit(ctx, sent_message, message))
             await task
 
-            input_index = await self.bot.wait_for('message', check=author_check, timeout=30)
+            await ctx.send("Hi")
 
-            if input_index == self.bot.soccer_indexes[ctx.author.id]:
-                self.bot.soccer_indexes.pop(ctx.author.id)
-                await ctx.send("Congratulations you got it right.")
-                return True
-            else:
-                await ctx.send("Congratulations you got it wrong.")
-                await task.cancel()
-                return True
+            while True:
+
+                input_index = await self.bot.wait_for('message', check=author_check, timeout=30)
+
+                await ctx.send("yo")
+
+                try:
+                    input_index = int(input_index.content)
+                except ValueError:
+                    await ctx.send("Congratulations you got it wrong.")
+                    await task.cancel()
+                    return True
+
+                if input_index == self.bot.soccer_indexes[ctx.author.id]:
+                    self.bot.soccer_indexes.pop(ctx.author.id)
+                    await ctx.send("Congratulations you got it right.")
+                    return True
+                else:
+                    await ctx.send("Congratulations you got it wrong.")
+                    await task.cancel()
+                    return False
 
     async def soccer_edit(self, ctx, message, message_text):
 
-        for i in range(3):
+        while True:
             index = random.randint(1, 3)
             if index == 1:
                 final_message = message_text + f'  ``1``   ``2``   ``3``\n:goal: :goal: :goal:\n:shield: {self.bot.EMOJIS["blank"]} {self.bot.EMOJIS["blank"]}'
