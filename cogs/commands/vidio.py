@@ -86,7 +86,12 @@ class Vidio(commands.Cog):
 
             while True:
 
-                input_index = await self.bot.wait_for('message', check=author_check, timeout=30)
+                try:
+                    input_index = await self.bot.wait_for('message', check=author_check, timeout=30)
+                except asyncio.TimeoutError:
+                    await ctx.send("Congratulations you got it wrong.")
+                    await task.cancel()
+                    return False
 
                 await ctx.send("yo")
 
