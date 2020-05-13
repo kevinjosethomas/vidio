@@ -1,5 +1,6 @@
 import math
 import locale
+import random
 import asyncio
 import discord
 from discord.ext import commands
@@ -53,6 +54,22 @@ class Vidio(commands.Cog):
                 continue
             break
         return channel_index
+
+    @commands.command()
+    @commands.is_owner()
+    async def games(self, ctx):
+
+        game_list = ['soccer']
+        game = random.choice(game_list)
+
+        if game == 'soccer':
+            message = '**Halt!** You need to solve this problem. Hit the soccer ball into the goal to continue! ' \
+                      'Use the indexes to choose where you want to shoot the ball. \n\n'
+            index = random.randint(1, 3)
+            if index == 1:
+                final_message = message + '  ``1``   ``2``   ``3``\n:goal: :goal: :goal:\n:shield:'
+
+            await ctx.send(final_message)
 
     @commands.command(
         aliases=['cc'],
