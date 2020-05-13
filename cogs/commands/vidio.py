@@ -86,8 +86,10 @@ class Vidio(commands.Cog):
 
             if input_index == self.bot.soccer_indexes[ctx.author.id]:
                 self.bot.soccer_indexes.pop(ctx.author.id)
+                await ctx.send("Congratulations you got it right.")
                 return True
             else:
+                await ctx.send("Congratulations you got it wrong.")
                 await task.cancel()
                 return True
 
@@ -106,7 +108,6 @@ class Vidio(commands.Cog):
             await message.edit(content=final_message)
 
             await asyncio.sleep(random.randint(4, 5))
-
 
     @commands.command(
         aliases=['cc'],
