@@ -68,6 +68,10 @@ class Vidio(commands.Cog):
             index = random.randint(1, 3)
             if index == 1:
                 final_message = message + '  ``1``   ``2``   ``3``\n:goal: :goal: :goal:\n:shield:'
+            elif index == 2:
+                final_message = message + '  ``1``   ``2``   ``3``\n:goal: :goal: :goal:\n:blank: :shield: :blank'
+            elif index == 3:
+                final_message = message + '  ``1``   ``2``   ``3``\n:goal: :goal: :goal:\n:blank: :blank: :shield:'
 
             await ctx.send(final_message)
 
