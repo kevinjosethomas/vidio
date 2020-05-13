@@ -87,26 +87,31 @@ class Vidio(commands.Cog):
                 try:
                     input_index = await self.bot.wait_for('message', check=author_check, timeout=30)
                 except asyncio.TimeoutError:
-                    await ctx.send("Congratulations you got it wrong.")
                     task.cancel()
-                    return False
-
-                await ctx.send("yo")
+                    return None
 
                 try:
                     input_index = int(input_index.content)
                 except ValueError:
-                    await ctx.send("Congratulations you got it wrong.")
-                    await task.cancel()
-                    return True
+                    await ctx.send(f"{self.bot.no} **Invalid Input.** You missed by a few "
+                                   f"{'inches' if random.randint(1, 2) == 1 else 'metres'}, try harder next time.")
+                    task.cancel()
+                    return False
 
-                if input_index == self.bot.soccer_indexes[ctx.author.id]:
+                if input_index > 3 or input_index < 1:
+                    await ctx.send(f"{self.bot.no} **Invalid Input.** You missed by a few "
+                                   f"{'inches' if random.randint(1, 2) == 1 else 'metres'}, try harder next time.")
+                    task.cancel()
+                    return False
+
+                if input_index != self.bot.soccer_indexes[ctx.author.id]:
                     self.bot.soccer_indexes.pop(ctx.author.id)
-                    await ctx.send("Congratulations you got it right.")
+                    await ctx.send(f"{self.bot.yes} **Congratulations!** You shot a successful goal!")
                     return True
                 else:
-                    await ctx.send("Congratulations you got it wrong.")
-                    await task.cancel()
+                    await ctx.send(f"{self.bot.no} **You missed by a few "
+                                   f"{'inches' if random.randint(1, 2) == 1 else 'metres'},** try harder next time.")
+                    task.cancel()
                     return False
 
     async def soccer_edit(self, ctx, message, message_text):
