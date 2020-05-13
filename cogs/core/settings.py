@@ -190,7 +190,7 @@ class Default(commands.Cog):
     async def on_ready(self):
         print(f"vidio is back online!")
         self.bot.start_time = datetime.now()
-        self.bot.support_server = self.bot.get_guild(self.bot.support_server_id)
+        self.bot.support_server = self.bot.get_guild(self.bot.GLOBAL["support_server_id"])
         self.change_presence.start()
 
     async def bot_check(self, ctx):
