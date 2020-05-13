@@ -156,7 +156,7 @@ class Database(commands.Cog):
             await self.db.execute("INSERT INTO awards (channel_id, award) VALUES ($1, $2)",
                                   channel.get('channel_id'), award)
 
-            emoji = eval(f'self.bot.{award}')
+            emoji = self.bot.EMOJIS[award]
 
             await ctx.send(f':tada: **<@{ctx.author.id}> just got the {emoji} {award} play button!**')
 
