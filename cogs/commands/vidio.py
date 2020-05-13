@@ -80,7 +80,7 @@ class Vidio(commands.Cog):
 
             sent_message = await ctx.send(final_message)
 
-            task = await asyncio.create_task(self.soccer_edit(ctx, sent_message, message))
+            task = await self.bot.loop.create_task(self.soccer_edit(ctx, sent_message, message))
 
             await ctx.send("Hi")
 
