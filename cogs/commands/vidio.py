@@ -105,6 +105,7 @@ class Vidio(commands.Cog):
                 if input_index != self.bot.soccer_indexes[ctx.author.id]:
                     self.bot.soccer_indexes.pop(ctx.author.id)
                     await ctx.send(f"{self.bot.EMOJIS['yes']} **Congratulations!** You shot a successful goal!")
+                    task.cancel()
                     return True
                 else:
                     await ctx.send(f"{self.bot.EMOJIS['no']} **You missed by a few "
