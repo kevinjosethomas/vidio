@@ -9,6 +9,9 @@ from discord.ext import commands, tasks, menus
 
 class HelpMenu(menus.Menu):
 
+    def __init__(self):
+        super().__init__(timeout=30)
+
     async def send_initial_message(self, ctx, channel):
 
         help_embed = discord.Embed(
@@ -17,6 +20,8 @@ class HelpMenu(menus.Menu):
                         f':tools: for **utility** commands\n\n'
                         f':octagonal_sign: to return here',
             color=self.bot.embed)
+
+        help_embed.set_footer(text='Use -uglyhelp to get a list of all commands.')
 
         return await ctx.send(embed=help_embed)
 
@@ -42,6 +47,9 @@ class HelpMenu(menus.Menu):
             description=description,
             color=self.bot.embed
         )
+
+        help_embed.set_footer(text='Use -uglyhelp to get a list of all commands.')
+
         await self.message.edit(embed=help_embed)
 
     @menus.button('🛠️')
@@ -64,6 +72,9 @@ class HelpMenu(menus.Menu):
             description=description,
             color=self.bot.embed
         )
+
+        help_embed.set_footer(text='Use -uglyhelp to get a list of all commands.')
+
         await self.message.edit(embed=help_embed)
 
     @menus.button('🛑')
@@ -75,6 +86,8 @@ class HelpMenu(menus.Menu):
                         f':tools: for **utility** commands\n\n'
                         f':octagonal_sign: to return here',
             color=self.bot.embed)
+
+        help_embed.set_footer(text='Use -uglyhelp to get a list of all commands.')
 
         await self.message.edit(embed=help_embed)
 
