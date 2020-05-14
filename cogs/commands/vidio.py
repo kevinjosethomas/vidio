@@ -306,7 +306,7 @@ class Vidio(commands.Cog):
         award_str = ''
 
         for award in awards:
-            award_str += f"{eval(f'self.bot.{str(award[0])}')} "
+            award_str += f"{self.bot.EMOJIS[str(award[0])]} "
 
         user = self.bot.get_user(user)
 
