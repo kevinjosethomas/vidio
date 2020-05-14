@@ -30,7 +30,7 @@ class HelpMenu(menus.Menu):
 
         description = '**tutorial** ``(how)``\nA basic tutorial on how to use the bot.\n\n' \
                       '**create_channel** ``(cc)``\nCreates a channel simulation with your user account. (prompts)\n\n' \
-                      '**upload** ``(up)``\nUploads a video on the selected channel. (prompts)\n\n' \
+                      '**upload** ``(u)``\nUploads a video on the selected channel. (prompts)\n\n' \
                       '**profile** ``(p, bal, user)``\nDisplays current balance and list of channels that belong to the user.\n\n' \
                       '**channel** ``(c)``\nShows metrics about the selected channel. (prompts)\n\n' \
                       '**leaderboard** ``(lb)``\nShows the top 10 users of various metrics.\n\n' \
