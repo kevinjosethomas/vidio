@@ -42,7 +42,7 @@ class TopGG(commands.Cog):
 
         user = self.bot.get_user(user_id)
 
-        await user.send(f':heart: **Thanks for upvoting!** {self.bot.money} You got ${added_money} for helping '
+        await user.send(f':heart: **Thanks for upvoting!** {self.bot.EMOJIS["money"]} You got ${added_money} for helping '
                         f'videonet grow!')
 
     @commands.Cog.listener()
