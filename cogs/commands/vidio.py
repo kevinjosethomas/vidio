@@ -576,14 +576,28 @@ class Vidio(commands.Cog):
         likes = locale.format_string('%d', video['likes'], grouping=True)
         dislikes = locale.format_string('%d', video['dislikes'], grouping=True)
 
+        comments = []
+
         if status == 'successful' or status == 'good':
             status_quote = f'{self.bot.EMOJIS["success"]} Status'
+            for comment in random.choices(self.bot.COMMENTS['good'], k=3):
+                comments.append(f'{self.bot.EMOJIS["likes"]} {comment}\n')
         elif status == 'average':
             status_quote = f'{self.bot.EMOJIS["average"]} Status'
+            for comment in random.choices(self.bot.COMMENTS['good'], k=2):
+                comments.append(f'{self.bot.EMOJIS["likes"]} {comment}\n')
+            for comment in random.choices(self.bot.COMMENTS['bad'], k=1):
+                comments.append(f'{self.bot.EMOJIS["dislikes"]} {comment}\n')
         elif status == 'poor' or status == 'fail':
             status_quote = f'{self.bot.EMOJIS["fail"]} Status'
+            for comment in random.choices(self.bot.COMMENTS['good'], k=1):
+                comments.append(f'{self.bot.EMOJIS["likes"]} {comment}\n')
+            for comment in random.choices(self.bot.COMMENTS['bad'], k=2):
+                comments.append(f'{self.bot.EMOJIS["dislikes"]} {comment}\n')
         else:
             status_quote = 'Status'
+
+        comments_string = ''.join(comments)
 
         if not str(new_subs).startswith('-'):
             new_subs = f"+{new_subs}"
@@ -597,7 +611,8 @@ class Vidio(commands.Cog):
                         f'{self.bot.EMOJIS["money"]} **Money:** ${money}\n\n'
                         f'{self.bot.EMOJIS["likes"]} **Likes:** {likes}\n'
                         f'{self.bot.EMOJIS["dislikes"]} **Dislikes:** {dislikes}\n\n'
-                        f':notepad_spiral: **Description:** {description}',
+                        f':notepad_spiral: **Description:** {description}\n\n'
+                        f'{self.bot.EMOJIS["comments"]} **Comments:**\n{comments_string}',
             color=self.bot.embed)
 
         video_embed.set_footer(
