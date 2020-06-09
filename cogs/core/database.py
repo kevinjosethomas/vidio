@@ -24,6 +24,9 @@ class Database(commands.Cog):
         self.db = self.bot.db
 
     async def check_award(self, ctx: commands.Context, channel: Channel):
+        """
+        checks if the provided channel hit a subscriber milestone
+        """
 
         award = []
 
