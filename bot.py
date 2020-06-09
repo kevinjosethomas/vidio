@@ -22,7 +22,7 @@ HOSTNAME = os.getenv('hostname')
 DBL_TOKEN = os.getenv('dbl_token')
 
 
-async def get_prefix(bot, message):
+async def get_prefix(_bot, message):
 
     """
        This function gets the custom prefixes for servers from the database,
@@ -34,12 +34,12 @@ async def get_prefix(bot, message):
 
     guild_id = message.guild.id
 
-    prefix = await bot.db.fetchrow(
+    prefix = await _bot.db.fetchrow(
         "SELECT prefix FROM guilds WHERE guild_id = $1",
         guild_id,)
 
     if not prefix:
-        async with bot.db.acquire() as conn:
+        async with _bot.db.acquire() as conn:
             await conn.execute(
                 "INSERT INTO guilds (guild_id, prefix) VALUES ($1, $2)",
                 guild_id, '-')
