@@ -75,7 +75,7 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 bot.logger.addHandler(handler)
 
 
-with open('data/global.json') as CONFIG:
+with open('data/config.json') as CONFIG:
     bot.CONFIG = json.load(CONFIG)
 
 with open('data/emojis.json') as EMOJIS:
