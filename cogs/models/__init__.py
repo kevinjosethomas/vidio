@@ -23,3 +23,5 @@ SOFTWARE.
 """
 
 from ..models.channel import Channel
+from ..models.video import Video
+from ..models.user import User
