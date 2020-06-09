@@ -9,6 +9,7 @@ import random
 import asyncpg
 import discord
 from ..models import *
+from typing import Union
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
 
@@ -74,6 +75,18 @@ class Database(commands.Cog):
             return True
         else:
             return False
+
+    async def get_user(self, user_id: int) -> Union[User, bool]:
+
+        user = await self.db.fetchrow("select * from users where user_id = $1",
+                                      user_id)
+
+        if not user:
+            return False
+        else:
+            return User(user_id=user[0],
+                        money=user[1],
+                        commands=user[2])
 
     async def on_vote(self, user: User, is_weekend: bool):
         """method triggered when someone votes for the bot on dbl"""
