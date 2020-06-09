@@ -75,6 +75,11 @@ class Database(commands.Cog):
         else:
             return False
 
+    async def on_vote(self, user: User, is_weekend: bool):
+        """method triggered when someone votes for the bot on dbl"""
+
+        pass
+
 
 def setup(bot):
     bot.add_cog(Database(bot))
