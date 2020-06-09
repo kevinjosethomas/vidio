@@ -27,13 +27,6 @@ async def get_prefix(bot, message):
     """
        This function gets the custom prefixes for servers from the database,
        and allows servers to use them.
-
-       Args:
-           :param bot: The bot instance.
-           :param message: The message object.
-
-       Returns:
-           :return (str): Returns the prefix
        """
 
     if message.guild is None:
