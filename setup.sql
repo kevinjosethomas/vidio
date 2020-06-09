@@ -1,6 +1,7 @@
 create table if not exists users (
     user_id bigint primary key,
-    money bigint
+    money bigint,
+    commands int default 0
 );
 
 create table if not exists channels (
