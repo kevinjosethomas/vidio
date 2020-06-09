@@ -167,15 +167,15 @@ class Database(commands.Cog):
         user = await self.db.fetchrow('SELECT * FROM users WHERE user_id = $1',
                                       user_id)
         if not user:
-            return 'User doesn\'t exist'
+            return False
 
         money = user[1]
 
         if is_weekend:
-            added_money = math.ceil(8 * money / 100)
+            added_money = math.ceil(2 * money / 100)
             money += added_money
         elif not is_weekend:
-            added_money = math.ceil(5 * money / 100)
+            added_money = math.ceil(1 * money / 100)
             money += added_money
 
         if added_money == 0:
