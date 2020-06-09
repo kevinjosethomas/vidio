@@ -156,7 +156,7 @@ class Database(commands.Cog):
             await self.db.execute("INSERT INTO awards (channel_id, award) VALUES ($1, $2)",
                                   channel.get('channel_id'), award)
 
-            emoji = eval(f'self.bot.{award}')
+            emoji = self.bot.EMOJIS[award]
 
             await ctx.send(f':tada: **<@{ctx.author.id}> just got the {emoji} {award} play button!**')
 
@@ -313,10 +313,18 @@ class Database(commands.Cog):
 
     async def add_ban(self, user_id):
 
+        banned = await self.db.fetch("SELECT * FROM bans WHERE user_id = $1",
+                                     user_id)
+
+        if banned:
+            return False
+
         async with self.db.acquire() as conn:
 
             await conn.execute("INSERT INTO bans (user_id) VALUES ($1)",
                                user_id)
+
+            return True
 
     async def add_subscriber(self, user_id, channel_id):
 
@@ -354,10 +362,18 @@ class Database(commands.Cog):
 
     async def remove_ban(self, user_id):
 
+        banned = await self.db.fetch("SELECT * FROM bans WHERE user_id = $1",
+                                     user_id)
+
+        if not banned:
+            return False
+
         async with self.db.acquire() as conn:
 
             await conn.execute("DELETE FROM bans WHERE user_id = $1",
                                user_id)
+
+            return True
 
     async def remove_channel(self, user_id, cid):
 

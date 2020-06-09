@@ -1,6 +1,7 @@
 import os
 import asyncio
 import discord
+import resource
 import traceback
 from datetime import datetime
 from discord.ext import commands
@@ -34,7 +35,7 @@ class Owner(commands.Cog):
             for cog in self.bot.cog_list:
                 self.bot.load_extension(cog)
             cog_embed = discord.Embed(
-                description=f'{self.bot.yes} **Successfully reloaded all cogs!**',
+                description=f'{self.bot.EMOJIS["yes"]} **Successfully reloaded all cogs!**',
                 color=self.bot.embed)
             await ctx.send(embed=cog_embed)
             return
@@ -45,7 +46,7 @@ class Owner(commands.Cog):
         self.bot.load_extension(cog)
 
         cog_embed = discord.Embed(
-            description=f'{self.bot.yes} **Successfully loaded** ``{cog}``',
+            description=f'{self.bot.EMOJIS["yes"]} **Successfully loaded** ``{cog}``',
             color=self.bot.embed
         )
         await ctx.send(embed=cog_embed)
@@ -59,7 +60,7 @@ class Owner(commands.Cog):
             for cog in self.bot.cog_list:
                 self.bot.unload_extension(cog)
             cog_embed = discord.Embed(
-                description=f'{self.bot.yes} **Successfully unloaded all cogs!**',
+                description=f'{self.bot.EMOJIS["yes"]} **Successfully unloaded all cogs!**',
                 color=self.bot.embed)
             await ctx.send(embed=cog_embed)
             return
@@ -70,7 +71,7 @@ class Owner(commands.Cog):
         self.bot.unload_extension(cog)
 
         cog_embed = discord.Embed(
-            description=f'{self.bot.yes} **Successfully unloaded** ``{cog}``',
+            description=f'{self.bot.EMOJIS["yes"]} **Successfully unloaded** ``{cog}``',
             color=self.bot.embed
         )
         await ctx.send(embed=cog_embed)
@@ -84,7 +85,7 @@ class Owner(commands.Cog):
             for cog in self.bot.cog_list:
                 self.bot.reload_extension(cog)
             cog_embed = discord.Embed(
-                description=f'{self.bot.yes} **Successfully reloaded all cogs!**',
+                description=f'{self.bot.EMOJIS["yes"]} **Successfully reloaded all cogs!**',
                 color=self.bot.embed)
             await ctx.send(embed=cog_embed)
             return
@@ -95,7 +96,7 @@ class Owner(commands.Cog):
         self.bot.reload_extension(cog)
 
         cog_embed = discord.Embed(
-            description=f'{self.bot.yes} **Successfully reloaded** ``{cog}``',
+            description=f'{self.bot.EMOJIS["yes"]} **Successfully reloaded** ``{cog}``',
             color=self.bot.embed
         )
         await ctx.send(embed=cog_embed)
@@ -176,8 +177,12 @@ class Owner(commands.Cog):
     @commands.is_owner()
     async def ban(self, ctx, *, user: discord.User):
 
-        await self.database.add_ban(user.id)
-        await ctx.send(f"{self.bot.yes} **Successfully banned -** <@{user.id}>")
+        banned = await self.database.add_ban(user.id)
+
+        if not banned:
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **<@{user.id}> is already banned.**')
+            return
+        await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully banned -** <@{user.id}>")
 
     @commands.command(
         aliases=['unyeet', 'revive', 'pardon'],
@@ -186,8 +191,12 @@ class Owner(commands.Cog):
     @commands.is_owner()
     async def unban(self, ctx, *, user: discord.User):
 
-        await self.database.remove_ban(user.id)
-        await ctx.send(f"{self.bot.yes} **Successfully unbanned -** <@{user.id}>")
+        unbanned = await self.database.remove_ban(user.id)
+
+        if not unbanned:
+            await ctx.send(f'{self.bot.EMOJIS["no"]} **<@{user.id}> is not banned.**')
+            return
+        await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully unbanned -** <@{user.id}>")
 
     @commands.command(
         aliases=['update', 'gitpull'],
@@ -196,7 +205,22 @@ class Owner(commands.Cog):
     @commands.is_owner()
     async def pull(self, ctx):
         os.system('git pull')
-        await ctx.send(f'{self.bot.yes} **Successfully pulled latest from Github!**')
+        await ctx.send(f'{self.bot.EMOJIS["yes"]} **Successfully pulled latest from Github!**')
+
+    @commands.command(
+        aliases=['ram', 'mem'],
+        usage='``-memory``',
+        help='Returns how much memory the bot is using.')
+    @commands.is_owner()
+    async def memory(self, ctx):
+
+        memory = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+
+        memory_embed = discord.Embed(
+            description=f"Memory in use: ``{int(round(memory * .001 * 1.04858, 2))}mb``",
+            color=self.bot.embed)
+        await ctx.send(embed=memory_embed)
+
 
     # @commands.command(
     #     usage=f'``>restart``',
@@ -204,7 +228,7 @@ class Owner(commands.Cog):
     # )
     # @commands.is_owner()
     # # async def restart(self, ctx):
-    #     await ctx.send(f'{  self.bot.yes} **Restarting the bot.**')
+    #     await ctx.send(f'{  self.bot.EMOJIS["yes"]} **Restarting the bot.**')
     #     await self.bot.logout()
     #     exit()
 
