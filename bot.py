@@ -1,87 +1,90 @@
 """
-This file has the basic setup and configuration for the vidio discord bot.
-It loads the token, creates and runs bot instances, loads it's cogs and prefixes
-and defines a bunch of bot variables including emojis.
+bot.py
+basic initialization and configuration of vidio
+- loads external files - .env, .json
+- loads cogs and prefixes
+- creates bot instance
 """
 
-
 import os
+import json
 import dotenv
-import asyncpg
 import asyncio
+import asyncpg
+import discord
 import logging
 from discord.ext import commands
 
 
-# loads .env and gets important data
+# loads environment variables
 dotenv.load_dotenv()
-PASSWORD = os.getenv('password')
-TOKEN = os.getenv('token')
-YT_KEY = os.getenv('yt_key')
-HOSTNAME = os.getenv('hostname')
+TOKEN = os.getenv('discord_token')
 DBL_TOKEN = os.getenv('dbl_token')
+AUTH = os.getenv('dbl_auth')
+HOSTNAME = os.getenv('database_hostname')
+NAME = os.getenv('database_name')
+USER = os.getenv('database_user')
+PASSWORD = os.getenv('database_password')
 
 
-async def get_prefix(_bot, message):
+async def get_prefix(_bot: commands.Bot, message: discord.Message) -> str:
+    """Fetches the custom prefix for the provided server"""
 
-    """
-       This function gets the custom prefixes for servers from the database,
-       and allows servers to use them.
-       """
-
-    if message.guild is None:
+    if not message.guild:  # if the command is initiated in direct messages
         return '-'
 
     guild_id = message.guild.id
 
     prefix = await _bot.db.fetchrow(
-        "SELECT prefix FROM guilds WHERE guild_id = $1",
-        guild_id,)
+        "select prefix from guilds where guild_id = $1",
+        guild_id
+    )
 
     if not prefix:
         async with _bot.db.acquire() as conn:
-            await conn.execute(
-                "INSERT INTO guilds (guild_id, prefix) VALUES ($1, $2)",
-                guild_id, '-')
-        return '-'
+            await conn.execute(""
+                               "insert into guilds (guild_id, prefix) values ($1, $2)",
+                               guild_id, '-')
 
-    return prefix[0]
-
-
-# defines the bot variable
-bot = commands.AutoShardedBot(command_prefix=get_prefix, case_insensitive=True)
+    return '-'
 
 
-async def database_setup():
+bot = commands.AutoShardedBot(
+    command_prefix=get_prefix,
+    case_insensitive=True
+)
 
-    """
-        This function creates a database pool connection that will be used
-        throughout all cogs.
-    """
+
+async def database_setup() -> None:
+    """Sets up the database pool connection"""
 
     bot.db = await asyncpg.create_pool(
-        user='postgres',
+        user=USER,
         password=PASSWORD,
-        database='vidio',
-        host=HOSTNAME)
+        database=NAME,
+        host=HOSTNAME
+    )
 
-# Calls the database_setup function.
 asyncio.get_event_loop().run_until_complete(database_setup())
 
 
-bot.YT_KEY = YT_KEY
-bot.PASSWORD = PASSWORD
-bot.DBL_TOKEN = DBL_TOKEN
-
-
-bot.logger = logging.getLogger('discord')
+bot.logger = logging.getLogger('events')
 logging.basicConfig(level=logging.INFO)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler = logging.FileHandler(filename='events.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 bot.logger.addHandler(handler)
 
 
-# defines the list of cogs in the bot
+with open('data/global.json') as CONFIG:
+    bot.CONFIG = json.load(CONFIG)
+
+with open('data/emojis.json') as EMOJIS:
+    bot.EMOJIS = json.load(EMOJIS)
+
+with open('data/comments.json') as COMMENTS:
+    bot.COMMENTS = json.load(COMMENTS)
+
+
 bot.cog_list = [
     'cogs.core.database',
     'cogs.core.settings',
@@ -90,10 +93,7 @@ bot.cog_list = [
     'cogs.commands.utility',
     'cogs.commands.vidio']
 
-# loads all the cogs from the cog list
 for cog in bot.cog_list:
     bot.load_extension(cog)
 
-
-# runs the bot instance with the token
 bot.run(TOKEN)
