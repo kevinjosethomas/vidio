@@ -75,23 +75,19 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 bot.logger.addHandler(handler)
 
 
-with open('data/config.json') as CONFIG:
+with open('data/config.json', encoding="utf8") as CONFIG:
     bot.CONFIG = json.load(CONFIG)
 
-with open('data/emojis.json') as EMOJIS:
+with open('data/emojis.json', encoding="utf8") as EMOJIS:
     bot.EMOJIS = json.load(EMOJIS)
 
-with open('data/comments.json') as COMMENTS:
+with open('data/comments.json', encoding="utf8") as COMMENTS:
     bot.COMMENTS = json.load(COMMENTS)
 
 
 bot.cog_list = [
-    'cogs.core.database',
-    'cogs.core.settings',
-    'cogs.core.owner',
-    'cogs.core.topgg',
-    'cogs.commands.utility',
-    'cogs.commands.vidio']
+    'cogs.core.database'
+]
 
 for cog in bot.cog_list:
     bot.load_extension(cog)
