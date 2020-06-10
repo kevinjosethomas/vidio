@@ -134,10 +134,25 @@ class Database(commands.Cog):
 
             return channel_list
 
-    async def on_vote(self, user: User, is_weekend: bool):
+    async def on_vote(self, user: int, is_weekend: bool):
         """method triggered when someone votes for the bot on dbl"""
 
-        pass
+        user = await self.get_user(user)
+
+        if not user:
+            return False
+
+        money = user.money
+
+        if is_weekend:
+            new_money = math.ceil(money * 0.02)
+        else:
+            new_money = math.ceil(money * 0.01)
+
+        if not new_money:
+            new_money = random.randint(1, 5)
+
+        money += new_money
 
 
 def setup(bot):
