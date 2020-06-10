@@ -25,7 +25,7 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
-    async def add_money(self, user: int, added_money: int):
+    async def adjust_money(self, user: int, added_money: int):
         """
         add's the given balance to the provided user
         """
@@ -39,6 +39,12 @@ class Database(commands.Cog):
 
             await conn.execute("update users set money = $1 where user_id = $2",
                                money, user)
+
+    async def buy_advertisement(self, user: int, channel: int, type: str):
+
+        assert type == "average" or type == "decent"
+
+        user = self.get_user(user)
 
     async def check_award(self, ctx: commands.Context, channel: Channel):
         """
@@ -178,7 +184,7 @@ class Database(commands.Cog):
         if not new_money:
             new_money = random.randint(1, 5)
 
-        await self.add_money(user.user_id, new_money)
+        await self.adjust_money(user.user_id, new_money)
 
         async with self.db.acquire() as conn:
 
