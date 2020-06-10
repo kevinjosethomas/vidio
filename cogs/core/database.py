@@ -9,7 +9,7 @@ import random
 import asyncpg
 import discord
 from ..models import *
-from typing import Union
+from typing import Union, List
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
 
@@ -84,9 +84,55 @@ class Database(commands.Cog):
         if not user:
             return False
         else:
-            return User(user_id=user[0],
-                        money=user[1],
-                        commands=user[2])
+            return User(
+                user_id=user[0],
+                money=user[1],
+                commands=user[2]
+            )
+
+    async def get_channel(self, channel_id: int) -> Union[Channel, bool]:
+
+        channel = await self.db.fetchrow("select * from channels where channel_id = $1",
+                                         channel_id)
+
+        if not channel:
+            return False
+        else:
+            return Channel(
+                channel_id=channel[0],
+                user_id=channel[1],
+                name=channel[2],
+                description=channel[3],
+                subscribers=channel[4],
+                total_views=channel[5],
+                category=channel[6],
+                created_at=channel[7]
+            )
+
+    async def get_channels(self, user_id: int) -> Union[List[Channel], bool]:
+
+        channels = await self.db.fetch("select * from channels where user_id = $1",
+                                       user_id)
+
+        if not channels:
+            return False
+        else:
+            channel_list = []
+            for channel in channels:
+                channel_list.append(
+                    Channel(
+                        channel_id=channel[0],
+                        user_id=channel[1],
+                        name=channel[2],
+                        description=channel[3],
+                        subscribers=channel[4],
+                        total_views=channel[5],
+                        category=channel[6],
+                        created_at=channel[7]
+                    )
+                )
+
+            return channel_list
 
     async def on_vote(self, user: User, is_weekend: bool):
         """method triggered when someone votes for the bot on dbl"""
