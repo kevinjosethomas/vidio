@@ -154,6 +154,16 @@ class Database(commands.Cog):
 
         money += new_money
 
+    async def set_money(self, user: int, money: int) -> bool:
+        """sets the given user's balance to the money provided."""
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update users set money = $1 where user_id = $2",
+                               money, user)
+
+        return True
+
 
 def setup(bot):
     bot.add_cog(Database(bot))
