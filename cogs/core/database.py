@@ -4,6 +4,7 @@ holds all database methods and functions
 """
 
 import math
+import time
 import string
 import random
 import asyncpg
@@ -24,7 +25,7 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
-    async def add_money(self, user: int, added_money: int) -> bool:
+    async def add_money(self, user: int, added_money: int):
         """add's the given balance to the provided user"""
 
         user = await self.get_user(user)
@@ -36,8 +37,6 @@ class Database(commands.Cog):
 
             await conn.execute("update users set money = $1 where user_id = $2",
                                money, user)
-
-        return True
 
     async def check_award(self, ctx: commands.Context, channel: Channel):
         """
@@ -149,7 +148,7 @@ class Database(commands.Cog):
 
             return channel_list
 
-    async def on_vote(self, user: int, is_weekend: bool):
+    async def on_vote(self, user: int, is_weekend: bool) -> Union[int, bool]:
         """method triggered when someone votes for the bot on dbl"""
 
         user = await self.get_user(user)
@@ -167,17 +166,22 @@ class Database(commands.Cog):
         if not new_money:
             new_money = random.randint(1, 5)
 
-        money += new_money
+        await self.add_money(user.user_id, new_money)
 
-    async def set_money(self, user: int, money: int) -> bool:
+        async with self.db.acquire() as conn:
+
+            await conn.execute("insert into votes (user_id, timestamp) values ($1, $2)",
+                               user.user_id, int(time.time()))
+
+        return new_money
+
+    async def set_money(self, user: int, money: int):
         """sets the given user's balance to the money provided"""
 
         async with self.db.acquire() as conn:
 
             await conn.execute("update users set money = $1 where user_id = $2",
                                money, user)
-
-        return True
 
 
 def setup(bot):
