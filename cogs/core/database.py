@@ -26,7 +26,9 @@ class Database(commands.Cog):
         self.db = self.bot.db
 
     async def add_money(self, user: int, added_money: int):
-        """add's the given balance to the provided user"""
+        """
+        add's the given balance to the provided user
+        """
 
         user = await self.get_user(user)
 
@@ -80,7 +82,6 @@ class Database(commands.Cog):
     async def check_banned(self, user_id: int) -> bool:
         """
         checks if a user is bot banned
-        checks if the user is in the botbans table
         """
 
         bans = await self.db.fetchrow("select * from botbans where user_id = $1",
@@ -91,6 +92,9 @@ class Database(commands.Cog):
             return False
 
     async def get_user(self, user_id: int) -> Union[User, bool]:
+        """
+        gets a user with the provided user id
+        """
 
         user = await self.db.fetchrow("select * from users where user_id = $1",
                                       user_id)
@@ -105,6 +109,9 @@ class Database(commands.Cog):
             )
 
     async def get_channel(self, channel_id: int) -> Union[Channel, bool]:
+        """
+        gets a channel with the provided channel id
+        """
 
         channel = await self.db.fetchrow("select * from channels where channel_id = $1",
                                          channel_id)
@@ -124,6 +131,9 @@ class Database(commands.Cog):
             )
 
     async def get_channels(self, user_id: int) -> Union[List[Channel], bool]:
+        """
+        gets a list of channels that belong to the provided user
+        """
 
         channels = await self.db.fetch("select * from channels where user_id = $1",
                                        user_id)
@@ -149,7 +159,9 @@ class Database(commands.Cog):
             return channel_list
 
     async def on_vote(self, user: int, is_weekend: bool) -> Union[int, bool]:
-        """method triggered when someone votes for the bot on dbl"""
+        """
+        method triggered when someone votes for the bot on dbl
+        """
 
         user = await self.get_user(user)
 
@@ -176,7 +188,9 @@ class Database(commands.Cog):
         return new_money
 
     async def set_money(self, user: int, money: int):
-        """sets the given user's balance to the money provided"""
+        """
+        sets the given user's balance to the money provided
+        """
 
         async with self.db.acquire() as conn:
 
