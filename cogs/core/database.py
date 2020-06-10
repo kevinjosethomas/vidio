@@ -24,6 +24,21 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
+    async def add_money(self, user: int, added_money: int) -> bool:
+        """add's the given balance to the provided user"""
+
+        user = await self.get_user(user)
+
+        money = user.money
+        money += added_money
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update users set money = $1 where user_id = $2",
+                               money, user)
+
+        return True
+
     async def check_award(self, ctx: commands.Context, channel: Channel):
         """
         checks if the provided channel hit a subscriber milestone
@@ -155,7 +170,7 @@ class Database(commands.Cog):
         money += new_money
 
     async def set_money(self, user: int, money: int) -> bool:
-        """sets the given user's balance to the money provided."""
+        """sets the given user's balance to the money provided"""
 
         async with self.db.acquire() as conn:
 
