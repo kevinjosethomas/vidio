@@ -116,7 +116,7 @@ class AlreadyBotBanned(Exception):
     def __init__(self):
         """basic initialization of the AlreadyBotBanned exception"""
 
-        self.message = f"This user is already botbanned."
+        self.message = f"This user is already botbanned"
         super().__init__(self.message)
 
     def __str__(self):
@@ -130,3 +130,24 @@ class AlreadySubscribedError(Exception):
 
     def __init__(self):
         """basic initialization of the AlreadySubscribed exception"""
+
+        self.message = f"User is already subscribed to this channel"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class SelfSubscribeError(Exception):
+    """
+    triggered when a user tries to subscribe to themselves
+    """
+
+    def __init__(self):
+        """basic initialization of the SelfSubscribeError"""
+
+        self.message = f"User cannot subscribe to themselves"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
