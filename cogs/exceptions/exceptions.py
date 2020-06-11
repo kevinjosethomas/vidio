@@ -144,9 +144,24 @@ class SelfSubscribeError(Exception):
     """
 
     def __init__(self):
-        """basic initialization of the SelfSubscribeError"""
+        """basic initialization of the SelfSubscribeError exception"""
 
         self.message = f"User cannot subscribe to themselves"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class SubscriptionDoesntExist(Exception):
+    """
+    triggered when a user unsubscribes from a channel which they are not subscribed to
+    """
+
+    def __init__(self):
+        """basic initialization of SubscriptionDoesntExist exception"""
+
+        self.message = "User attempted to unsubscribe from non-existent subscription"
         super().__init__(self.message)
 
     def __str__(self):
