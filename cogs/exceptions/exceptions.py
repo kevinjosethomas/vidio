@@ -86,7 +86,7 @@ class InvalidInputError(Exception):
     def __init__(self, cause=""):
         """basic initalization of the InvalidInputError exception"""
 
-        self.message = f"Provided input is invalid{' ({cause})' if cause else ''}"
+        self.message = f"Provided input is invalid{f' ({cause})' if cause else ''}"
         super().__init__(self.message)
 
     def __str__(self):
@@ -102,6 +102,21 @@ class DuplicateChannelNameError(Exception):
         """basic initialization of the DuplicateChannelError exception"""
 
         self.message = "The owner has a channel with the same name"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class DuplicateDatabaseEntryError(Exception):
+    """
+    triggered when a duplicate entry is inserted into a unique column
+    """
+
+    def __init__(self, cause=""):
+        """basic initialization of the DuplicateDatabaseEntryError exception"""
+
+        self.message = f"Duplicate Database Entry{f' ({cause})' if cause else ''}"
         super().__init__(self.message)
 
     def __str__(self):
