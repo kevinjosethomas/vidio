@@ -22,6 +22,19 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
+    async def add_ban(self, user: int):
+
+        banned = await self.db.fetchrow("select * from bans where user_id = $1",
+                                        user)
+
+        if banned:
+            raise DuplicateDatabaseEntryError('botban')
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("insert into botbans (user_id) values ($1)",
+                               user)
+
     async def add_channel(self, user: int, name: str, description: str, category: str):
         """
         creates a new channel under the provided user's name
