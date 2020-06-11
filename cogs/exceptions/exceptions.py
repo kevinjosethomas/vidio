@@ -108,16 +108,25 @@ class DuplicateChannelNameError(Exception):
         return self.message
 
 
-class DuplicateDatabaseEntryError(Exception):
+class AlreadyBotBanned(Exception):
     """
-    triggered when a duplicate entry is inserted into a unique column
+    triggered when a banned user is banned again
     """
 
-    def __init__(self, cause=""):
-        """basic initialization of the DuplicateDatabaseEntryError exception"""
+    def __init__(self):
+        """basic initialization of the AlreadyBotBanned exception"""
 
-        self.message = f"Duplicate Database Entry{f' ({cause})' if cause else ''}"
+        self.message = f"This user is already botbanned."
         super().__init__(self.message)
 
     def __str__(self):
         return self.message
+
+
+class AlreadySubscribedError(Exception):
+    """
+    triggered when a user tries to subscribe to someone they are already subscribed to
+    """
+
+    def __init__(self):
+        """basic initialization of the AlreadySubscribed exception"""
