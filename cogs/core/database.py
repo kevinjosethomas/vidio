@@ -23,6 +23,9 @@ class Database(commands.Cog):
         self.db = self.bot.db
 
     async def add_ban(self, user: int):
+        """
+        botbans the provided user
+        """
 
         banned = await self.db.fetchrow("select * from bans where user_id = $1",
                                         user)
@@ -77,6 +80,9 @@ class Database(commands.Cog):
                                guild, '-', 0)
 
     async def add_subscriber(self, user: int, channel: channel):
+        """
+        adds a subscription to the provided channel from the provided user
+        """
 
         user = await self.get_user(user)
         channel = await self.get_user(channel)
@@ -223,23 +229,6 @@ class Database(commands.Cog):
         else:
             return False
 
-    async def get_user(self, user_id: int) -> Union[User, bool]:
-        """
-        gets a user with the provided user id
-        """
-
-        user = await self.db.fetchrow("select * from users where user_id = $1",
-                                      user_id)
-
-        if not user:
-            raise InvalidUser
-        else:
-            return User(
-                user_id=user[0],
-                money=user[1],
-                commands=user[2]
-            )
-
     async def get_channel(self, channel_id: int) -> Union[Channel, bool]:
         """
         gets a channel with the provided channel id
@@ -290,6 +279,23 @@ class Database(commands.Cog):
 
             return channel_list
 
+    async def get_user(self, user_id: int) -> Union[User, bool]:
+        """
+        gets a user with the provided user id
+        """
+
+        user = await self.db.fetchrow("select * from users where user_id = $1",
+                                      user_id)
+
+        if not user:
+            raise InvalidUser
+        else:
+            return User(
+                user_id=user[0],
+                money=user[1],
+                commands=user[2]
+            )
+
     async def on_vote(self, user: int, is_weekend: bool) -> Union[int, bool]:
         """
         method triggered when someone votes for the bot on dbl
@@ -320,6 +326,9 @@ class Database(commands.Cog):
         return new_money
 
     async def remove_ban(self, user: int):
+        """
+        unbotbans the provided user
+        """
 
         banned = await self.db.fetchrow("select * from bans where user_id = $1",
                                         user)
@@ -332,6 +341,9 @@ class Database(commands.Cog):
                                user)
 
     async def remove_channel(self, channel: int):
+        """
+        deletes the provided channel
+        """
 
         channel = await self.get_channel(channel)
 
@@ -341,6 +353,9 @@ class Database(commands.Cog):
                                channel.channel_id)
 
     async def remove_subscription(self, user: int, channel: int):
+        """
+        deletes a subscription from a channel with the provided user
+        """
 
         subscription = await self.db.fetchrow("select * from subscribers where user_id = $1 and channel_id = $2",
                                               user, channel)
