@@ -11,6 +11,7 @@ import asyncpg
 import discord
 from ..models import *
 from typing import Union, List
+from ..exceptions.exceptions import *
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
 
@@ -44,7 +45,29 @@ class Database(commands.Cog):
 
         assert type == "average" or type == "decent"
 
-        user = self.get_user(user)
+        user = await self.get_user(user)
+        channel = await self.get_channel(channel)
+
+        if type == "average":
+            cost = math.ceil(0.03 * channel.subscribers)
+            new_subscribers = math.ceil(0.01 * channel.subscribers)
+        elif type == "decent":
+            cost = math.ceil(0.06 * channel.subscribers)
+            new_subscribers = math.ceil(0.02 * channel.subscribers)
+        else:
+            return False
+
+        if cost > user.money:
+            raise NotEnoughMoney
+
+        cost = -1 * cost
+
+        async with self.db.acquire() as conn:
+
+            await self.adjust_money(user.user_id, cost)
+
+            await conn.execute("update channels set subscribers = $1 where channel_id = $2",
+                               channel.subscribers + new_subscribers, channel.channel_id)
 
     async def check_award(self, ctx: commands.Context, channel: Channel):
         """
