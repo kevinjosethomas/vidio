@@ -22,6 +22,37 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
+    async def add_channel(self, user: int, name: str, description: str, category: str):
+        """
+        creates a new channel under the provided user's name
+        """
+
+        async with self.db.acquire() as conn:
+
+            database_user = await self.db.fetchrow("select * from users where user_id = $1",
+                                                   user)
+
+            if not database_user:
+                await conn.execute("insert into users (user_id, money, commands) values ($1, $2, $3)",
+                                   user, 0, 1)
+
+            channels = await self.get_channels(user)
+
+            if len(channels) >= 3:
+                raise ChannelLimitError
+
+            for channel in channels:
+                if channel.name == name:
+                    raise DuplicateChannelNameError
+
+            if len(name) > 50 or len(description) > 1000 or len(category) > 30:
+                raise InvalidInputError
+
+            await conn.execute('insert into channels (user_id, name, description, '
+                               'subscribers, total_views, category, created_at) '
+                               'values ($1, $2, $3, $4, $5, $6, $7)',
+                               user, name, description, 0, 0, category, int(time.time()))
+
     async def adjust_money(self, user: int, added_money: int):
         """
         add's the given balance to the provided user
@@ -57,7 +88,7 @@ class Database(commands.Cog):
             raise UnknownError("Invalid advertisement type input")
 
         if cost > user.money:
-            raise NotEnoughMoney
+            raise NotEnoughMoneyError
 
         cost = -1 * cost
 
@@ -83,7 +114,7 @@ class Database(commands.Cog):
         cost = -1 * (amount * 5)
 
         if cost > user.money:
-            raise NotEnoughMoney
+            raise NotEnoughMoneyError
 
         new_subscribers = amount
 
@@ -159,7 +190,7 @@ class Database(commands.Cog):
                                       user_id)
 
         if not user:
-            return False
+            raise InvalidUser
         else:
             return User(
                 user_id=user[0],
@@ -176,7 +207,7 @@ class Database(commands.Cog):
                                          channel_id)
 
         if not channel:
-            return False
+            raise InvalidChannel
         else:
             return Channel(
                 channel_id=channel[0],
