@@ -4,6 +4,9 @@ file containing all custom errors needed for the bot
 
 
 class UnknownError(Exception):
+    """
+    triggered when no other exception covers the error
+    """
 
     def __init__(self, reason: str = "Unkown reason!"):
         """basic initialization of UnknownError exception"""
@@ -16,6 +19,9 @@ class UnknownError(Exception):
 
 
 class InvalidUser(Exception):
+    """
+    triggered when a user is not in the database
+    """
 
     def __init__(self):
         """basic initialization of the InvalidUser exception"""
@@ -28,6 +34,9 @@ class InvalidUser(Exception):
 
 
 class InvalidChannel(Exception):
+    """
+    triggered when a channel is not in the database
+    """
 
     def __init__(self, cause: str = "channel_id or user_id"):
         """basic initialization of the InvalidChannel exception"""
@@ -39,12 +48,29 @@ class InvalidChannel(Exception):
         return self.message
 
 
-class NotEnoughMoney(Exception):
+class NotEnoughMoneyError(Exception):
+    """
+    triggered when a user initiates an action which they don't have enough money for
+    """
 
     def __init__(self):
         """basic initialization of the NotEnoughMoney exception"""
 
         self.message = "Provided user doesn't have enough money"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class ChannelLimitError(Exception):
+    """
+    triggered when a user already has 3 channels under their name
+    """
+
+    def __init__(self):
+
+        self.message = "Provided user already has 3 channels"
         super().__init__(self.message)
 
     def __str__(self):
