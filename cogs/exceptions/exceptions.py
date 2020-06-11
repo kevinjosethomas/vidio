@@ -37,3 +37,15 @@ class InvalidChannel(Exception):
 
     def __str__(self):
         return self.message
+
+
+class NotEnoughMoney(Exception):
+
+    def __init__(self):
+        """basic initialization of the NotEnoughMoney exception"""
+
+        self.message = "Provided user doesn't have enough money"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
