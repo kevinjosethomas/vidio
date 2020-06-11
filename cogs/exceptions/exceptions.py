@@ -54,7 +54,7 @@ class NotEnoughMoneyError(Exception):
     """
 
     def __init__(self):
-        """basic initialization of the NotEnoughMoney exception"""
+        """basic initialization of the NotEnoughMoneyError exception"""
 
         self.message = "Provided user doesn't have enough money"
         super().__init__(self.message)
@@ -69,8 +69,24 @@ class ChannelLimitError(Exception):
     """
 
     def __init__(self):
+        """basic initialization of the ChannelLimitError exception"""
 
         self.message = "Provided user already has 3 channels"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class InvalidInputError(Exception):
+    """
+    triggered when provided input is too long or has invalid characters
+    """
+
+    def __init__(self, cause=""):
+        """basic initalization of the InvalidInputError exception"""
+
+        self.message = f"Provided input is invalid{' ({cause})' if cause else ''}"
         super().__init__(self.message)
 
     def __str__(self):
