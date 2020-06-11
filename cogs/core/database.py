@@ -66,6 +66,25 @@ class Database(commands.Cog):
                                'values ($1, $2, $3, $4, $5, $6, $7)',
                                user, name, description, 0, 0, category, int(time.time()))
 
+    async def add_subscriber(self, user: int, channel: channel):
+
+        user = await self.get_user(user)
+        channel = await self.get_user(channel)
+
+        subscribers = await self.db.fetch('select * from subscriptions where user_id = $1 and channel_id = $2',
+                                          user.user_id, channel.user_id)
+
+        if subscribers:
+            raise AlreadySubscribedError
+
+        if channel.user_id == user.user_id:
+            raise SelfSubscribeError
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("insert into subscriptions (user_id, channel_id) values ($1, $2)",
+                               user.user_id, channel.user_id)
+
     async def adjust_money(self, user: int, added_money: int):
         """
         add's the given balance to the provided user
