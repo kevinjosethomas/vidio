@@ -28,7 +28,7 @@ class Database(commands.Cog):
                                         user)
 
         if banned:
-            raise DuplicateDatabaseEntryError('botban')
+            raise AlreadyBotBanned('botban')
 
         async with self.db.acquire() as conn:
 
@@ -65,6 +65,16 @@ class Database(commands.Cog):
                                'subscribers, total_views, category, created_at) '
                                'values ($1, $2, $3, $4, $5, $6, $7)',
                                user, name, description, 0, 0, category, int(time.time()))
+
+    async def add_guild(self, guild: int):
+        """
+        adds the provided guild to the database
+        """
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("insert into guilds (guild_id, prefix, commands) values ($1, $2, $3)",
+                               guild, '-', 0)
 
     async def add_subscriber(self, user: int, channel: channel):
 
