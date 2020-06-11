@@ -123,6 +123,21 @@ class AlreadyBotBanned(Exception):
         return self.message
 
 
+class NotBotBanned(Exception):
+    """
+    triggered when a unbanned user is unbanned
+    """
+
+    def __init__(self):
+        """basic initialization of the NotBotBanned exception"""
+
+        self.message = f"This user is not botbanned"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
 class AlreadySubscribedError(Exception):
     """
     triggered when a user tries to subscribe to someone they are already subscribed to
