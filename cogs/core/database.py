@@ -41,12 +41,15 @@ class Database(commands.Cog):
             await conn.execute("update users set money = $1 where user_id = $2",
                                money, user)
 
-    async def buy_advertisement(self, user: int, channel: int, type: str):
+    async def buy_advertisement(self, channel: int, type: str) -> dict:
+        """
+        buys an advertisement for the given channel
+        """
 
         assert type == "average" or type == "decent"
 
-        user = await self.get_user(user)
         channel = await self.get_channel(channel)
+        user = await self.get_user(channel.user_id)
 
         if type == "average":
             cost = math.ceil(0.03 * channel.subscribers)
@@ -55,7 +58,7 @@ class Database(commands.Cog):
             cost = math.ceil(0.06 * channel.subscribers)
             new_subscribers = math.ceil(0.02 * channel.subscribers)
         else:
-            return False
+            raise UnknownError("Invalid advertisement type input")
 
         if cost > user.money:
             raise NotEnoughMoney
@@ -68,6 +71,37 @@ class Database(commands.Cog):
 
             await conn.execute("update channels set subscribers = $1 where channel_id = $2",
                                channel.subscribers + new_subscribers, channel.channel_id)
+
+        return {
+            "cost": -1 * cost,
+            "new_subscribers": new_subscribers}
+
+    async def buy_subbot(self, channel: int, amount: int) -> dict:
+        """
+        buys x amount of subscribers for the channel
+        """
+
+        channel = await self.get_channel(channel)
+        user = await self.get_user(channel.user_id)
+
+        cost = -1 * (amount * 5)
+
+        if cost > user.money:
+            raise NotEnoughMoney
+
+        new_subscribers = amount
+
+        async with self.db.acquire() as conn:
+
+            await self.adjust_money(user.user_id, cost)
+
+            await conn.execute("update channels set subscribers = $1 where channel_id = $2",
+                               channel.subscribers + new_subscribers, channel.channel_id)
+
+        return {
+            "cost": -1 * cost,
+            "new_subscribers": new_subscribers
+        }
 
     async def check_award(self, ctx: commands.Context, channel: Channel):
         """
