@@ -5,15 +5,11 @@ holds all database methods and functions
 
 import math
 import time
-import string
 import random
-import asyncpg
-import discord
 from ..models import *
 from typing import Union, List
 from ..exceptions.exceptions import *
-from discord.ext import commands, tasks
-from datetime import datetime, timedelta
+from discord.ext import commands
 
 
 class Database(commands.Cog):
