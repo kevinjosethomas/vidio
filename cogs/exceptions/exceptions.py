@@ -91,3 +91,18 @@ class InvalidInputError(Exception):
 
     def __str__(self):
         return self.message
+
+
+class DuplicateChannelNameError(Exception):
+    """
+    triggered when a channel with the same name and same owner is created
+    """
+
+    def __init__(self):
+        """basic initialization of the DuplicateChannelError exception"""
+
+        self.message = "The owner has a channel with the same name"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
