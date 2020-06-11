@@ -331,6 +331,15 @@ class Database(commands.Cog):
             await conn.execute("delete from botbans where user_id = $1",
                                user)
 
+    async def remove_channel(self, channel: int):
+
+        channel = await self.get_channel(channel)
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("delete from channels where channel_id = $1",
+                               channel.channel_id)
+
     async def remove_subscription(self, user: int, channel: int):
 
         subscription = await self.db.fetchrow("select * from subscribers where user_id = $1 and channel_id = $2",
