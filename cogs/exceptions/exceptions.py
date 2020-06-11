@@ -26,3 +26,14 @@ class InvalidUser(Exception):
     def __str__(self):
         return self.message
 
+
+class InvalidChannel(Exception):
+
+    def __init__(self, cause: str = "channel_id or user_id"):
+        """basic initialization of the InvalidChannel exception"""
+
+        self.message = f"Invalid {cause} was provided"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
