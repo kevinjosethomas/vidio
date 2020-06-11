@@ -319,6 +319,19 @@ class Database(commands.Cog):
 
         return new_money
 
+    async def remove_subscription(self, user: int, channel: int):
+
+        subscription = await self.db.fetchrow("select * from subscribers where user_id = $1 and channel_id = $2",
+                                              user, channel)
+
+        if not subscription:
+            raise SubscriptionDoesntExist
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("delete from subscriptions where user_id = $1 and channel_id = $2",
+                               user, channel)
+
     async def set_money(self, user: int, money: int):
         """
         sets the given user's balance to the money provided
