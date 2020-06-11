@@ -28,7 +28,7 @@ class Database(commands.Cog):
                                         user)
 
         if banned:
-            raise AlreadyBotBanned('botban')
+            raise AlreadyBotBanned()
 
         async with self.db.acquire() as conn:
 
@@ -318,6 +318,18 @@ class Database(commands.Cog):
                                user.user_id, int(time.time()))
 
         return new_money
+
+    async def remove_ban(self, user: int):
+
+        banned = await self.db.fetchrow("select * from bans where user_id = $1",
+                                        user)
+
+        if not banned:
+            raise AlreadyBotBanned()
+
+        async with self.db.acquire() as conn:
+            await conn.execute("delete from botbans where user_id = $1",
+                               user)
 
     async def remove_subscription(self, user: int, channel: int):
 
