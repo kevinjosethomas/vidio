@@ -344,6 +344,23 @@ class Database(commands.Cog):
             guilds = await self.db.fetch("select * from guilds order by commands desc limit 10")
             return list(guilds)
 
+    async def get_prefix(self, guild: int):
+        """Fetches the custom prefix for the provided server"""
+
+        prefix = await self.db.fetchrow(
+            "select prefix from guilds where guild_id = $1",
+            guild
+        )
+
+        if not prefix:
+            async with self.db.acquire() as conn:
+                await conn.execute(""
+                                   "insert into guilds (guild_id, prefix) values ($1, $2)",
+                                   guild, '-')
+
+                return '-'
+        return prefix
+
     async def get_subscribers(self, channel: int) -> Union[list, None]:
         """
         returns all the users who are subscribed to the provided channel
@@ -396,6 +413,9 @@ class Database(commands.Cog):
         return users
 
     async def get_video(self, channel: int, search: str) -> Union[list, None]:
+        """
+        fetches a video with a similar search term that was uploaded by the provided channel
+        """
 
         videos = await self.db.fetch("select * from videos where channel_id = $1 and name like $2",
                                      channel, search)

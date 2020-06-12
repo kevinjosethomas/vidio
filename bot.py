@@ -46,7 +46,8 @@ async def get_prefix(_bot: commands.Bot, message: discord.Message) -> str:
                                "insert into guilds (guild_id, prefix) values ($1, $2)",
                                guild_id, '-')
 
-    return '-'
+        return '-'
+    return prefix
 
 
 bot = commands.AutoShardedBot(
