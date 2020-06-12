@@ -66,12 +66,14 @@ create table if not exists warns (
 );
 
 create table if not exists vote_reminders (
+    user_id bigint primary key,
     toggle boolean,
     last_reminded bigint,
     last_voted bigint
 );
 
 create table if not exists upload_reminders (
+    channel_id bigint primary key,
     toggle boolean,
     last_reminded bigint,
     last_uploaded bigint
