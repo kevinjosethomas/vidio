@@ -13,6 +13,7 @@ from discord.ext import commands
 
 
 class Database(commands.Cog):
+    
 
     def __init__(self, bot: commands.Bot):
         """
@@ -273,7 +274,7 @@ class Database(commands.Cog):
                                        user_id)
 
         if not channels:
-            return False
+            raise InvalidChannel
         else:
             channel_list = []
             for channel in channels:
@@ -291,6 +292,45 @@ class Database(commands.Cog):
                 )
 
             return channel_list
+
+    async def get_leaderboard(self, category: str):
+
+        assert category == "subscribers" or \
+               category == "total_views" or \
+               category == "money" or \
+               category == "commands" or \
+               category == "gcommands"
+
+        if category == "subscribers" or category == "views":
+
+            channels = await self.db.fetch(f"select * from channels order by {category} desc limit 10")
+            for channel in channels:
+                channels[channels.index(channel)] = Channel(
+                    channel_id=channel[0],
+                    user_id=channel[1],
+                    name=channel[2],
+                    description=channel[3],
+                    subscribers=channel[4],
+                    total_views=channel[5],
+                    category=channel[6],
+                    created_at=channel[7]
+                )
+            return list(channels)
+
+        elif category == "money" or category == "commands":
+
+            users = await self.db.fetch(f"select * from users order by {category} desc limit 10")
+            for user in users:
+                users[users.index(user)] = User(
+                    user_id=user[0],
+                    money=user[1],
+                    commands=user[2]
+                )
+            return list(users)
+
+        else:
+            guilds = await self.db.fetch("select * from guilds order by commands desc limit 10")
+            return list(guilds)
 
     async def get_user(self, user_id: int) -> Union[User, bool]:
         """
