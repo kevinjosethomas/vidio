@@ -78,21 +78,6 @@ class ChannelLimitError(Exception):
         return self.message
 
 
-class InvalidInputError(Exception):
-    """
-    triggered when provided input is too long or has invalid characters
-    """
-
-    def __init__(self, cause=""):
-        """basic initalization of the InvalidInputError exception"""
-
-        self.message = f"Provided input is invalid{f' ({cause})' if cause else ''}"
-        super().__init__(self.message)
-
-    def __str__(self):
-        return self.message
-
-
 class DescriptionTooLongError(Exception):
     """
     triggered when the provided channel description is too long
