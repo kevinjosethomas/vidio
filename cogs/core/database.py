@@ -523,6 +523,24 @@ class Database(commands.Cog):
             await conn.execute("update users set money = $1 where user_id = $2",
                                money, user)
 
+    async def set_prefix(self, guild: int, prefix: str):
+
+        if len(prefix) > 10:
+            raise PrefixTooLongError
+
+        async with self.db.acquire() as conn:
+
+            current_prefix = await self.db.fetchrow("select * from guilds where guild_id = $1",
+                                                    guild)
+            if not current_prefix:
+                await conn.execute("insert into guilds (guild_id, prefix) values ($1, $2)",
+                                   guild, prefix)
+                return
+
+            await conn.execute("update guilds set prefix = $1 where guild_id = $2",
+                               prefix, guild)
+            return
+
 
 def setup(bot):
     bot.add_cog(Database(bot))
