@@ -78,6 +78,21 @@ class ChannelLimitError(Exception):
         return self.message
 
 
+class NameTooLongError(Exception):
+    """
+    triggered when the provided channel name is too long
+    """
+
+    def __init__(self):
+        """basic initialization of the NameTooLongError exception"""
+
+        self.message = "Provided channel name is too long (Above 50 characters)"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
 class DescriptionTooLongError(Exception):
     """
     triggered when the provided channel description is too long
