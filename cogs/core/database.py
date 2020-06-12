@@ -345,7 +345,7 @@ class Database(commands.Cog):
             return list(guilds)
 
     async def get_prefix(self, guild: int):
-        """Fetches the custom prefix for the provided server"""
+        """fetches the custom prefix for the provided server"""
 
         prefix = await self.db.fetchrow(
             "select prefix from guilds where guild_id = $1",
@@ -412,7 +412,7 @@ class Database(commands.Cog):
 
         return users
 
-    async def get_video(self, channel: int, search: str) -> Union[list, None]:
+    async def get_video_by_search(self, channel: int, search: str) -> Union[list, None]:
         """
         fetches a video with a similar search term that was uploaded by the provided channel
         """
@@ -421,6 +421,23 @@ class Database(commands.Cog):
                                      channel, search)
 
         if videos:
+            for video in videos:
+                videos[videos.index(video)] = Video(
+                    video_id=video[0],
+                    channel_id=video[1],
+                    name=video[2],
+                    description=video[3],
+                    status=video[4],
+                    new_subscribers=video[5],
+                    new_money=video[6],
+                    views=video[7],
+                    likes=video[8],
+                    dislikes=video[9],
+                    subscriber_cap=video[10],
+                    iteration=video[11],
+                    last_updated=video[12],
+                    uploaded_at=video[13]
+                )
             return list(videos)
         return videos
 
