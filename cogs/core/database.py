@@ -13,7 +13,6 @@ from discord.ext import commands
 
 
 class Database(commands.Cog):
-    
 
     def __init__(self, bot: commands.Bot):
         """
@@ -62,8 +61,11 @@ class Database(commands.Cog):
                 if channel.name == name:
                     raise DuplicateChannelNameError
 
-            if len(name) > 50 or len(description) > 1000 or len(category) > 30:
-                raise InvalidInputError
+            if len(name) > 50:
+                raise NameTooLongError
+
+            if len(description) > 1000:
+                raise DescriptionTooLongError
 
             await conn.execute('insert into channels (user_id, name, description, '
                                'subscribers, total_views, category, created_at) '
@@ -513,6 +515,18 @@ class Database(commands.Cog):
             await conn.execute("delete from subscriptions where user_id = $1 and channel_id = $2",
                                user, channel)
 
+    async def set_description(self, channel: int, description: str):
+
+        channel = await self.get_channel(channel)
+
+        if len(description) > 1000:
+            raise DescriptionTooLongError
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update channels set description = $1 where channel_id = $2",
+                               description, channel.description)
+
     async def set_money(self, user: int, money: int):
         """
         sets the given user's balance to the money provided
@@ -524,6 +538,9 @@ class Database(commands.Cog):
                                money, user)
 
     async def set_prefix(self, guild: int, prefix: str):
+        """
+        updated the custom prefix for the provided guild
+        """
 
         if len(prefix) > 10:
             raise PrefixTooLongError
