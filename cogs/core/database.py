@@ -293,6 +293,15 @@ class Database(commands.Cog):
 
             return channel_list
 
+    async def get_channels_count(self) -> int:
+        """
+        returns the total number of channels in the vidio database
+        """
+
+        channels = await self.db.fetchrow("select count(*) from channels")
+
+        return channels
+
     async def get_leaderboard(self, category: str) -> list:
         """
         gets top 10 people of various categories - subscribers, views, money, commands and guild commands for guilds
