@@ -336,6 +336,9 @@ class Database(commands.Cog):
             return list(guilds)
 
     async def get_subscribers(self, channel: int) -> Union[list, None]:
+        """
+        returns all the users who are subscribed to the provided channel
+        """
 
         subscribers = await self.db.fetch("select * from subscriptions where channel_id = $1",
                                           channel)
@@ -343,6 +346,19 @@ class Database(commands.Cog):
             return list(subscribers)
 
         return subscribers
+
+    async def get_subscriptions(self, user: int) -> Union[list, None]:
+        """
+        returns all the channels the provided user is subscribed to
+        """
+
+        subscriptions = await self.db.fetch("select * from subscriptions where user_id = $1",
+                                            user)
+
+        if subscriptions:
+            return list(subscriptions)
+
+        return subscriptions
 
     async def get_user(self, user_id: int) -> Union[User, bool]:
         """
