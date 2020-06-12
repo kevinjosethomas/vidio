@@ -229,6 +229,19 @@ class Database(commands.Cog):
         else:
             return False
 
+    async def get_awards(self, channel: int) -> list:
+        """
+        fetches all the awards that belong to the provided channel
+        """
+
+        awards = await self.db.fetch("select award from awards where channel_id = $1",
+                                     channel)
+
+        if awards:
+            return list(awards)
+
+        return awards
+
     async def get_channel(self, channel_id: int) -> Union[Channel, bool]:
         """
         gets a channel with the provided channel id
