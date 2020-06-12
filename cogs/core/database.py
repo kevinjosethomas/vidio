@@ -515,7 +515,22 @@ class Database(commands.Cog):
             await conn.execute("delete from subscriptions where user_id = $1 and channel_id = $2",
                                user, channel)
 
+    async def set_channel_name(self, channel: int, name: str):
+
+        channel = await self.get_channel(channel)
+
+        if len(name) > 50:
+            raise NameTooLongError
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update channels set name = $1 where channel_id = $2",
+                               name, channel)
+
     async def set_description(self, channel: int, description: str):
+        """
+        updates the channel description for the provided channel
+        """
 
         channel = await self.get_channel(channel)
 
