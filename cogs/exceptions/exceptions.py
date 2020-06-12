@@ -93,6 +93,21 @@ class InvalidInputError(Exception):
         return self.message
 
 
+class DescriptionTooLongError(Exception):
+    """
+    triggered when the provided channel description is too long
+    """
+
+    def __init__(self):
+        """basic initialization of the DescriptionTooLongError exception"""
+
+        self.message = "Provided description is too long (Above 1000 characters)"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
 class DuplicateChannelNameError(Exception):
     """
     triggered when a channel with the same name and same owner is created
