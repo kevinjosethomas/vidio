@@ -174,9 +174,24 @@ class SubscriptionDoesntExist(Exception):
     """
 
     def __init__(self):
-        """basic initialization of SubscriptionDoesntExist exception"""
+        """basic initialization of the SubscriptionDoesntExist exception"""
 
         self.message = "User attempted to unsubscribe from non-existent subscription"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class PrefixTooLongError(Exception):
+    """
+    triggered when an administrator tries to set a guild prefix which is longer than the character limit
+    """
+
+    def __init__(self):
+        """basic initialization of the PrefixTooLongError"""
+
+        self.message = "User attempted to set a prefix longer than the character limit"
         super().__init__(self.message)
 
     def __str__(self):
