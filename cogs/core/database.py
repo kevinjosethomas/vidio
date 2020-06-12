@@ -386,6 +386,15 @@ class Database(commands.Cog):
                 commands=user[2]
             )
 
+    async def get_users_count(self) -> int:
+        """
+        returns the total number of unique users in the vidio database
+        """
+
+        users = await self.db.fetchrow("select count(*) from users")
+
+        return users
+
     async def on_vote(self, user: int, is_weekend: bool) -> Union[int, bool]:
         """
         method triggered when someone votes for the bot on dbl
