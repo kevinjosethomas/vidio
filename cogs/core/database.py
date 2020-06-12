@@ -573,6 +573,37 @@ class Database(commands.Cog):
                                prefix, guild)
             return
 
+    async def toggle_vote_reminder(self, user: int):
+        """
+        toggles a vote reminder for the provided user
+        """
+
+        user = await self.get_user(user)
+
+        reminder = await self.db.fetch("select * from vote_reminders where user_id = $1",
+                                       user.user_id)
+
+        vote = await self.db.fetchrow("select * from votes where user_id = $1 order by timestamp desc limit 1")
+        if vote is None:
+            vote = 0
+        else:
+            vote = [1]
+
+        async with self.db.acquire() as conn:
+
+            if reminder is None:
+                await conn.execute("insert into vote_reminders (user_id, toggle, last_reminded, last_voted) values ($1, $2, $3, $4)",
+                                   user.user_id, True, 0, vote)
+                reminder = False
+            elif not reminder:
+                await conn.execute("update vote_reminders set toggle = $1 where user_id = $2",
+                                   True, user.user_id)
+            elif reminder:
+                await conn.execute("update vote_reminders set toggle = $1 where user_id = $2",
+                                   False, user.user_id)
+
+        return not reminder
+
 
 def setup(bot):
     bot.add_cog(Database(bot))
