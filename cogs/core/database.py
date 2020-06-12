@@ -395,6 +395,15 @@ class Database(commands.Cog):
 
         return users
 
+    async def get_video(self, channel: int, search: str) -> Union[list, None]:
+
+        videos = await self.db.fetch("select * from videos where channel_id = $1 and name like $2",
+                                     channel, search)
+
+        if videos:
+            return list(videos)
+        return videos
+
     async def on_vote(self, user: int, is_weekend: bool) -> Union[int, bool]:
         """
         method triggered when someone votes for the bot on dbl
