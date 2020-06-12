@@ -230,7 +230,7 @@ class Database(commands.Cog):
         else:
             return False
 
-    async def get_awards(self, channel: int) -> list:
+    async def get_awards(self, channel: int) -> Union[list, None]:
         """
         fetches all the awards that belong to the provided channel
         """
@@ -293,7 +293,10 @@ class Database(commands.Cog):
 
             return channel_list
 
-    async def get_leaderboard(self, category: str):
+    async def get_leaderboard(self, category: str) -> list:
+        """
+        gets top 10 people of various categories - subscribers, views, money, commands and guild commands for guilds
+        """
 
         assert category == "subscribers" or \
                category == "total_views" or \
@@ -331,6 +334,15 @@ class Database(commands.Cog):
         else:
             guilds = await self.db.fetch("select * from guilds order by commands desc limit 10")
             return list(guilds)
+
+    async def get_subscribers(self, channel: int) -> Union[list, None]:
+
+        subscribers = await self.db.fetch("select * from subscriptions where channel_id = $1",
+                                          channel)
+        if subscribers:
+            return list(subscribers)
+
+        return subscribers
 
     async def get_user(self, user_id: int) -> Union[User, bool]:
         """
