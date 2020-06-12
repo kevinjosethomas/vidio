@@ -22,7 +22,7 @@ create table if not exists videos (
     description text,
     status varchar(30),
     new_subscribers bigint,
-    new_money bigint,
+    new_money bigint default 0,
     views bigint,
     likes bigint,
     dislikes bigint,
@@ -33,7 +33,7 @@ create table if not exists videos (
 );
 
 create table if not exists guilds (
-    guild_id bigint,
+    guild_id bigint primary key,
     prefix varchar(15),
     commands bigint default 0
 );
@@ -49,7 +49,7 @@ create table if not exists votes (
 );
 
 create table if not exists botbans (
-    user_id bigint
+    user_id bigint primary key
 );
 
 create table if not exists awards (
@@ -65,8 +65,14 @@ create table if not exists warns (
     warning text
 );
 
-create table if not exists reminders (
-    reminder_type text,
+create table if not exists vote_reminders (
     toggle boolean,
-    last_reminded boolean
+    last_reminded bigint,
+    last_voted bigint
+);
+
+create table if not exists upload_reminders (
+    toggle boolean,
+    last_reminded bigint,
+    last_uploaded bigint
 );
