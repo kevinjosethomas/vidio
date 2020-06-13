@@ -9,7 +9,7 @@ import random
 from ..models import *
 from typing import Union, List
 from ..exceptions.exceptions import *
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 
 class Database(commands.Cog):
@@ -603,6 +603,41 @@ class Database(commands.Cog):
                                    False, user.user_id)
 
         return not reminder
+
+    # loops
+
+    @tasks.loop(minutes=30)
+    async def vote_reminder(self):
+
+        votes = await self.db.fetchrow("select * from votes where (extract(epoch from now()) - timestamp) > 43200")
+
+        for vote in votes:
+
+            user = await self.db.fetchrow("select * from vote_reminders where user_id = $1",
+                                          vote[0])
+
+            if not user[1]:
+                continue
+
+            if not user[3]:
+                user[3] = await self.db.fetchrow("select timestamp from votes where user_id = $1 order by timestamp desc limit 1",
+                                                 user[0])
+
+            if user[2] and user[3]:
+
+                if user[2] > user[3]:
+                    continue
+
+            await self.bot.get_user(user[0]).send(
+                f"{self.bot.EMOJIS['heart']} **hey!** It's been 12 hours since you last voted for **vidio**! "
+                f"Since you set vote reminders on, I'm assuming you would be interested to get some sweet "
+                f"money by voting here - https://top.gg/bot/689210550680682560"
+            )
+
+            async with self.db.acquire() as conn:
+
+                await conn.execute("update vote_reminders set last_reminded = $1 where user_id = $2",
+                                   int(time.time()), user[0])
 
 
 def setup(bot):
