@@ -470,6 +470,14 @@ class Database(commands.Cog):
             await conn.execute("insert into votes (user_id, timestamp) values ($1, $2)",
                                user.user_id, int(time.time()))
 
+            vote_reminder = await self.db.fetchrow("select * from vote_reminders where user_id = $1",
+                                                   user.user_id)
+
+            if vote_reminder[1]:
+
+                await conn.execute("update vote_reminders set last_reminded = $1 where user_id = $2",
+                                   int(time.time()), user.user_id)
+
         return new_money
 
     async def remove_ban(self, user: int):
