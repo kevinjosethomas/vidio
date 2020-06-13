@@ -608,6 +608,9 @@ class Database(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def vote_reminder(self):
+        """
+        reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last votes
+        """
 
         votes = await self.db.fetchrow("select * from votes where (extract(epoch from now()) - timestamp) > 43200")
 
@@ -638,6 +641,10 @@ class Database(commands.Cog):
 
                 await conn.execute("update vote_reminders set last_reminded = $1 where user_id = $2",
                                    int(time.time()), user[0])
+
+    @vote_reminder.before_loop
+    async def before_vote_reminding(self):
+        await self.bot.wait_until_ready()
 
 
 def setup(bot):
