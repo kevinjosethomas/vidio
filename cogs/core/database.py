@@ -442,18 +442,19 @@ class Database(commands.Cog):
                 videos[videos.index(video)] = Video(
                     video_id=video[0],
                     channel_id=video[1],
-                    name=video[2],
-                    description=video[3],
-                    status=video[4],
-                    new_subscribers=video[5],
-                    new_money=video[6],
-                    views=video[7],
-                    likes=video[8],
-                    dislikes=video[9],
-                    subscriber_cap=video[10],
-                    iteration=video[11],
-                    last_updated=video[12],
-                    uploaded_at=video[13]
+                    user_id=video[2],
+                    name=video[3],
+                    description=video[4],
+                    status=video[5],
+                    new_subscribers=video[6],
+                    new_money=video[7],
+                    views=video[8],
+                    likes=video[9],
+                    dislikes=video[10],
+                    subscriber_cap=video[11],
+                    iteration=video[12],
+                    last_updated=video[13],
+                    uploaded_at=video[14]
                 )
             return list(videos)
         return videos
@@ -632,6 +633,7 @@ class Database(commands.Cog):
         uploads a video under the provided channel
         """
 
+        channel = await self.get_channel(channel)
         status = await self.decide_video_status(name, description)
 
     # loops
