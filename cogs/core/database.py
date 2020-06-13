@@ -243,6 +243,10 @@ class Database(commands.Cog):
         else:
             weights = [15, 20, 50, 14.999, 0.001]
 
+        return (random.choices(
+            ['fail', 'poor', 'average', 'good', 'trending'],
+            weights=weights, k=1))[0]
+
     async def get_awards(self, channel: int) -> Union[list, None]:
         """
         fetches all the awards that belong to the provided channel
@@ -628,14 +632,14 @@ class Database(commands.Cog):
         uploads a video under the provided channel
         """
 
-        pass
+        status = await self.decide_video_status(name, description)
 
     # loops
 
     @tasks.loop(minutes=30)
     async def vote_reminder(self):
         """
-        reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last votes
+        reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last voted
         """
 
         votes = await self.db.fetchrow("select * from votes where (extract(epoch from now()) - timestamp) > 43200")
