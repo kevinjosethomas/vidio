@@ -612,6 +612,13 @@ class Database(commands.Cog):
 
         return not reminder
 
+    async def upload_video(self, channel: int, name: str, description: str):
+        """
+        uploads a video under the provided channel
+        """
+
+        pass
+
     # loops
 
     @tasks.loop(minutes=30)
