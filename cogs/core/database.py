@@ -232,6 +232,17 @@ class Database(commands.Cog):
         else:
             return False
 
+    async def decide_video_status(self, name: str, description: str) -> list:
+
+        if 5 < len(name) < 15 and 40 < len(description) < 100:
+            weights = [10, 20, 40, 29.999, 0.001]
+        elif 5 < len(name) < 15 and not 40 < len(description) < 100:
+            weights = [10, 20, 50, 19.999, 0.001]
+        elif not 5 < len(name) < 15 and 40 < len(description) < 100:
+            weights = [10, 15, 60, 14.999, 0.001]
+        else:
+            weights = [15, 20, 50, 14.999, 0.001]
+
     async def get_awards(self, channel: int) -> Union[list, None]:
         """
         fetches all the awards that belong to the provided channel
