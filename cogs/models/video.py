@@ -13,6 +13,7 @@ class Video:
 
         self.video_id = kwargs.get('video_id', None)
         self.channel_id = kwargs.get('channel_id', None)
+        self.user_id = kwargs.get('user_id', None)
         self.name = kwargs.get('name', None)
         self.description = kwargs.get('description', None)
         self.status = kwargs.get('status', None)
