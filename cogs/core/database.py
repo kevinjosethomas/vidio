@@ -599,7 +599,39 @@ class Database(commands.Cog):
                                prefix, guild)
             return
 
-    async def toggle_vote_reminder(self, user: int):
+    async def toggle_upload_reminder(self, channel: int) -> bool:
+        """
+        toggles an upload reminder for the provided channel
+        """
+
+        channel = await self.get_channel(channel)
+
+        reminder = await self.db.fetch("select * from upload_reminders where channel_id = $1",
+                                       channel.channel_id)
+
+        video = await self.db.fetchrow("select * from videos where channel_id = $1 order by timestamp desc limit 1",
+                                      channel.channel_id)
+        if video is None:
+            reminder = None
+        else:
+            reminder = video[1]
+
+        async with self.db.acquire() as conn:
+
+            if reminder is None:
+                await conn.execute("insert into vote_reminders (user_id, toggle, last_reminded, last_voted) values ($1, $2, $3, $4)",
+                                   channel.user_id, True, 0, video)
+                reminder = False
+            elif not reminder:
+                await conn.execute("update vote_reminders set toggle = $1 where user_id = $2",
+                                   True, channel.user_id)
+            elif reminder:
+                await conn.execute("update vote_reminders set toggle = $1 where user_id = $2",
+                                   False, channel.user_id)
+
+        return not reminder
+
+    async def toggle_vote_reminder(self, user: int) -> bool:
         """
         toggles a vote reminder for the provided user
         """
