@@ -51,3 +51,7 @@ class Settings(commands.Cog):
         self.bot.start_time = int(time.time())
         self.bot.commands = 0
         self.bot.support_server = self.bot.get_guild(self.bot.CONFIG["support_server_id"])
+
+
+def setup(bot):
+    bot.add_cog(Settings(bot))
