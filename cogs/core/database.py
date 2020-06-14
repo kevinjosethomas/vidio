@@ -66,7 +66,7 @@ class Database(commands.Cog):
             if len(name) > 50:
                 raise NameTooLongError
 
-            if len(description) > 1000:
+            if len(description) > 500:
                 raise DescriptionTooLongError
 
             await conn.execute('insert into channels (user_id, name, description, '
@@ -560,7 +560,7 @@ class Database(commands.Cog):
 
         channel = await self.get_channel(channel)
 
-        if len(description) > 1000:
+        if len(description) > 500:
             raise DescriptionTooLongError
 
         async with self.db.acquire() as conn:
@@ -634,6 +634,11 @@ class Database(commands.Cog):
         """
         uploads a video under the provided channel
         """
+
+        if len(name) > 50:
+            raise NameTooLongError
+        if len(description) > 500:
+            raise DescriptionTooLongError
 
         channel = await self.get_channel(channel)
         user = await self.get_user(channel.user_id)
