@@ -84,6 +84,24 @@ class Database(commands.Cog):
             await conn.execute("insert into guilds (guild_id, prefix, commands) values ($1, $2, $3)",
                                guild, '-', 0)
 
+    async def add_guild_command(self, guild: int, command_count: int):
+        """
+        adds commands to the provided guild's command count
+        """
+
+        commands = await self.db.fetch("select commands from guilds where guild_id = $1",
+                                       guild)
+
+        if not commands:
+            return
+
+        commands += command_count
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update guilds set commands = $1 where guild_id = $2",
+                               commands, guild)
+
     async def add_subscriber(self, user: int, channel: channel):
         """
         adds a subscription to the provided channel from the provided user
