@@ -1,6 +1,7 @@
-import random
 import time
-from discord.ext import commands
+import random
+import discord
+from discord.ext import commands, tasks
 
 
 class Settings(commands.Cog):
@@ -13,6 +14,10 @@ class Settings(commands.Cog):
         self.database = self.bot.get_cog('Database')
 
     async def bot_check(self, ctx):
+        """
+        global bot_check initiated before every command that checks if the
+        command author is banned, and also if the bot is ready
+        """
 
         banned = await self.database.check_banned(ctx.author.id)
 
@@ -64,6 +69,33 @@ class Settings(commands.Cog):
         self.bot.start_time = int(time.time())
         self.bot.commands = 0
         self.bot.support_server = self.bot.get_guild(self.bot.CONFIG["support_server_id"])
+
+    # loops
+
+    @tasks.loop(minutes=random.randint(20, 25))
+    async def change_presence(self):
+        """
+        loop that is ran every 20-25 minutes that changes the bot's presence status
+        """
+
+        presences = [
+            discord.Activity(
+                name='youtube videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name='satisfying slime videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name='some viral videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name='youtube videos',
+                type=discord.ActivityType.watching),
+            discord.Activity(
+                name=f'{len(self.bot.guilds)} servers',
+                type=discord.ActivityType.watching),
+        ]
+        await self.bot.change_presence(activity=random.choice(presences))
 
 
 def setup(bot):
