@@ -20,7 +20,7 @@
       },
       "subscribers": -25,
       "stats": {
-        "likes": [1],
+        "likes": [1, 1],
         "dislikes": [2, 4]
       },
       "max": -4
@@ -41,7 +41,7 @@
       },
       "subscribers": 20,
       "stats": {
-        "likes": [3],
+        "likes": [3, 3],
         "dislikes": [1, 2]
       },
       "max": 4
@@ -62,7 +62,7 @@
       },
       "subscribers": 25,
       "stats": {
-        "likes": [3],
+        "likes": [3, 3],
         "dislikes": [1, 2]
       },
       "max": 5
