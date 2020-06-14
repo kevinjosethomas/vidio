@@ -721,8 +721,98 @@ class Database(commands.Cog):
                 uploaded_at=uploaded_at
                 )
 
-
     # loops
+
+    @tasks.loop(minutes=30)
+    async def update_video(self):
+        """
+        updated video statistics for eligible videos
+        """
+
+        videos = await self.db.fetch("select * from videos where iteration < 11 and (extract(epoch from now()) - timestamp) > 43200")
+
+        for video in videos:
+
+            video = Video(
+                video_id=video[0],
+                channel_id=video[1],
+                user_id=video[2],
+                name=video[3],
+                description=video[4],
+                status=video[5],
+                new_subscribers=video[6],
+                new_money=video[7],
+                views=video[8],
+                likes=video[9],
+                dislikes=video[10],
+                subscriber_cap=video[11],
+                iteration=video[12],
+                last_updated=video[13],
+                uploaded_at=video[14]
+            )
+
+            iteration = video.iteration
+
+            if video.iteration >= 11:
+                continue
+
+            iteration += 1
+            status = video.status.lower()
+
+            user = await self.get_user(video.user_id)
+            channel = await self.get_channel(video.channel_id)
+
+            if channel.subscribers < 20:
+                continue
+
+            views = math.ceil(self.bot.algorith[status]["views"][iteration] * video.views * 100)
+            total_video_views = video.views + views
+            total_channel_views = channel.total_views + views
+
+            subscribers = math.ceil(self.bot.algorithm[status]["subscribers"] * views / 100)
+            if subscribers > video.subscriber_cap:
+                subscribers = video.subscriber_cap
+            total_video_subscribers = video.new_subscribers + subscribers
+            total_channel_subscribers = channel.subscribers + subscribers
+
+            if 200 < channel.subscribers > 400:
+                money = math.ceil(views / 2)
+            elif 400 < channel.subscribers > 1000:
+                money = math.ceil(views / 4)
+            elif 1000 < channel.subscribers > 10000:
+                money = math.ceil(views / 8)
+            elif channel.subscribers > 10000:
+                money = math.ceil(views / 10)
+            else:
+                money = 0
+
+            total_video_money = video.new_money + money
+            total_user_money = user.money + money
+
+            likes = math.ceil(random.randint(
+                self.bot.algorithm[status]['stats']['likes'][0],
+                self.bot.algorithm[status]['stats']['likes'][1]
+            ) * total_video_views / 100)
+            dislikes = math.ceil(random.randint(
+                self.bot.algorithm[status]['stats']['dislikes'][0],
+                self.bot.algorithm[status]['stats']['dislikes'][1]
+            ) * total_video_views / 100)
+
+            async with self.db.acquire() as conn:
+
+                await conn.execute("update videos set new_subscribers = $1, "
+                                   "new_money = $2, views = $3, likes = $4, "
+                                   "dislikes = $5, iteration = $6, last_updated = $7 "
+                                   "where video_id = $8",
+                                   total_video_subscribers, total_video_money,
+                                   total_video_views, likes, dislikes, iteration,
+                                   int(time.time()), video.video_id)
+
+                await conn.execute("update channels set subscribers = $1, total_views = $2 where channel_id = $3",
+                                   total_channel_subscribers, total_channel_views, channel.channel_id)
+
+                await conn.execute("update users set money = $1 where user_id = $2",
+                                   total_user_money, user.user_id)
 
     @tasks.loop(minutes=30)
     async def vote_reminder(self):
