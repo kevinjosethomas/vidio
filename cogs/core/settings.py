@@ -38,3 +38,16 @@ class Settings(commands.Cog):
 
         await self.database.add_user_command(ctx.author.id, 1)
         await self.database.add_guild_command(ctx.guild.id, 1)
+
+        self.bot.commands += 1
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        """
+        event initiated when the bot is ready
+        """
+
+        print(f"vidio is back online!")
+        self.bot.start_time = int(time.time())
+        self.bot.commands = 0
+        self.bot.support_server = self.bot.get_guild(self.bot.CONFIG["support_server_id"])
