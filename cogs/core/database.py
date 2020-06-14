@@ -22,6 +22,8 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
+        self.algorithm = self.bot.config["algorithm"]
+
     async def add_ban(self, user: int):
         """
         botbans the provided user
@@ -628,13 +630,92 @@ class Database(commands.Cog):
 
         return not reminder
 
-    async def upload_video(self, channel: int, name: str, description: str):
+    async def upload_video(self, ctx: commands.Context, channel: int, name: str, description: str) -> Video:
         """
         uploads a video under the provided channel
         """
 
         channel = await self.get_channel(channel)
+        user = await self.get_user(channel.user_id)
         status = await self.decide_video_status(name, description)
+
+        iteration = 1
+
+        views = math.ceil(self.algorithm[status]["views"][iteration] * channel.subscribers / 100)
+        total_views = channel.total_views + views
+
+        if 200 < channel.subscribers > 400:
+            money = math.ceil(views / 2)
+        elif 400 < channel.subscribers > 1000:
+            money = math.ceil(views / 4)
+        elif 1000 < channel.subscribers > 10000:
+            money = math.ceil(views / 8)
+        elif channel.subscribers > 10000:
+            money = math.ceil(views / 10)
+        else:
+            money = 0
+
+        total_money = user.money + money
+
+        subscribers = math.ceil(self.algorithm[status]["subscribers"] * views / 100)
+        total_subscribers = channel.subscribers + subscribers
+
+        likes = random.randint(
+            self.algorithm[status]["stats"]["likes"][0],
+            self.algorithm[status]["stats"]["likes"][1]
+        ) * views / 100
+        dislikes = random.randint(
+            self.algorithm[status]["stats"]["dislikes"][0],
+            self.algorithm[status]["stats"]["dislikes"][1]
+        ) * views / 100
+
+        max_cap = math.ceil(self.algorithm[status]["max"] * channel.subscribers / 100)
+
+        if channel.subscribers < 20:
+            status = 'average'
+            views = random.randint(5, 10)
+            subscribers = math.ceil(80 * views / 100)
+            total_subscribers = channel.subscribers + subscribers
+            likes = math.ceil(20 * views / 100)
+            dislikes = math.ceil(5 * views / 100)
+
+        last_updated, uploaded_at = int(time.time())
+
+        async with self.db.acquire as conn:
+
+            await conn.execute("insert into videos (channel_id, "
+                               "user_id, name, description, status, new_subscribers, "
+                               "new_money, views, likes, dislikes, subscriber_cap, "
+                               "iteration, last_updated, uploaded_at)",
+                               channel.channel_id, channel.user_id, name, description,
+                               status, subscribers, money, views, likes, dislikes,
+                               max_cap, iteration, last_updated, uploaded_at)
+
+            await conn.execute("update channels set subscribers = $1, total_views = $2 where channel_id = $3",
+                               total_subscribers, total_views, channel.channel_id)
+
+            await conn.execute("update users set money = $1 where user_id = $2",
+                               total_money, channel.user_id)
+
+        await self.check_award(ctx, channel)
+
+        return Video(
+                channel_id=channel.channel_id,
+                user_id=user.user_id,
+                name=name,
+                description=description,
+                status=status,
+                new_subscribers=subscribers,
+                new_money=money,
+                views=views,
+                likes=likes,
+                dislikes=dislikes,
+                subscriber_cap=max_cap,
+                iteration=iteration,
+                last_updated=last_updated,
+                uploaded_at=uploaded_at
+                )
+
 
     # loops
 
