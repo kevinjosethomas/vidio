@@ -962,6 +962,10 @@ class Database(commands.Cog):
                 await conn.execute("update upload_reminders set last_reminded = $1 where channel_id = $2",
                                    int(time.time()), channel[0])
 
+    @upload_reminder.before_loop
+    async def before_upload_reminding(self):
+        await self.bot.wait_until_ready()
+
 
 def setup(bot):
     bot.add_cog(Database(bot))
