@@ -724,7 +724,7 @@ class Database(commands.Cog):
     # loops
 
     @tasks.loop(minutes=30)
-    async def update_video(self):
+    async def update_videos(self):
         """
         updated video statistics for eligible videos
         """
@@ -814,6 +814,10 @@ class Database(commands.Cog):
                 await conn.execute("update users set money = $1 where user_id = $2",
                                    total_user_money, user.user_id)
 
+    @update_videos.before_loop
+    async def before_updating_videos(self):
+        await self.bot.wait_until_ready()
+
     @tasks.loop(minutes=30)
     async def vote_reminder(self):
         """
@@ -824,10 +828,10 @@ class Database(commands.Cog):
 
         for vote in votes:
 
-            user = await self.db.fetchrow("select * from vote_reminders where user_id = $1",
+            user = await self.db.fetchrow("select * from vote_reminders where user_id = $1 and toggle is true",
                                           vote[0])
 
-            if not user[1]:
+            if not user or not user[1]:
                 continue
 
             if not user[3]:
@@ -853,6 +857,42 @@ class Database(commands.Cog):
     @vote_reminder.before_loop
     async def before_vote_reminding(self):
         await self.bot.wait_until_ready()
+
+    @tasks.loop(minutes=2)
+    async def upload_reminder(self):
+        """
+        reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last voted
+        """
+
+        videos = await self.db.fetchrow("select * from videos where (extract(epoch from now()) - timestamp) > 3600")
+
+        for video in videos:
+
+            channel = await self.db.fetchrow("select * from upload_reminders where channel_id = $1 and toggle is true",
+                                          video[1])
+
+            if not channel or not channel[1]:
+                continue
+
+            if not channel[3]:
+                channel[3] = await self.db.fetchrow("select uploaded_at from videos where channel_id = $1 order by uploaded_at desc limit 1",
+                                                    channel[0])
+
+            if channel[2] and channel[3]:
+
+                if channel[2] > channel[3]:
+                    continue
+
+            await self.bot.get_user(channel[0]).send(
+                f"{self.bot.EMOJIS['heart']} **hey!** It's been an hour since you last uploaded on **vidio**! "
+                f"Since you set upload reminders on, I'm assuming you're determined to climb that leaderboard."
+                f"Make sure you upload often!"
+            )
+
+            async with self.db.acquire() as conn:
+
+                await conn.execute("update upload_reminders set last_reminded = $1 where channel_id = $2",
+                                   int(time.time()), channel[0])
 
 
 def setup(bot):
