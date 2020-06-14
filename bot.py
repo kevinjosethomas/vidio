@@ -87,7 +87,8 @@ with open('data/comments.json', encoding="utf8") as COMMENTS:
 
 
 bot.cog_list = [
-    'cogs.core.database'
+    'cogs.core.database',
+    'cogs.commands.simulation'
 ]
 
 for cog in bot.cog_list:
