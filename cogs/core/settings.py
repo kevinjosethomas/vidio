@@ -12,6 +12,19 @@ class Settings(commands.Cog):
         self.bot = bot
         self.database = self.bot.get_cog('Database')
 
+    async def bot_check(self, ctx):
+
+        banned = await self.database.check_banned(ctx.author.id)
+
+        if banned:
+            return False
+
+        if not self.bot.is_ready():
+            await ctx.send(f'**{random.choice(["Hold up", "Wait a moment"])}!** vidio is still starting up!')
+            return
+
+        return True
+
     @commands.Cog.listener()
     async def on_command(self, ctx):
         """
