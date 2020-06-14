@@ -24,6 +24,10 @@ class Database(commands.Cog):
 
         self.algorithm = self.bot.config["algorithm"]
 
+        self.update_videos.start()
+        self.vote_reminder.start()
+        self.upload_reminder.start()
+
     async def add_ban(self, user: int):
         """
         botbans the provided user
