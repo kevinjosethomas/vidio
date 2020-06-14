@@ -124,6 +124,24 @@ class Database(commands.Cog):
             await conn.execute("insert into subscriptions (user_id, channel_id) values ($1, $2)",
                                user.user_id, channel.user_id)
 
+    async def add_user_command(self, user: int, command_count: int):
+        """
+        adds commands to the provided user's command count
+        """
+
+        commands = await self.db.fetch("select commands from users where user_id = $1",
+                                       user)
+
+        if not commands:
+            return
+
+        commands += command_count
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update users set commands = $1 where user_id = $2",
+                               commands, user)
+
     async def adjust_money(self, user: int, added_money: int):
         """
         add's the given balance to the provided user
