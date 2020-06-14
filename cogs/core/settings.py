@@ -68,6 +68,17 @@ class Settings(commands.Cog):
         await self.database.add_guild(guild)
 
     @commands.Cog.listener()
+    async def on_message(self, message):
+        """
+        event triggered when a message is sent that the bot has read access to
+        """
+
+        if self.bot.user in message.mentions:
+            await message.channel.send(
+                f'The prefix for this server is -'
+                f'** ``{(await self.database.get_prefix(message.guild))}``')
+
+    @commands.Cog.listener()
     async def on_ready(self):
         """
         event initiated when the bot is ready

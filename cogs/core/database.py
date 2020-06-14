@@ -399,7 +399,7 @@ class Database(commands.Cog):
             guilds = await self.db.fetch("select * from guilds order by commands desc limit 10")
             return list(guilds)
 
-    async def get_prefix(self, guild: int):
+    async def get_prefix(self, guild: int) -> str:
         """fetches the custom prefix for the provided server"""
 
         prefix = await self.db.fetchrow(
