@@ -1,3 +1,4 @@
+import random
 import time
 from discord.ext import commands
 
@@ -13,6 +14,27 @@ class Settings(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
-        """event called when a command is executed"""
+        """
+        event called when a command is executed
+        """
 
-        self.bot.logger.info(f'COMMAND {ctx.command} EXECUTED BY {ctx.author} AT {int(time.time())}')
+        self.bot.logger.info(f'COMMAND {ctx.command} EXECUTED BY {ctx.author.id} AT {int(time.time())}')
+
+    @commands.Cog.listener()
+    async def on_command_completion(self, ctx):
+        """
+        event called when a command execution is complete
+        """
+
+        replies = [
+            'Upvote the bot to get some money! https://top.gg/bot/689210550680682560/vote',
+            f'Regularly check ``{ctx.prefix}changelog`` to learn about new cool features!',
+            'Join the vidio support server to stay updated about '
+            'new features! https://discord.gg/pGzQUvE',
+            f'Use ``{ctx.prefix}toggle_vote_reminder`` to enable bot vote reminders!']
+
+        if random.choice([True, False, False, False, False]):
+            await ctx.send(f'**Tip:** {random.choice(replies)}')
+
+        await self.database.add_user_command(ctx.author.id, 1)
+        await self.database.add_guild_command(ctx.guild.id, 1)
