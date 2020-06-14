@@ -60,6 +60,14 @@ class Settings(commands.Cog):
         self.bot.commands += 1
 
     @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        """
+        event initiated when the bot joins a server
+        """
+
+        await self.database.add_guild(guild)
+
+    @commands.Cog.listener()
     async def on_ready(self):
         """
         event initiated when the bot is ready
