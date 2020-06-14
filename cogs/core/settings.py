@@ -1,6 +1,8 @@
 import time
 import random
+import asyncio
 import discord
+import traceback
 from discord.ext import commands, tasks
 
 
@@ -58,6 +60,141 @@ class Settings(commands.Cog):
         await self.database.add_guild_command(ctx.guild.id, 1)
 
         self.bot.commands += 1
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        """
+        event triggered when an error/exception is raised
+        """
+
+        try:
+            if ctx.handled is True:
+                return
+        except AttributeError:
+            pass
+
+        if isinstance(error, commands.CommandNotFound):
+            return
+
+        elif isinstance(error, commands.CommandOnCooldown):
+            message = f"**Try again later!** " \
+                      f"You need to wait {str(error.retry_after // 60)} " \
+                      f"minutes and {str(error.retry_after % 60)} seconds " \
+                      f"to execute this command again!"
+            await ctx.send(message)
+            return
+
+        elif isinstance(error, commands.MissingRequiredArgument):
+            message = "**Missing command parameters!** Please make sure you " \
+                      "are providing the right arguments for this command. " \
+                      f"You are missing the ``{error.param}`` argument."
+            await ctx.send(message)
+            return
+
+        elif isinstance(error, commands.MissingPermissions):
+            message = "**Missing Permissions!** You are missing the required " \
+                      "permissions to execute that command. You need " \
+                      f"``{', '.join(error.missing_perms)}``"
+            await ctx.send(message)
+            return
+
+        elif isinstance(error, commands.NoPrivateMessage):
+            return
+
+        try:
+            if isinstance(error.original, commands.ExtensionNotFound):
+                message = "**Invalid Cog!** The mentioned cog does not exist."
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, commands.ExtensionError):
+                message = f"**Unknown Cog Error!** Error in extension - ``{error.original.name}``."
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, commands.ExtensionNotLoaded):
+                message = f"**Invalid Cog!** The mentioned cog is not loaded."
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, commands.ExtensionAlreadyLoaded):
+                message = "**Invalid Cog!** The mentioned cog is already loaded."
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, commands.ExtensionFailed):
+                message = f"**Cog Error!** Failed to load the mentioned cog - ``{error.original.name}``."
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, discord.Forbidden):
+                message = "**Missing Bot Permissions!** I do not have permission to send " \
+                          "messages in the channel you initiated the command in."
+                await ctx.author.send(message)
+                return
+
+            elif isinstance(error.original, asyncio.TimeoutError):
+                message = "**Timed Out!** Canceled the input process as you took too long to reply!"
+                await ctx.send(message)
+                return
+
+        except AttributeError:
+            pass
+
+        else:
+
+            message = "**Unknown Error!** Please try again later. " \
+                      f"If this issue persists, please report it in the support server. (``{ctx.prefix}links``)"
+            await ctx.send(message)
+
+            etype = type(error)
+            trace = error.__traceback__
+            verbosity = 2
+            lines = traceback.format_exception(etype, error, trace, verbosity)
+            traceback_error = ''.join(lines)
+
+            error_channel = await self.bot.support_server.get_channel(self.bot.CONFIG["error_channel_id"])
+
+            user_input = ctx.message.content
+            guild = ctx.author.guild
+            timestamp = int(time.time())
+            channel = ctx.channel
+            user = ctx.author.id
+            try:
+                invites = await self.bot.get_guild(guild).invites()
+            except discord.Forbidden:
+                invites = None
+
+            embed = discord.Embed()
+
+            embed.add_field(
+                name="Input",
+                value=f"```{user_input}```"
+            )
+            embed.add_field(
+                name="Guild",
+                value=guild
+            )
+            embed.add_field(
+                name="Channel",
+                value=channel
+            )
+            embed.add_field(
+                name="User",
+                value=f"{user} at {timestamp}"
+            )
+            if invites:
+                embed.add_field(
+                    name="Invites",
+                    value=invites[:4]
+                )
+            embed.add_field(
+                name="Traceback",
+                value=f"```traceback_error```"
+            )
+
+            await error_channel.send(embed=embed)
+
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
