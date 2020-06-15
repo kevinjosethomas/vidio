@@ -46,7 +46,7 @@ class Utility(commands.Cog):
             f'**Latency:** ``{round(self.bot.latency * 1000, 2)} ms``\n',
             color=self.bot.embed)
 
-        emb.set_author(name='vidio', icon_url=self.bot.avatar_url)
+        emb.set_author(name='vidio', icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=emb)
 

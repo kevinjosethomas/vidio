@@ -234,6 +234,9 @@ class Settings(commands.Cog):
                 invites = invites[:4]
                 for invite in invites:
                     invites[invites.index(invite)] = f"https://discord.gg/{invite.code} \n"
+
+                invites = ''.join(invites)
+
             except discord.Forbidden:
                 invites = None
 
@@ -251,7 +254,7 @@ class Settings(commands.Cog):
             )
             embed.add_field(
                 name="Channel",
-                value=f"``#{channel}`` - <#{channel}>",
+                value=f"``#{channel}`` - <#{channel.id}>",
                 inline=False
             )
             embed.add_field(
