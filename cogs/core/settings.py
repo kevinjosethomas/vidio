@@ -60,7 +60,7 @@ class Settings(commands.Cog):
         await self.database.add_user_command(ctx.author.id, 1)
         await self.database.add_guild_command(ctx.guild.id, 1)
 
-        self.bot.commands += 1
+        self.bot.command_count += 1
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
