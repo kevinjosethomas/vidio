@@ -936,12 +936,12 @@ class Database(commands.Cog):
         reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last voted
         """
 
-        videos = await self.db.fetchrow("select * from videos where (extract(epoch from now()) - timestamp) > 3600")
+        videos = await self.db.fetchrow("select * from videos where (extract(epoch from now()) - uploaded_at) > 3600")
 
         for video in videos:
 
             channel = await self.db.fetchrow("select * from upload_reminders where channel_id = $1 and toggle is true",
-                                          video[1])
+                                             video[1])
 
             if not channel or not channel[1]:
                 continue
