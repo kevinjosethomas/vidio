@@ -231,6 +231,9 @@ class Settings(commands.Cog):
             user = ctx.author.id
             try:
                 invites = await guild.invites()
+                invites = invites[:4]
+                for invite in invites:
+                    invites[invites.index(invite)] = f"https://discord.gg/{invite[0]}"
             except discord.Forbidden:
                 invites = None
 
@@ -238,28 +241,28 @@ class Settings(commands.Cog):
 
             embed.add_field(
                 name="Input",
-                value=f"```{user_input}```"
+                value=f"```{user_input}```",
+                inline=False
             )
             embed.add_field(
                 name="Guild",
-                value=guild
+                value=f"{guild.name} {f'| {invites}' if invites else ''}",
+                inline=False
             )
             embed.add_field(
                 name="Channel",
-                value=channel
+                value=channel,
+                inline=False
             )
             embed.add_field(
                 name="User",
-                value=f"{user} at {timestamp}"
+                value=f"{user} at {timestamp}",
+                inline=False
             )
-            if invites:
-                embed.add_field(
-                    name="Invites",
-                    value=invites[:4]
-                )
             embed.add_field(
                 name="Traceback",
-                value=f"```traceback_error```"
+                value=f"```{traceback_error}```",
+                inline=False
             )
 
             await error_channel.send(embed=embed)
