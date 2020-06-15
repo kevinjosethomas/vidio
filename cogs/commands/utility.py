@@ -1,3 +1,4 @@
+import time
 import discord
 from discord.ext import commands
 from datetime import datetime, timedelta
@@ -40,7 +41,8 @@ class Utility(commands.Cog):
             f'**Total Users:** ``{len(self.bot.users)} users``\n'
             f'**Total Guilds:** ``{len(self.bot.guilds)} servers``\n'
             f'**Total DMs:** ``{len(self.bot.private_channels)} DMs``\n'
-            f'**Total TextChannels:** ``{len(list(self.bot.get_all_channels()))} channels``\n'
+            f'**Total Commands:** ``{self.bot.command_count} commands since startup.``\n'
+            f'**Average commands/s"** ``{str(self.bot.command_count / (int(time.time()) - self.bot.start_time))}'
             f'**Latency:** ``{round(self.bot.latency * 1000, 2)} ms``\n',
             color=self.bot.embed)
 
