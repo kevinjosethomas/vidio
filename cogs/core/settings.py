@@ -225,12 +225,12 @@ class Settings(commands.Cog):
             error_channel = self.bot.support_server.get_channel(self.bot.CONFIG["error_channel_id"])
 
             user_input = ctx.message.content
-            guild = ctx.author.guild
+            guild = ctx.guild
             timestamp = int(time.time())
             channel = ctx.channel
             user = ctx.author.id
             try:
-                invites = await self.bot.get_guild(guild).invites()
+                invites = await guild.invites()
             except discord.Forbidden:
                 invites = None
 
