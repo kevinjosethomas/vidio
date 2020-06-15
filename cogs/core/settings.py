@@ -233,7 +233,7 @@ class Settings(commands.Cog):
                 invites = await guild.invites()
                 invites = invites[:4]
                 for invite in invites:
-                    invites[invites.index(invite)] = f"https://discord.gg/{invite.code}\n"
+                    invites[invites.index(invite)] = f"https://discord.gg/{invite.code} \n"
             except discord.Forbidden:
                 invites = None
 
@@ -251,12 +251,12 @@ class Settings(commands.Cog):
             )
             embed.add_field(
                 name="Channel",
-                value=channel,
+                value=f"``#{channel}`` - <#{channel}>",
                 inline=False
             )
             embed.add_field(
                 name="User",
-                value=f"{user} at {timestamp}",
+                value=f"``{user}`` - <@{user}>",
                 inline=False
             )
             embed.add_field(
