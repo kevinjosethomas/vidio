@@ -22,7 +22,7 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
-        self.algorithm = self.bot.config["algorithm"]
+        self.algorithm = self.bot.CONFIG["algorithm"]
 
         self.update_videos.start()
         self.vote_reminder.start()
