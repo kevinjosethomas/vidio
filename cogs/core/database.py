@@ -801,7 +801,7 @@ class Database(commands.Cog):
         updated video statistics for eligible videos
         """
 
-        videos = await self.db.fetch("select * from videos where iteration < 11 and (extract(epoch from now()) - timestamp) > 43200")
+        videos = await self.db.fetch("select * from videos where iteration < 11 and (extract(epoch from now()) - last_updated) > 43200")
 
         for video in videos:
 
