@@ -233,7 +233,7 @@ class Settings(commands.Cog):
                 invites = await guild.invites()
                 invites = invites[:4]
                 for invite in invites:
-                    invites[invites.index(invite)] = f"https://discord.gg/{invite[0]}"
+                    invites[invites.index(invite)] = f"https://discord.gg/{invite.code}\n"
             except discord.Forbidden:
                 invites = None
 
@@ -246,7 +246,7 @@ class Settings(commands.Cog):
             )
             embed.add_field(
                 name="Guild",
-                value=f"{guild.name} {f'| {invites}' if invites else ''}",
+                value=f"{guild.name}\n{f'{invites}' if invites else ''}",
                 inline=False
             )
             embed.add_field(
@@ -266,7 +266,6 @@ class Settings(commands.Cog):
             )
 
             await error_channel.send(embed=embed)
-
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
