@@ -420,7 +420,7 @@ class Database(commands.Cog):
                                    guild, '-')
 
                 return '-'
-        return prefix
+        return prefix[0]
 
     async def get_subscribers(self, channel: int) -> Union[list, None]:
         """
