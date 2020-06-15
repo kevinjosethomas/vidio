@@ -93,8 +93,8 @@ class Database(commands.Cog):
         adds commands to the provided guild's command count
         """
 
-        commands = await self.db.fetch("select commands from guilds where guild_id = $1",
-                                       guild)
+        commands = await self.db.fetchrow("select commands from guilds where guild_id = $1",
+                                          guild)
 
         if not commands:
             return
