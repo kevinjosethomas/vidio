@@ -531,10 +531,10 @@ class Database(commands.Cog):
             vote_reminder = await self.db.fetchrow("select * from vote_reminders where user_id = $1",
                                                    user.user_id)
 
-            if vote_reminder[1]:
-
-                await conn.execute("update vote_reminders set last_reminded = $1 where user_id = $2",
-                                   int(time.time()), user.user_id)
+            if vote_reminder:
+                if vote_reminder[1]:
+                    await conn.execute("update vote_reminders set last_reminded = $1 where user_id = $2",
+                                       int(time.time()), user.user_id)
 
         return new_money
 
