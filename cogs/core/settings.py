@@ -286,7 +286,7 @@ class Settings(commands.Cog):
 
         if self.bot.user in message.mentions:
             await message.channel.send(
-                f'The prefix for this server is - '
+                f'The prefix for this server is '
                 f'``{(await self.database.get_prefix(message.guild.id))}``')
 
     @commands.Cog.listener()
