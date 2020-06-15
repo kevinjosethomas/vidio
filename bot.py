@@ -91,7 +91,11 @@ bot.AUTH = AUTH
 
 bot.cog_list = [
     'cogs.core.database',
-    'cogs.commands.simulation'
+    'cogs.core.settings',
+    'cogs.core.topgg',
+    'cogs.commands.simulation',
+    'cogs.commands.owner',
+    'cogs.commands.utility'
 ]
 
 for cog in bot.cog_list:
