@@ -361,7 +361,7 @@ class Database(commands.Cog):
 
         channels = await self.db.fetchrow("select count(*) from channels")
 
-        return channels
+        return channels[0]
 
     async def get_leaderboard(self, category: str) -> list:
         """
