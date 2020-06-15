@@ -99,6 +99,8 @@ class Database(commands.Cog):
         if not commands:
             return
 
+        commands = commands[0]
+
         commands += command_count
 
         async with self.db.acquire() as conn:

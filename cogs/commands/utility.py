@@ -42,7 +42,7 @@ class Utility(commands.Cog):
             f'**Total Guilds:** ``{len(self.bot.guilds)} servers``\n'
             f'**Total DMs:** ``{len(self.bot.private_channels)} DMs``\n'
             f'**Total Commands:** ``{self.bot.command_count} commands since startup.``\n'
-            f'**Average commands/s"** ``{str(self.bot.command_count / (int(time.time()) - self.bot.start_time))}'
+            f'**Average commands/s"** ``{str(self.bot.command_count / (int(time.time()) - self.bot.start_time))}``\n'
             f'**Latency:** ``{round(self.bot.latency * 1000, 2)} ms``\n',
             color=self.bot.embed)
 
