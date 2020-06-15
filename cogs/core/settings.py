@@ -292,7 +292,7 @@ class Settings(commands.Cog):
 
         print(f"vidio is back online!")
         self.bot.start_time = int(time.time())
-        self.bot.commands = 0
+        self.bot.command_count = 0
         self.bot.support_server = self.bot.get_guild(self.bot.CONFIG["support_server_id"])
 
         self.change_presence.start()
