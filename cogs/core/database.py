@@ -58,14 +58,19 @@ class Database(commands.Cog):
                 await conn.execute("insert into users (user_id, money, commands) values ($1, $2, $3)",
                                    user, 0, 1)
 
-            channels = await self.get_channels(user)
+            try:
+                channels = await self.get_channels(user)
+            except InvalidChannel:
+                channels = None
 
-            if len(channels) >= 3:
-                raise ChannelLimitError
+            if channels:
 
-            for channel in channels:
-                if channel.name == name:
-                    raise DuplicateChannelNameError
+                if len(channels) >= 3:
+                    raise ChannelLimitError
+
+                for channel in channels:
+                    if channel.name == name:
+                        raise DuplicateChannelNameError
 
             if len(name) > 50:
                 raise NameTooLongError

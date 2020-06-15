@@ -146,16 +146,12 @@ class Vidio(commands.Cog):
         try:
             channels = await self.database.get_channels(ctx.author.id)
         except InvalidChannel:
-            pass
+            channels = None
 
-        try:
-            if channels:
-                if len(channels) >= 3:
-                    await ctx.send(
-                        f"{self.bot.EMOJIS['no']} **You cannot create more than 3 channels.**")
-                    return
-        except UnboundLocalError:
-            pass
+        if len(channels) >= 3:
+            await ctx.send(
+                f"{self.bot.EMOJIS['no']} **You cannot create more than 3 channels.**")
+            return
 
         name_msg = f'{self.bot.EMOJIS["youtube"]} **Step 1/3: Choose a name ' \
                    'for your channel**\nLet\'s create your channel! First, ' \
