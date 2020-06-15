@@ -42,8 +42,7 @@ async def get_prefix(_bot: commands.Bot, message: discord.Message) -> str:
 
     if not prefix:
         async with _bot.db.acquire() as conn:
-            await conn.execute(""
-                               "insert into guilds (guild_id, prefix) values ($1, $2)",
+            await conn.execute("insert into guilds (guild_id, prefix) values ($1, $2)",
                                guild_id, '-')
 
         return '-'
