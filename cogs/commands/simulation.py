@@ -4,6 +4,7 @@ import random
 import asyncio
 import discord
 from discord.ext import commands
+from ..exceptions.exceptions import *
 from datetime import datetime, timedelta
 from discord.ext.commands.cooldowns import BucketType
 
@@ -142,14 +143,16 @@ class Vidio(commands.Cog):
         def author_check(msg):
             return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
-        channels = await self.database.get_channels(ctx.author.id)
+        try:
+            channels = await self.database.get_channels(ctx.author.id)
+        except InvalidChannel:
+            pass
 
-        if channels == "Channel doesn't exist":
-            channels = None
-        elif len(channels) >= 3:
-            await ctx.send(
-                f"{self.bot.EMOJIS['no']} **You cannot create more than 3 channels.**")
-            return
+        if channels:
+            if len(channels) >= 3:
+                await ctx.send(
+                    f"{self.bot.EMOJIS['no']} **You cannot create more than 3 channels.**")
+                return
 
         name_msg = f'{self.bot.EMOJIS["youtube"]} **Step 1/3: Choose a name ' \
                    'for your channel**\nLet\'s create your channel! First, ' \
