@@ -898,6 +898,9 @@ class Database(commands.Cog):
 
         votes = await self.db.fetchrow("select * from votes where (extract(epoch from now()) - timestamp) > 43200")
 
+        if not votes:
+            return
+
         for vote in votes:
 
             user = await self.db.fetchrow("select * from vote_reminders where user_id = $1 and toggle is true",
@@ -937,6 +940,9 @@ class Database(commands.Cog):
         """
 
         videos = await self.db.fetchrow("select * from videos where (extract(epoch from now()) - uploaded_at) > 3600")
+
+        if not videos:
+            return
 
         for video in videos:
 
