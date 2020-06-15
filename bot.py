@@ -54,6 +54,8 @@ bot = commands.AutoShardedBot(
     case_insensitive=True
 )
 
+bot.embed = 0x2f3136
+
 
 async def database_setup() -> None:
     """Sets up the database pool connection"""
