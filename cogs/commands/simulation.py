@@ -142,7 +142,7 @@ class Vidio(commands.Cog):
         def author_check(msg):
             return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
-        channels = await self.database.get_channel(ctx.author.id)
+        channels = await self.database.get_channels(ctx.author.id)
 
         if channels == "Channel doesn't exist":
             channels = None
