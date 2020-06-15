@@ -222,7 +222,7 @@ class Settings(commands.Cog):
             lines = traceback.format_exception(etype, error, trace, verbosity)
             traceback_error = ''.join(lines)
 
-            error_channel = await self.bot.support_server.get_channel(self.bot.CONFIG["error_channel_id"])
+            error_channel = self.bot.support_server.get_channel(self.bot.CONFIG["error_channel_id"])
 
             user_input = ctx.message.content
             guild = ctx.author.guild
