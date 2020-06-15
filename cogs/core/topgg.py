@@ -55,3 +55,8 @@ class TopGG(commands.Cog):
         print(type(data))
 
 
+def setup(bot):
+    bot.add_cog(TopGG(bot))
+
+
+
