@@ -22,6 +22,8 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.db
 
+        self.algorithm = self.bot.config["algorithm"]
+
     async def add_ban(self, user: int):
         """
         botbans the provided user
@@ -64,7 +66,7 @@ class Database(commands.Cog):
             if len(name) > 50:
                 raise NameTooLongError
 
-            if len(description) > 1000:
+            if len(description) > 500:
                 raise DescriptionTooLongError
 
             await conn.execute('insert into channels (user_id, name, description, '
@@ -81,6 +83,24 @@ class Database(commands.Cog):
 
             await conn.execute("insert into guilds (guild_id, prefix, commands) values ($1, $2, $3)",
                                guild, '-', 0)
+
+    async def add_guild_command(self, guild: int, command_count: int):
+        """
+        adds commands to the provided guild's command count
+        """
+
+        commands = await self.db.fetch("select commands from guilds where guild_id = $1",
+                                       guild)
+
+        if not commands:
+            return
+
+        commands += command_count
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update guilds set commands = $1 where guild_id = $2",
+                               commands, guild)
 
     async def add_subscriber(self, user: int, channel: channel):
         """
@@ -103,6 +123,24 @@ class Database(commands.Cog):
 
             await conn.execute("insert into subscriptions (user_id, channel_id) values ($1, $2)",
                                user.user_id, channel.user_id)
+
+    async def add_user_command(self, user: int, command_count: int):
+        """
+        adds commands to the provided user's command count
+        """
+
+        commands = await self.db.fetch("select commands from users where user_id = $1",
+                                       user)
+
+        if not commands:
+            return
+
+        commands += command_count
+
+        async with self.db.acquire() as conn:
+
+            await conn.execute("update users set commands = $1 where user_id = $2",
+                               commands, user)
 
     async def adjust_money(self, user: int, added_money: int):
         """
@@ -243,6 +281,10 @@ class Database(commands.Cog):
         else:
             weights = [15, 20, 50, 14.999, 0.001]
 
+        return (random.choices(
+            ['fail', 'poor', 'average', 'good', 'trending'],
+            weights=weights, k=1))[0]
+
     async def get_awards(self, channel: int) -> Union[list, None]:
         """
         fetches all the awards that belong to the provided channel
@@ -357,7 +399,7 @@ class Database(commands.Cog):
             guilds = await self.db.fetch("select * from guilds order by commands desc limit 10")
             return list(guilds)
 
-    async def get_prefix(self, guild: int):
+    async def get_prefix(self, guild: int) -> str:
         """fetches the custom prefix for the provided server"""
 
         prefix = await self.db.fetchrow(
@@ -438,18 +480,19 @@ class Database(commands.Cog):
                 videos[videos.index(video)] = Video(
                     video_id=video[0],
                     channel_id=video[1],
-                    name=video[2],
-                    description=video[3],
-                    status=video[4],
-                    new_subscribers=video[5],
-                    new_money=video[6],
-                    views=video[7],
-                    likes=video[8],
-                    dislikes=video[9],
-                    subscriber_cap=video[10],
-                    iteration=video[11],
-                    last_updated=video[12],
-                    uploaded_at=video[13]
+                    user_id=video[2],
+                    name=video[3],
+                    description=video[4],
+                    status=video[5],
+                    new_subscribers=video[6],
+                    new_money=video[7],
+                    views=video[8],
+                    likes=video[9],
+                    dislikes=video[10],
+                    subscriber_cap=video[11],
+                    iteration=video[12],
+                    last_updated=video[13],
+                    uploaded_at=video[14]
                 )
             return list(videos)
         return videos
@@ -553,7 +596,7 @@ class Database(commands.Cog):
 
         channel = await self.get_channel(channel)
 
-        if len(description) > 1000:
+        if len(description) > 500:
             raise DescriptionTooLongError
 
         async with self.db.acquire() as conn:
@@ -592,7 +635,39 @@ class Database(commands.Cog):
                                prefix, guild)
             return
 
-    async def toggle_vote_reminder(self, user: int):
+    async def toggle_upload_reminder(self, channel: int) -> bool:
+        """
+        toggles an upload reminder for the provided channel
+        """
+
+        channel = await self.get_channel(channel)
+
+        reminder = await self.db.fetch("select * from upload_reminders where channel_id = $1",
+                                       channel.channel_id)
+
+        video = await self.db.fetchrow("select * from videos where channel_id = $1 order by timestamp desc limit 1",
+                                      channel.channel_id)
+        if video is None:
+            reminder = None
+        else:
+            reminder = video[1]
+
+        async with self.db.acquire() as conn:
+
+            if reminder is None:
+                await conn.execute("insert into vote_reminders (user_id, toggle, last_reminded, last_voted) values ($1, $2, $3, $4)",
+                                   channel.user_id, True, 0, video)
+                reminder = False
+            elif not reminder:
+                await conn.execute("update vote_reminders set toggle = $1 where user_id = $2",
+                                   True, channel.user_id)
+            elif reminder:
+                await conn.execute("update vote_reminders set toggle = $1 where user_id = $2",
+                                   False, channel.user_id)
+
+        return not reminder
+
+    async def toggle_vote_reminder(self, user: int) -> bool:
         """
         toggles a vote reminder for the provided user
         """
@@ -623,29 +698,208 @@ class Database(commands.Cog):
 
         return not reminder
 
-    async def upload_video(self, channel: int, name: str, description: str):
+    async def upload_video(self, ctx: commands.Context, channel: int, name: str, description: str) -> Video:
         """
         uploads a video under the provided channel
         """
 
-        pass
+        if len(name) > 50:
+            raise NameTooLongError
+        if len(description) > 500:
+            raise DescriptionTooLongError
+
+        channel = await self.get_channel(channel)
+        user = await self.get_user(channel.user_id)
+        status = await self.decide_video_status(name, description)
+
+        iteration = 1
+
+        views = math.ceil(self.algorithm[status]["views"][iteration] * channel.subscribers / 100)
+        total_views = channel.total_views + views
+
+        if 200 < channel.subscribers > 400:
+            money = math.ceil(views / 2)
+        elif 400 < channel.subscribers > 1000:
+            money = math.ceil(views / 4)
+        elif 1000 < channel.subscribers > 10000:
+            money = math.ceil(views / 8)
+        elif channel.subscribers > 10000:
+            money = math.ceil(views / 10)
+        else:
+            money = 0
+
+        total_money = user.money + money
+
+        subscribers = math.ceil(self.algorithm[status]["subscribers"] * views / 100)
+        total_subscribers = channel.subscribers + subscribers
+
+        likes = random.randint(
+            self.algorithm[status]["stats"]["likes"][0],
+            self.algorithm[status]["stats"]["likes"][1]
+        ) * views / 100
+        dislikes = random.randint(
+            self.algorithm[status]["stats"]["dislikes"][0],
+            self.algorithm[status]["stats"]["dislikes"][1]
+        ) * views / 100
+
+        max_cap = math.ceil(self.algorithm[status]["max"] * channel.subscribers / 100)
+
+        if channel.subscribers < 20:
+            status = 'average'
+            views = random.randint(5, 10)
+            subscribers = math.ceil(80 * views / 100)
+            total_subscribers = channel.subscribers + subscribers
+            likes = math.ceil(20 * views / 100)
+            dislikes = math.ceil(5 * views / 100)
+
+        last_updated, uploaded_at = int(time.time())
+
+        async with self.db.acquire as conn:
+
+            await conn.execute("insert into videos (channel_id, "
+                               "user_id, name, description, status, new_subscribers, "
+                               "new_money, views, likes, dislikes, subscriber_cap, "
+                               "iteration, last_updated, uploaded_at)",
+                               channel.channel_id, channel.user_id, name, description,
+                               status, subscribers, money, views, likes, dislikes,
+                               max_cap, iteration, last_updated, uploaded_at)
+
+            await conn.execute("update channels set subscribers = $1, total_views = $2 where channel_id = $3",
+                               total_subscribers, total_views, channel.channel_id)
+
+            await conn.execute("update users set money = $1 where user_id = $2",
+                               total_money, channel.user_id)
+
+        await self.check_award(ctx, channel)
+
+        return Video(
+                channel_id=channel.channel_id,
+                user_id=user.user_id,
+                name=name,
+                description=description,
+                status=status,
+                new_subscribers=subscribers,
+                new_money=money,
+                views=views,
+                likes=likes,
+                dislikes=dislikes,
+                subscriber_cap=max_cap,
+                iteration=iteration,
+                last_updated=last_updated,
+                uploaded_at=uploaded_at
+                )
 
     # loops
 
     @tasks.loop(minutes=30)
+    async def update_videos(self):
+        """
+        updated video statistics for eligible videos
+        """
+
+        videos = await self.db.fetch("select * from videos where iteration < 11 and (extract(epoch from now()) - timestamp) > 43200")
+
+        for video in videos:
+
+            video = Video(
+                video_id=video[0],
+                channel_id=video[1],
+                user_id=video[2],
+                name=video[3],
+                description=video[4],
+                status=video[5],
+                new_subscribers=video[6],
+                new_money=video[7],
+                views=video[8],
+                likes=video[9],
+                dislikes=video[10],
+                subscriber_cap=video[11],
+                iteration=video[12],
+                last_updated=video[13],
+                uploaded_at=video[14]
+            )
+
+            iteration = video.iteration
+
+            if video.iteration >= 11:
+                continue
+
+            iteration += 1
+            status = video.status.lower()
+
+            user = await self.get_user(video.user_id)
+            channel = await self.get_channel(video.channel_id)
+
+            if channel.subscribers < 20:
+                continue
+
+            views = math.ceil(self.bot.algorith[status]["views"][iteration] * video.views * 100)
+            total_video_views = video.views + views
+            total_channel_views = channel.total_views + views
+
+            subscribers = math.ceil(self.bot.algorithm[status]["subscribers"] * views / 100)
+            if subscribers > video.subscriber_cap:
+                subscribers = video.subscriber_cap
+            total_video_subscribers = video.new_subscribers + subscribers
+            total_channel_subscribers = channel.subscribers + subscribers
+
+            if 200 < channel.subscribers > 400:
+                money = math.ceil(views / 2)
+            elif 400 < channel.subscribers > 1000:
+                money = math.ceil(views / 4)
+            elif 1000 < channel.subscribers > 10000:
+                money = math.ceil(views / 8)
+            elif channel.subscribers > 10000:
+                money = math.ceil(views / 10)
+            else:
+                money = 0
+
+            total_video_money = video.new_money + money
+            total_user_money = user.money + money
+
+            likes = math.ceil(random.randint(
+                self.bot.algorithm[status]['stats']['likes'][0],
+                self.bot.algorithm[status]['stats']['likes'][1]
+            ) * total_video_views / 100)
+            dislikes = math.ceil(random.randint(
+                self.bot.algorithm[status]['stats']['dislikes'][0],
+                self.bot.algorithm[status]['stats']['dislikes'][1]
+            ) * total_video_views / 100)
+
+            async with self.db.acquire() as conn:
+
+                await conn.execute("update videos set new_subscribers = $1, "
+                                   "new_money = $2, views = $3, likes = $4, "
+                                   "dislikes = $5, iteration = $6, last_updated = $7 "
+                                   "where video_id = $8",
+                                   total_video_subscribers, total_video_money,
+                                   total_video_views, likes, dislikes, iteration,
+                                   int(time.time()), video.video_id)
+
+                await conn.execute("update channels set subscribers = $1, total_views = $2 where channel_id = $3",
+                                   total_channel_subscribers, total_channel_views, channel.channel_id)
+
+                await conn.execute("update users set money = $1 where user_id = $2",
+                                   total_user_money, user.user_id)
+
+    @update_videos.before_loop
+    async def before_updating_videos(self):
+        await self.bot.wait_until_ready()
+
+    @tasks.loop(minutes=30)
     async def vote_reminder(self):
         """
-        reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last votes
+        reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last voted
         """
 
         votes = await self.db.fetchrow("select * from votes where (extract(epoch from now()) - timestamp) > 43200")
 
         for vote in votes:
 
-            user = await self.db.fetchrow("select * from vote_reminders where user_id = $1",
+            user = await self.db.fetchrow("select * from vote_reminders where user_id = $1 and toggle is true",
                                           vote[0])
 
-            if not user[1]:
+            if not user or not user[1]:
                 continue
 
             if not user[3]:
@@ -670,6 +924,46 @@ class Database(commands.Cog):
 
     @vote_reminder.before_loop
     async def before_vote_reminding(self):
+        await self.bot.wait_until_ready()
+
+    @tasks.loop(minutes=2)
+    async def upload_reminder(self):
+        """
+        reminds every user who has enabled vote_reminders to vote if it's been 12 hours since they last voted
+        """
+
+        videos = await self.db.fetchrow("select * from videos where (extract(epoch from now()) - timestamp) > 3600")
+
+        for video in videos:
+
+            channel = await self.db.fetchrow("select * from upload_reminders where channel_id = $1 and toggle is true",
+                                          video[1])
+
+            if not channel or not channel[1]:
+                continue
+
+            if not channel[3]:
+                channel[3] = await self.db.fetchrow("select uploaded_at from videos where channel_id = $1 order by uploaded_at desc limit 1",
+                                                    channel[0])
+
+            if channel[2] and channel[3]:
+
+                if channel[2] > channel[3]:
+                    continue
+
+            await self.bot.get_user(channel[0]).send(
+                f"{self.bot.EMOJIS['heart']} **hey!** It's been an hour since you last uploaded on **vidio**! "
+                f"Since you set upload reminders on, I'm assuming you're determined to climb that leaderboard."
+                f"Make sure you upload often!"
+            )
+
+            async with self.db.acquire() as conn:
+
+                await conn.execute("update upload_reminders set last_reminded = $1 where channel_id = $2",
+                                   int(time.time()), channel[0])
+
+    @upload_reminder.before_loop
+    async def before_upload_reminding(self):
         await self.bot.wait_until_ready()
 
 

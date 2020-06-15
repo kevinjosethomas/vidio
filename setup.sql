@@ -18,6 +18,7 @@ create table if not exists channels (
 create table if not exists videos (
     video_id serial primary key,
     channel_id int references channels (channel_id),
+    user_id bigint references users (user_id),
     name varchar(55),
     description text,
     status varchar(30),
