@@ -85,6 +85,9 @@ with open('data/emojis.json', encoding="utf8") as EMOJIS:
 with open('data/comments.json', encoding="utf8") as COMMENTS:
     bot.COMMENTS = json.load(COMMENTS)
 
+bot.DBL_TOKEN = DBL_TOKEN
+bot.AUTH = AUTH
+
 
 bot.cog_list = [
     'cogs.core.database',
