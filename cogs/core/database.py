@@ -726,7 +726,6 @@ class Database(commands.Cog):
         iteration = 1
 
         views = math.ceil(self.algorithm[status]["views"][f"{iteration}"] * channel.subscribers / 100)
-        total_views = channel.total_views + views
 
         if 200 < channel.subscribers > 400:
             money = math.ceil(views / 2)
@@ -739,10 +738,7 @@ class Database(commands.Cog):
         else:
             money = 0
 
-        total_money = user.money + money
-
         subscribers = math.ceil(self.algorithm[status]["subscribers"] * views / 100)
-        total_subscribers = channel.subscribers + subscribers
 
         likes = random.randint(
             self.algorithm[status]["stats"]["likes"][0],
@@ -766,9 +762,13 @@ class Database(commands.Cog):
         if subscribers > max_cap:
             subscribers = max_cap
 
+        total_subscribers = channel.subscribers + subscribers
+        total_money = user.money + money
+        total_views = channel.total_views + views
+
         await ctx.send('``1. views -`` ' + str(views))
         await ctx.send('``2. channel views -`` ' + str(channel.total_views))
-        await ctx.send('total views (1+2) -`` ' + str(total_views))
+        await ctx.send('``total views (1+2) -`` ' + str(total_views))
 
         await ctx.send('``max subs -`` ' + str(max_cap))
 
