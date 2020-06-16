@@ -744,10 +744,14 @@ class Database(commands.Cog):
         else:
             money = 0
 
+        await ctx.send("1")
+
         total_money = user.money + money
 
         subscribers = math.ceil(self.algorithm[status]["subscribers"] * views / 100)
         total_subscribers = channel.subscribers + subscribers
+
+        await ctx.send("1")
 
         likes = random.randint(
             self.algorithm[status]["stats"]["likes"][0],
@@ -758,7 +762,11 @@ class Database(commands.Cog):
             self.algorithm[status]["stats"]["dislikes"][1]
         ) * views / 100
 
+        await ctx.send("1")
+
         max_cap = math.ceil(self.algorithm[status]["max"] * channel.subscribers / 100)
+
+        await ctx.send("1")
 
         if channel.subscribers < 20:
             status = 'average'
@@ -767,6 +775,8 @@ class Database(commands.Cog):
             total_subscribers = channel.subscribers + subscribers
             likes = math.ceil(20 * views / 100)
             dislikes = math.ceil(5 * views / 100)
+
+        await ctx.send("1")
 
         last_updated, uploaded_at = int(time.time())
 
@@ -849,7 +859,7 @@ class Database(commands.Cog):
             if channel.subscribers < 20:
                 continue
 
-            views = math.ceil(self.bot.algorith[status]["views"][iteration] * video.views * 100)
+            views = math.ceil(self.bot.algorith[status]["views"][f"{iteration}"] * video.views * 100)
             total_video_views = video.views + views
             total_channel_views = channel.total_views + views
 
