@@ -569,7 +569,7 @@ class Vidio(commands.Cog):
         channel_name = channels[channel_index].name
         new_subs = locale.format_string('%d', video.new_subscribers, grouping=True)
         views = locale.format_string('%d', video.views, grouping=True)
-        money = locale.format_string('%d', video.money, grouping=True)
+        money = locale.format_string('%d', video.new_money, grouping=True)
         likes = locale.format_string('%d', video.likes, grouping=True)
         dislikes = locale.format_string('%d', video.dislikes, grouping=True)
 
