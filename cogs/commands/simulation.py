@@ -300,10 +300,10 @@ class Vidio(commands.Cog):
         created_at = datetime.fromtimestamp(created_at)
         date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
 
-        real_subscribers = await self.database.get_subscribers(channels[channel_index][1])
+        real_subscribers = await self.database.get_subscribers(channels[channel_index].channel_id)
         real_subscribers = len(real_subscribers)
 
-        awards = await self.database.get_awards(channels[channel_index][1])
+        awards = await self.database.get_awards(channels[channel_index].channel_id)
 
         award_str = ''
 
