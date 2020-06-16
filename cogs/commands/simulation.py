@@ -564,18 +564,17 @@ class Vidio(commands.Cog):
             description = description.content
             break
 
-        video = await self.database.upload_video(ctx, ctx.author.id, channels[channel_index][1], video_name,
-                                                 description)
+        video = await self.database.upload_video(ctx, channels[channel_index].channel_id, name, description)
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-        status = video['status']
-        channel_name = video['channel']
-        new_subs = locale.format_string('%d', video['new_subs'], grouping=True)
-        views = locale.format_string('%d', video['views'], grouping=True)
-        money = locale.format_string('%d', video['money'], grouping=True)
-        likes = locale.format_string('%d', video['likes'], grouping=True)
-        dislikes = locale.format_string('%d', video['dislikes'], grouping=True)
+        status = video.status
+        channel_name = channels[channel_index].name
+        new_subs = locale.format_string('%d', video.new_subscribers, grouping=True)
+        views = locale.format_string('%d', video.views, grouping=True)
+        money = locale.format_string('%d', video.money, grouping=True)
+        likes = locale.format_string('%d', video.likes, grouping=True)
+        dislikes = locale.format_string('%d', video.dislikes, grouping=True)
 
         comments = []
 
