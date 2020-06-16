@@ -713,10 +713,12 @@ class Database(commands.Cog):
         """
         uploads a video under the provided channel
         """
+
         if len(name) > 50:
             raise NameTooLongError
         if len(description) > 500:
             raise DescriptionTooLongError
+
         channel = await self.get_channel(channel)
         user = await self.get_user(channel.user_id)
         status = await self.decide_video_status(name, description)
@@ -763,6 +765,16 @@ class Database(commands.Cog):
 
         if subscribers > max_cap:
             subscribers = max_cap
+
+        await ctx.send(views)
+        await ctx.send(channel.total_views)
+        await ctx.send(total_views)
+
+        await ctx.send(max_cap)
+
+        await ctx.send(subscribers)
+        await ctx.send(channel.subscribers)
+        await ctx.send(total_subscribers)
 
         last_updated = uploaded_at = int(time.time())
 
