@@ -561,13 +561,6 @@ class Vidio(commands.Cog):
             description = description.content
             break
 
-        await ctx.send(channels)
-        for channel in channels:
-            await ctx.send(channel)
-            await ctx.send(type(channel))
-            await ctx.send(channel.channel_id)
-
-
         video = await self.database.upload_video(ctx, channels[channel_index].channel_id, video_name, description)
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')

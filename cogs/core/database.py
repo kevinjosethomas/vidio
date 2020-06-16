@@ -714,19 +714,24 @@ class Database(commands.Cog):
         uploads a video under the provided channel
         """
 
+        await ctx.send("1")
         if len(name) > 50:
             raise NameTooLongError
         if len(description) > 500:
             raise DescriptionTooLongError
 
+        await ctx.send("1")
         channel = await self.get_channel(channel)
         user = await self.get_user(channel.user_id)
         status = await self.decide_video_status(name, description)
 
         iteration = 1
+        await ctx.send("1")
 
         views = math.ceil(self.algorithm[status]["views"][iteration] * channel.subscribers / 100)
         total_views = channel.total_views + views
+
+        await ctx.send("1")
 
         if 200 < channel.subscribers > 400:
             money = math.ceil(views / 2)
