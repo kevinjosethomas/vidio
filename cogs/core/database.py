@@ -778,7 +778,7 @@ class Database(commands.Cog):
 
         await ctx.send("1")
 
-        last_updated, uploaded_at = int(time.time())
+        last_updated = uploaded_at = int(time.time())
 
         async with self.db.acquire as conn:
 
