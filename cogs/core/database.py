@@ -785,7 +785,8 @@ class Database(commands.Cog):
             await conn.execute("insert into videos (channel_id, "
                                "user_id, name, description, status, new_subscribers, "
                                "new_money, views, likes, dislikes, subscriber_cap, "
-                               "iteration, last_updated, uploaded_at)",
+                               "iteration, last_updated, uploaded_at) values ($1, $2, "
+                               "$3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)",
                                channel.channel_id, channel.user_id, name, description,
                                status, subscribers, money, views, likes, dislikes,
                                max_cap, iteration, last_updated, uploaded_at)
