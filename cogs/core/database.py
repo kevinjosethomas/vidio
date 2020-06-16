@@ -766,15 +766,15 @@ class Database(commands.Cog):
         if subscribers > max_cap:
             subscribers = max_cap
 
-        await ctx.send('1. views -' + str(views))
-        await ctx.send('2. channel views - ' + str(channel.total_views))
-        await ctx.send('total views (1+2) -' + str(total_views))
+        await ctx.send('``1. views -`` ' + str(views))
+        await ctx.send('``2. channel views -`` ' + str(channel.total_views))
+        await ctx.send('total views (1+2) -`` ' + str(total_views))
 
-        await ctx.send('max subs - ' + str(max_cap))
+        await ctx.send('``max subs -`` ' + str(max_cap))
 
-        await ctx.send('5. subs -' + str(subscribers))
-        await ctx.send('6. channel subs -' + str(channel.subscribers))
-        await ctx.send('total subs (5+6) -' + str(total_subscribers))
+        await ctx.send('``5. subs -``' + str(subscribers))
+        await ctx.send('``6. channel subs -`` ' + str(channel.subscribers))
+        await ctx.send('``total subs (5+6) -`` ' + str(total_subscribers))
 
         last_updated = uploaded_at = int(time.time())
 
