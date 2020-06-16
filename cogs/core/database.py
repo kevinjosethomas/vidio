@@ -780,7 +780,7 @@ class Database(commands.Cog):
 
         last_updated = uploaded_at = int(time.time())
 
-        async with self.db.acquire as conn:
+        async with self.db.acquire() as conn:
 
             await conn.execute("insert into videos (channel_id, "
                                "user_id, name, description, status, new_subscribers, "
