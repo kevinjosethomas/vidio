@@ -728,7 +728,7 @@ class Database(commands.Cog):
         iteration = 1
         await ctx.send("1")
 
-        views = math.ceil(self.algorithm[status]["views"][str(iteration)] * channel.subscribers / 100)
+        views = math.ceil(self.algorithm[status]["views"][f"{iteration}"] * channel.subscribers / 100)
         total_views = channel.total_views + views
 
         await ctx.send("1")
