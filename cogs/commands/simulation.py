@@ -277,7 +277,7 @@ class Vidio(commands.Cog):
         if isinstance(user, discord.User):
             user = user.id
 
-        channels = await self.database.get_channel(user)
+        channels = await self.database.get_channels(user)
 
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
@@ -359,7 +359,7 @@ class Vidio(commands.Cog):
             return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
         user = ctx.author.id
-        channels = await self.database.get_channel(user)
+        channels = await self.database.get_channels(user)
 
         if len(channels) == 1:
             channel_index = 0
@@ -405,7 +405,7 @@ class Vidio(commands.Cog):
             return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
         user = ctx.author.id
-        channels = await self.database.get_channel(user)
+        channels = await self.database.get_channels(user)
 
         if len(channels) == 1:
             channel_index = 0
@@ -457,7 +457,7 @@ class Vidio(commands.Cog):
 
         user = ctx.author.id
 
-        channels = await self.database.get_channel(user)
+        channels = await self.database.get_channels(user)
 
         if len(channels) == 1:
             channel_index = 0
@@ -483,7 +483,7 @@ class Vidio(commands.Cog):
         def author_check(msg):
             return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
-        channels = await self.database.get_channel(ctx.author.id)
+        channels = await self.database.get_channels(ctx.author.id)
 
         if channels == "Channel doesn't exist":
             await ctx.send(
@@ -731,7 +731,7 @@ class Vidio(commands.Cog):
         def author_check(msg):
             return msg.author == ctx.message.author and ctx.guild == msg.guild and ctx.channel == msg.channel
 
-        channels = await self.database.get_channel(ctx.author.id)
+        channels = await self.database.get_channels(ctx.author.id)
 
         if channels == "Channel doesn't exist":
             await ctx.send(
@@ -848,7 +848,7 @@ class Vidio(commands.Cog):
             await ctx.send(f'{self.bot.EMOJIS["no"]} **You cannot subscribe to your own channels.**')
             return
 
-        channels = await self.database.get_channel(user)
+        channels = await self.database.get_channels(user)
 
         if channels == "Channel doesn't exist":
             await ctx.send(f"{self.bot.EMOJIS['no']} **This user doesn't have a channel.**")
@@ -892,7 +892,7 @@ class Vidio(commands.Cog):
             await ctx.send(f'{self.bot.EMOJIS["no"]} **You cannot unsubscribe from your own channels.**')
             return
 
-        channels = await self.database.get_channel(user)
+        channels = await self.database.get_channels(user)
 
         if channels == "Channel doesn't exist":
             await ctx.send(f"{self.bot.EMOJIS['no']} **This user doesn't have a channel.**")
@@ -941,7 +941,7 @@ class Vidio(commands.Cog):
         description = f'<@{user_details[0]}>\n' \
                       f'**Money:** ``${user_details[1]}``'
 
-        channels = await self.database.get_channel(user_id)
+        channels = await self.database.get_channels(user_id)
 
         if channels == "Channel doesn't exist":
             channels = None
@@ -967,7 +967,7 @@ class Vidio(commands.Cog):
 
         if ctx.invoked_subcommand is None:
 
-            channels = await self.database.get_channel(ctx.author.id)
+            channels = await self.database.get_channels(ctx.author.id)
 
             if len(channels) == 1:
                 channel_index = 0
@@ -1011,7 +1011,7 @@ class Vidio(commands.Cog):
     async def decent_ad(self, ctx):
 
         user_id = ctx.author.id
-        channels = await self.database.get_channel(user_id)
+        channels = await self.database.get_channels(user_id)
 
         if len(channels) == 1:
             channel_index = 0
@@ -1039,7 +1039,7 @@ class Vidio(commands.Cog):
     async def average_ad(self, ctx):
 
         user_id = ctx.author.id
-        channels = await self.database.get_channel(user_id)
+        channels = await self.database.get_channels(user_id)
 
         if len(channels) == 1:
             channel_index = 0
@@ -1067,7 +1067,7 @@ class Vidio(commands.Cog):
     async def subbot(self, ctx, subscriber_amount: int):
 
         user_id = ctx.author.id
-        channels = await self.database.get_channel(user_id)
+        channels = await self.database.get_channels(user_id)
 
         if len(channels) == 1:
             channel_index = 0
