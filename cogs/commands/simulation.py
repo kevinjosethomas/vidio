@@ -31,7 +31,7 @@ class Vidio(commands.Cog):
                   f" to the channels in the list below to choose which channel you want to see.\n"
 
         for channel in channels:
-            message += f"• ``{channels.index(channel) + 1}.`` {channel[2]}\n"
+            message += f"• ``{channels.index(channel) + 1}.`` {channel.name}\n"
 
         message += "\n To cancel channel search, simply type ``cancel``."
 
@@ -290,12 +290,12 @@ class Vidio(commands.Cog):
         if channel_index is False:
             return
 
-        name = channels[channel_index][2]
-        description = channels[channel_index][3]
-        subs = channels[channel_index][4]
-        total_views = channels[channel_index][5]
-        category = channels[channel_index][6]
-        created_at = channels[channel_index][7]
+        name = channels[channel_index].name
+        description = channels[channel_index].description
+        subs = channels[channel_index].subscribers
+        total_views = channels[channel_index].total_views
+        category = channels[channel_index].category
+        created_at = channels[channel_index].created_at
         date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
 
         real_subscribers = await self.database.get_subscribers(channels[channel_index][1])
