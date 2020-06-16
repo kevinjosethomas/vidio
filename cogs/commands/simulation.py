@@ -3,6 +3,7 @@ import locale
 import random
 import asyncio
 import discord
+from datetime import datetime
 from discord.ext import commands
 from ..exceptions.exceptions import *
 from datetime import datetime, timedelta
@@ -296,6 +297,7 @@ class Vidio(commands.Cog):
         total_views = channels[channel_index].total_views
         category = channels[channel_index].category
         created_at = channels[channel_index].created_at
+        created_at = datetime.fromtimestamp(created_at)
         date = f'{created_at.strftime("%B")} {created_at.strftime("%d")}, {created_at.strftime("%Y")}'
 
         real_subscribers = await self.database.get_subscribers(channels[channel_index][1])
