@@ -564,8 +564,6 @@ class Vidio(commands.Cog):
             description = description.content
             break
 
-        await self.games(ctx)
-
         video = await self.database.upload_video(ctx, ctx.author.id, channels[channel_index][1], video_name,
                                                  description)
 
