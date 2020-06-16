@@ -487,10 +487,7 @@ class Vidio(commands.Cog):
 
         channels = await self.database.get_channels(ctx.author.id)
 
-        if channels == "Channel doesn't exist":
-            await ctx.send(
-                f"{self.bot.EMOJIS['no']} **You don't have a channel.** You must create a channel to upload videos.")
-            return
+
 
         if len(channels) == 1:
             channel_index = 0
@@ -565,6 +562,11 @@ class Vidio(commands.Cog):
             break
 
         await ctx.send(channels)
+        for channel in channels:
+            await ctx.send(channel)
+            await ctx.send(type(channel))
+            await ctx.send(channel.channel_id)
+
 
         video = await self.database.upload_video(ctx, channels[channel_index].channel_id, video_name, description)
 
