@@ -247,19 +247,11 @@ class Vidio(commands.Cog):
 
         await asyncio.sleep(1)
 
-        query = await self.database.add_channel(ctx.author.id, name, description, category)
+        await self.database.add_channel(ctx.author.id, name, description, category)
 
-        if query == 'Channel with same name exists':
-            await ctx.send(f"{self.bot.EMOJIS['no']} **You have a channel with the same name.** "
-                           f"This makes it really hard for us to handle."
-                           f" Please retry with a different name.")
-            await message.delete()
-            return
-
-        elif query == 'Successful':
-            await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully created your channel!** "
-                           f"Check it out with ``{ctx.prefix}channel``!")
-            await message.delete()
+        await ctx.send(f"{self.bot.EMOJIS['yes']} **Successfully created your channel!** "
+                       f"Check it out with ``{ctx.prefix}channel``!")
+        await message.delete()
 
     @create_channel.error
     async def create_channel_error(self, ctx, error):
