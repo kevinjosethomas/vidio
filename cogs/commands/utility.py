@@ -123,8 +123,8 @@ class Utility(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def suggest(self, ctx, *, suggestion):
 
-        support_server = self.bot.get_guild(self.bot.GLOBAL["support_server_id"])
-        suggestions_channel = support_server.get_channel(self.bot.GLOBAL["suggestions_channel_id"])
+        support_server = self.bot.get_guild(self.bot.CONFIG["support_server_id"])
+        suggestions_channel = support_server.get_channel(self.bot.CONFIG["suggestions_channel_id"])
 
         suggestion_embed = discord.Embed(
             title=f'{self.bot.EMOJIS["pencil"]} New Suggestion!',
@@ -148,8 +148,8 @@ class Utility(commands.Cog):
     @commands.cooldown(1, 10, BucketType.user)
     async def bug(self, ctx, *, bug):
 
-        support_server = self.bot.get_guild(self.bot.GLOBAL["support_server_id"])
-        bugs_channel = support_server.get_channel(self.bot.GLOBAL["bugs_channel_id"])
+        support_server = self.bot.get_guild(self.bot.CONFIG["support_server_id"])
+        bugs_channel = support_server.get_channel(self.bot.CONFIG["bugs_channel_id"])
 
         bug_embed = discord.Embed(
             title=f'{self.bot.bug} New Bug!',

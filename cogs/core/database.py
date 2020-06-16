@@ -751,8 +751,6 @@ class Database(commands.Cog):
             self.algorithm[status]["stats"]["dislikes"][1]
         ) * views / 100
 
-        max_cap = math.ceil(self.algorithm[status]["max"] * channel.subscribers / 100)
-
         if channel.subscribers < 20:
             status = 'average'
             views = random.randint(5, 10)
@@ -760,6 +758,11 @@ class Database(commands.Cog):
             total_subscribers = channel.subscribers + subscribers
             likes = math.ceil(20 * views / 100)
             dislikes = math.ceil(5 * views / 100)
+
+        max_cap = math.ceil(self.algorithm[status]["max"] * channel.subscribers / 100)
+
+        if subscribers > max_cap:
+            subscribers = max_cap
 
         last_updated = uploaded_at = int(time.time())
 
