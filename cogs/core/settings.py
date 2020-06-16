@@ -102,74 +102,6 @@ class Settings(commands.Cog):
         elif isinstance(error, commands.NoPrivateMessage):
             return
 
-        elif isinstance(error, InvalidUser):
-            message = '**Invalid User!** This user is not in the database.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, InvalidChannel):
-            message = '**Invalid Channel!** This user does not have a channel.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, NotEnoughMoneyError):
-            message = "**Not Enough Money!** You do not have enough money to complete this purchase!"
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, ChannelLimitError):
-            message = '**Channel Limit Reacher!** You cannoto have more than 3 channels as a user.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, NameTooLongError):
-            message = '**Invalid Input!** The provided channel name is too long! ' \
-                      'Please make sure it is under 50 characters.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, DescriptionTooLongError):
-            message = '**Invalid Input!** The provided channel description is too long! ' \
-                      'Please make sure it is under 500 characters.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, DuplicateChannelNameError):
-            message = '**Duplicate Channel Name!** You cannot have more than one channel with the same name.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, AlreadyBotBanned):
-            message = '**Already Banned!** This user is already botbanned.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, NotBotBanned):
-            message = '**Not Banned!** This user is not botbanned.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, AlreadySubscribedError):
-            message = '**Invalid Action!* You are already subscribed to this channel.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, SelfSubscribeError):
-            message = '**Invalid Action!** You cannot subscribe to yourself.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, SubscriptionDoesntExist):
-            message = '**Invalid Action!** You are not subscribed to this user.'
-            await ctx.send(message)
-            return
-
-        elif isinstance(error, InvalidChannel):
-            message = '**Invalid Input!** The provided custom prefix is too long! ' \
-                      'Please make sure it is under 10 characters.'
-            await ctx.send(message)
-            return
-
         try:
             if isinstance(error.original, commands.ExtensionNotFound):
                 message = "**Invalid Cog!** The mentioned cog does not exist."
@@ -204,6 +136,74 @@ class Settings(commands.Cog):
 
             elif isinstance(error.original, asyncio.TimeoutError):
                 message = "**Timed Out!** Canceled the input process as you took too long to reply!"
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, InvalidUser):
+                message = '**Invalid User!** This user is not in the database.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, InvalidChannel):
+                message = '**Invalid Channel!** This user does not have a channel.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, NotEnoughMoneyError):
+                message = "**Not Enough Money!** You do not have enough money to complete this purchase!"
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, ChannelLimitError):
+                message = '**Channel Limit Reacher!** You cannoto have more than 3 channels as a user.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, NameTooLongError):
+                message = '**Invalid Input!** The provided channel name is too long! ' \
+                          'Please make sure it is under 50 characters.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, DescriptionTooLongError):
+                message = '**Invalid Input!** The provided channel description is too long! ' \
+                          'Please make sure it is under 500 characters.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, DuplicateChannelNameError):
+                message = '**Duplicate Channel Name!** You cannot have more than one channel with the same name.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, AlreadyBotBanned):
+                message = '**Already Banned!** This user is already botbanned.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, NotBotBanned):
+                message = '**Not Banned!** This user is not botbanned.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, AlreadySubscribedError):
+                message = '**Invalid Action!* You are already subscribed to this channel.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, SelfSubscribeError):
+                message = '**Invalid Action!** You cannot subscribe to yourself.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, SubscriptionDoesntExist):
+                message = '**Invalid Action!** You are not subscribed to this user.'
+                await ctx.send(message)
+                return
+
+            elif isinstance(error.original, InvalidChannel):
+                message = '**Invalid Input!** The provided custom prefix is too long! ' \
+                          'Please make sure it is under 10 characters.'
                 await ctx.send(message)
                 return
 
