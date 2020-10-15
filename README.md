@@ -19,7 +19,7 @@ way through the leaderboard!
 If you find any error/bug/mistake 
 on the site or in the code feel free to 
 [create an issue and report them here](https://github.com/TrustedMercury/vidio/issues)
-k
+
 ### Fix/Edit Content
 If you want to contribute to this site, fork the repository and then -
 ```
