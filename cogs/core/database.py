@@ -86,11 +86,6 @@ class Database(commands.Cog):
     async def add_channel(self, user_id: int, name: str, description: str, genre: str):
         """Adds a channel to the database"""
 
-        channel = await self.get_channel(user_id)
-        if channel:
-            raise ChannelError("Provided channel already exists!")
-            return
-
         if len(name) > 32 or len(description) > 200:
             raise ChannelError("Invalid channel fields provided")
 
