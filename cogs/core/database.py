@@ -83,6 +83,44 @@ class Database(commands.Cog):
                 [guild_id]
             )
 
+    async def add_channel(self, user_id: int, name: str, description: str, genre: str):
+        """Adds a channel to the database"""
+
+        channel = await self.get_channel(user_id)
+        if channel:
+            raise ChannelError("Provided channel already exists!")
+            return
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "INSERT INTO channel (user_id, name, description, subscribers, balance, views, genre, created_at) VALUES ($1, $2, $3, 0, 0, 0, $4, $5)",
+                [user_id, name, description, genre, time.time()]
+            )
+
+    async def get_channel(self, user_id: int) -> asyncpg.Record:
+        """Fetches a channel from the database"""
+
+        channel = await self.db.fetchrow(
+            "SELECT * FROM channels WHERE user_id = $1",
+            [user_id]
+        )
+
+        return channel
+
+    async def remove_channel(self, user_id: int):
+        """Removes a channel from the database"""
+
+        channel = await self.get_channel(user_id)
+        if not channel:
+            raise ChannelError("Provided channel does not exist!")
+            return
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "DELETE FROM channels WHERE user_id = $1",
+                [user_id]
+            )
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Database(bot))
