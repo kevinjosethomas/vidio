@@ -29,6 +29,7 @@ with open("data/emojis.json", "r") as _emojis:
 
 # Execution
 bot.cog_list = [
+    "cogs.core.database",
     "cogs.core.events"
 ]
 
