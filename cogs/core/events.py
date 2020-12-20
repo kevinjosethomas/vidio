@@ -1,5 +1,6 @@
 import time
 import discord
+import classyjson
 from discord.ext import commands
 
 
@@ -7,6 +8,7 @@ class Events(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.database = self.bot.get_cog("Database")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -17,6 +19,9 @@ class Events(commands.Cog):
         self.bot.errors_channel = self.bot.guild.get_channel(self.bot.c.errors_channel_id)
         self.bot.bug_reports_channel = self.bot.guild.get_channel(self.bot.c.bug_reports_channel_id)
         self.bot.suggestions_channel = self.bot.guild.get_channel(self.bot.c.suggestions_channel_id)
+
+        self.bot.cache = classyjson.classify({})
+        await self.database.populate_cache()
 
         print("vidio going brrrr")
 
