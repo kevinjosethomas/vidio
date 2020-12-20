@@ -8,8 +8,16 @@ class UnknownError(Exception):
 
 
 class GuildError(Exception):
-    """Triggered when the exception relates to guilds"""
+    """Triggered when the error relates to guilds"""
 
     def __init__(self, reason: str = "Unknown Guild Error!"):
+        self.message = reason
+        super().__init__(self.message)
+
+
+class ChannelError(Exception):
+    """Triggered when the error relates to channels"""
+
+    def __init__(self, reason: str = "Unknown Channel Error!"):
         self.message = reason
         super().__init__(self.message)
