@@ -18,7 +18,7 @@ class Database(commands.Cog):
 
         guild = await self.get_guild(guild_id)
         if guild:
-            # Raise error here
+            raise GuildError("Provided guild already exists!")
             return
 
         async with self.db.acquire() as conn:
@@ -42,7 +42,7 @@ class Database(commands.Cog):
 
         guild = await self.get_guild(guild_id)
         if not guild:
-            # Raise error here
+            raise GuildError("Provided guild does not exist!")
             return
 
         async with self.db.acquire() as conn:
