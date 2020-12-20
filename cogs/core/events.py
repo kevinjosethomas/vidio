@@ -18,7 +18,7 @@ class Events(commands.Cog):
         self.bot.bug_reports_channel = self.bot.guild.get_channel(self.bot.c.bug_reports_channel_id)
         self.bot.suggestions_channel = self.bot.guild.get_channel(self.bot.c.suggestions_channel_id)
 
-        print("BOT IS READY")
+        print("vidio going brrrr")
 
 
 def setup(bot):
