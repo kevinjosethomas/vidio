@@ -2,6 +2,7 @@ import asyncpg
 import discord
 from typing import Union
 from discord.ext import commands
+from ..exceptions import *
 
 
 class Database(commands.Cog):

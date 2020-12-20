@@ -1,5 +1,4 @@
 
-
 class UnknownError(Exception):
     """Triggered when no other exception handles the error"""
 
