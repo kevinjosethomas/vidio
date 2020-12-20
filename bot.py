@@ -45,6 +45,12 @@ with open("data/config.json", "r") as _config:
 with open("data/emojis.json", "r") as _emojis:
     bot.e = classyjson.load(_emojis)
 
+@bot.check
+def global_bot_check(ctx: commands.Context) -> bool:
+    """Global bot check to block invalid commands"""
+
+    return not ctx.author.bot and ctx.author.id != self.bot.user.id
+
 
 # Execution
 bot.cog_list = [
