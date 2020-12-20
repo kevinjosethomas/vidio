@@ -11,6 +11,26 @@ class Database(commands.Cog):
         self.bot = bot
         self.db = self.bot.database
 
+    async def populate_cache(self):
+        """Repopulates all bot cache"""
+
+        self.bot.cache.prefixes = await self.get_all_prefixes()
+        self.bot.cache.genres = await self.get_all_genres()
+
+    async def get_all_prefixes(self) -> dict:
+        """Fetches all guilds' prefixes for cache"""
+
+        guilds = await self.db.fetch("SELECT guild_id, prefix FROM guilds")
+
+        return dict( (guild["guild_id"], guild["prefix"]) for guild in guilds if (guild["prefix"] != self.bot.c.default_prefix and guild["prefix"]) )
+
+    async def get_all_genres(self) -> list:
+        """Fetches all genres from the database"""
+
+        genres = await self.db.fetch("SELECT name FROM genres")
+
+        return [name for name in genres]
+
     async def add_guild(self, guild_id: int, prefix: Union[str, None]):
         """Adds a guild to the database"""
 
@@ -37,6 +57,18 @@ class Database(commands.Cog):
 
         return guild
 
+    async def update_guild_prefix(self, guild_id: int, prefix: str):
+        """Updates a guild's prefix in the database"""
+
+        if len(prefix) > 10:
+            raise GuildError("Invalid prefix provided!")
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
+                [prefix, guild_id]
+            )
+
     async def remove_guild(self, guild_id: int):
         """Removes a guild from the database"""
 
@@ -50,13 +82,6 @@ class Database(commands.Cog):
                 "DELETE FROM guilds WHERE guild_id = $1",
                 [guild_id]
             )
-
-    async def get_all_prefixes(self):
-        """Fetches all guilds' prefixes for cache"""
-
-        guilds = await self.db.fetch("SELECT guild_id, prefix FROM guilds")
-
-        return dict( (guild["guild_id"], guild["prefix"]) for guild in guilds if (guild["prefix"] != self.bot.c.default_prefix and guild["prefix"]) )
 
 
 def setup(bot: commands.Bot):
