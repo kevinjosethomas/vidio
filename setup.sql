@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS guilds (
 );
 
 CREATE TABLE IF NOT EXISTS users (
-  user_id BIGINT PRIMARY KEY
+  user_id BIGINT PRIMARY KEY,
   commands INT
-)
+);
 
 CREATE TABLE IF NOT EXISTS genres (
   name VARCHAR(37)
