@@ -91,6 +91,9 @@ class Database(commands.Cog):
             raise ChannelError("Provided channel already exists!")
             return
 
+        if len(name) > 32 or len(description) > 200:
+            raise ChannelError("Invalid channel fields provided")
+
         async with self.db.acquire() as conn:
             await conn.execute(
                 "INSERT INTO channel (user_id, name, description, subscribers, balance, views, genre, created_at) VALUES ($1, $2, $3, 0, 0, 0, $4, $5)",
