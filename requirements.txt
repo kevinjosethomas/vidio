@@ -1,3 +1,4 @@
 asyncpg
 discord.py
+classy-json
 python-dotenv
