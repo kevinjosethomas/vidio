@@ -68,7 +68,8 @@ def global_bot_check(ctx: commands.Context) -> bool:
 # Execution
 bot.cog_list = [
     "cogs.core.database",
-    "cogs.core.events"
+    "cogs.core.events",
+    "cogs.commands.simulation"
 ]
 
 for cog in bot.cog_list:
