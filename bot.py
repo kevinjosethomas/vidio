@@ -62,7 +62,7 @@ bot.e = _EMOJIS
 def global_bot_check(ctx: commands.Context) -> bool:
     """Global bot check to block invalid commands"""
 
-    return not ctx.author.bot and ctx.author.id != self.bot.user.id and ctx.bot.is_ready()
+    return not ctx.author.bot and ctx.author.id != ctx.bot.user.id and ctx.bot.is_ready()
 
 
 # Execution
