@@ -51,6 +51,13 @@ class Database(commands.Cog):
                 [guild_id]
             )
 
+    async def get_all_prefixes(self):
+        """Fetches all guilds' prefixes for cache"""
+
+        guilds = await self.db.fetch("SELECT guild_id, prefix FROM guilds")
+
+        return dict( (guild["guild_id"], guild["prefix"]) for guild in guilds if (guild["prefix"] != self.bot.c.default_prefix and guild["prefix"]) )
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Database(bot))
