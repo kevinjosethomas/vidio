@@ -43,6 +43,17 @@ CREATE TABLE IF NOT EXISTS items (
   name VARCHAR(55)
 );
 
+CREATE TABLE IF NOT EXISTS guilds (
+  guild_id BIGINT PRIMARY KEY,
+  prefix VARCHAR(15),
+  commands INT
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  user_id BIGINT PRIMARY KEY
+  commands INT
+)
+
 CREATE TABLE IF NOT EXISTS genres (
   name VARCHAR(37)
 );
