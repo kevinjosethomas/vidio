@@ -13,4 +13,11 @@ bot = commands.AutoShardedBot(
     intents=discord.Intents.default()
 )
 
+bot.cog_list = [
+    "cogs.core.events"
+]
+
+for cog in bot.cog_list:
+    bot.load_extension(cog)
+
 bot.run(token)
