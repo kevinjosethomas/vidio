@@ -21,11 +21,21 @@ with open("data/config.json", "r") as _config:
 with open("data/emojis.json", "r") as _emojis:
     _EMOJIS = classyjson.load(_emojis)
 
+async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
+    """Fetches guild specific prefix"""
+
+    if not ctx.guild:
+        return bot.c.default_prefix
+
+    prefix = bot.cache.prefixes.get(ctx.guild.id)
+
+    return prefix if prefix else bot.c.default_prefix
+
 
 # Initialization
 bot = commands.AutoShardedBot(
-    command_prefix=_CONFIG.default_prefix,
-    case_insentive=True,
+    command_prefix=get_prefix,
+    case_insensitive=True,
     intents=discord.Intents.default()
 )
 
