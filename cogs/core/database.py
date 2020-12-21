@@ -27,7 +27,7 @@ class Database(commands.Cog):
     async def get_all_genres(self) -> list:
         """Fetches all genres from the database"""
 
-        genres = await self.db.fetch("SELECT name FROM genres")
+        genres = await self.db.fetch("SELECT LOWER(name) FROM genres")
 
         return [name for name in genres]
 
