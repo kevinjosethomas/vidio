@@ -1,3 +1,4 @@
+import time
 import asyncpg
 import discord
 import classyjson
