@@ -1,9 +1,9 @@
-import time
 import asyncpg
 import discord
 import classyjson
 from typing import Union
 from ..exceptions import *
+from datetime import datetime
 from discord.ext import commands
 
 
@@ -100,7 +100,7 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
             await conn.execute(
                 "INSERT INTO channels (user_id, name, description, subscribers, balance, views, genre, created_at) VALUES ($1, $2, $3, 0, 0, 0, $4, $5)",
-                *[user_id, name, description, genre, time.time()]
+                *[user_id, name, description, genre, datetime.now()]
             )
 
     async def get_channel(self, user_id: int) -> asyncpg.Record:
