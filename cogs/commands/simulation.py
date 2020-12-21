@@ -74,6 +74,12 @@ class Simulation(commands.Cog):
         if not genre:
             return await ctx.send(f"{self.bot.e.cross} Invalid genre reaction provided. Canceled the channel creation process.")
 
+        await self.database.add_channel(ctx.author.id, name, description, genre)
+
+        await ctx.author.send(f"{self.bot.e.check} Successfully created your channel, you're now one step closer to world domination. Poggers!")
+
+        await message.edit(f"{self.bot.e.check} Successfully created your channel")
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Simulation(bot))
