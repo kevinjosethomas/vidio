@@ -99,7 +99,7 @@ class Database(commands.Cog):
 
         async with self.db.acquire() as conn:
             await conn.execute(
-                "INSERT INTO channel (user_id, name, description, subscribers, balance, views, genre, created_at) VALUES ($1, $2, $3, 0, 0, 0, $4, $5)",
+                "INSERT INTO channels (user_id, name, description, subscribers, balance, views, genre, created_at) VALUES ($1, $2, $3, 0, 0, 0, $4, $5)",
                 *[user_id, name, description, genre, time.time()]
             )
 
@@ -115,11 +115,6 @@ class Database(commands.Cog):
 
     async def remove_channel(self, user_id: int):
         """Removes a channel from the database"""
-
-        channel = await self.get_channel(user_id)
-        if not channel:
-            raise ChannelError("Provided channel does not exist!")
-            return
 
         async with self.db.acquire() as conn:
             await conn.execute(
