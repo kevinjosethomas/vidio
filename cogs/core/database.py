@@ -1,8 +1,9 @@
 import asyncpg
 import discord
+import classyjson
 from typing import Union
-from discord.ext import commands
 from ..exceptions import *
+from discord.ext import commands
 
 
 class Database(commands.Cog):
@@ -15,7 +16,7 @@ class Database(commands.Cog):
         """Repopulates all bot cache"""
 
         self.bot.cache.prefixes = await self.get_all_prefixes()
-        self.bot.cache.genres = await self.get_all_genres()
+        self.bot.cache.emoji_genre, self.bot.cache_genre_emoji = await self.get_all_genres()
 
     async def get_all_prefixes(self) -> dict:
         """Fetches all guilds' prefixes for cache"""
@@ -27,9 +28,15 @@ class Database(commands.Cog):
     async def get_all_genres(self) -> list:
         """Fetches all genres from the database"""
 
-        genres = await self.db.fetch("SELECT LOWER(name) FROM genres")
+        genres = await self.db.fetch("SELECT emoji, LOWER(genre) AS genre FROM genres")
+        emoji_genre = {}
+        genre_emoji = {}
 
-        return [name for name in genres]
+        for genre in genres:
+            emoji_genre[genre["emoji"]] = genre["genre"]
+            genre_emoji[genre["genre"]] = genre["emoji"]
+
+        return emoji_genre, genre_emoji
 
     async def add_guild(self, guild_id: int, prefix: Union[str, None]):
         """Adds a guild to the database"""
