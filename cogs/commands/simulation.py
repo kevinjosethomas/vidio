@@ -38,7 +38,7 @@ class Simulation(commands.Cog):
 
         if name.lower().strip() == "cancel":
             await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
-            await message.edit(f"{self.bot.e.check} Cancelled the channel creation process")
+            await message.edit(content=f"{self.bot.e.check} Cancelled the channel creation process")
             return
 
         if len(name) < 3:
@@ -54,7 +54,7 @@ class Simulation(commands.Cog):
 
         if description.lower().strip() == "cancel":
             await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
-            await message.edit(f"{self.bot.e.check} Cancelled the channel creation process")
+            await message.edit(content=f"{self.bot.e.check} Cancelled the channel creation process")
             return
 
         if len(description) < 25:
@@ -82,7 +82,7 @@ class Simulation(commands.Cog):
 
         await ctx.author.send(f"{self.bot.e.check} Successfully created your channel, you're now one step closer to world domination. Poggers!")
 
-        await message.edit(f"{self.bot.e.check} Successfully created your channel")
+        await message.edit(content=f"{self.bot.e.check} Successfully created your channel")
 
 
 def setup(bot: commands.Bot):
