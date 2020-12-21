@@ -55,5 +55,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS genres (
-  name VARCHAR(37)
+  emoji VARCHAR(37),
+  genre VARCHAR(37)
 );
