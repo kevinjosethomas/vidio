@@ -44,7 +44,7 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
             await conn.execute(
                 "INSERT INTO guilds VALUES ($1, $2, $3)",
-                [guild_id, prefix, 0]
+                *[guild_id, prefix, 0]
             )
 
     async def get_guild(self, guild_id: int) -> Union[asyncpg.Record, None]:
@@ -52,7 +52,7 @@ class Database(commands.Cog):
 
         guild = await self.db.fetchrow(
             "SELECT * FROM guilds WHERE guild_id = $1",
-            [guild_id]
+            *[guild_id]
         )
 
         return guild
@@ -66,7 +66,7 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
             await conn.execute(
                 "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
-                [prefix, guild_id]
+                *[prefix, guild_id]
             )
 
     async def remove_guild(self, guild_id: int):
@@ -80,7 +80,7 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
             await conn.execute(
                 "DELETE FROM guilds WHERE guild_id = $1",
-                [guild_id]
+                *[guild_id]
             )
 
     async def add_channel(self, user_id: int, name: str, description: str, genre: str):
@@ -92,7 +92,7 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
             await conn.execute(
                 "INSERT INTO channel (user_id, name, description, subscribers, balance, views, genre, created_at) VALUES ($1, $2, $3, 0, 0, 0, $4, $5)",
-                [user_id, name, description, genre, time.time()]
+                *[user_id, name, description, genre, time.time()]
             )
 
     async def get_channel(self, user_id: int) -> asyncpg.Record:
@@ -100,7 +100,7 @@ class Database(commands.Cog):
 
         channel = await self.db.fetchrow(
             "SELECT * FROM channels WHERE user_id = $1",
-            [user_id]
+            *[user_id]
         )
 
         return channel
@@ -116,7 +116,7 @@ class Database(commands.Cog):
         async with self.db.acquire() as conn:
             await conn.execute(
                 "DELETE FROM channels WHERE user_id = $1",
-                [user_id]
+                *[user_id]
             )
 
 
