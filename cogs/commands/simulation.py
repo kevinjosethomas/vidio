@@ -34,31 +34,48 @@ class Simulation(commands.Cog):
 
         await ctx.author.send(name_message)
 
-        name = (await self.bot.wait_for("message", check=check, timeout=60)).content
+        name = await self.bot.wait_for("message", check=check, timeout=60)
 
-        if name.lower().strip() == "cancel":
-            await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
+        if name.content.lower().strip() == "cancel":
+            await name.add_reaction(self.bot.e.check)
             await message.edit(content=f"{self.bot.e.check} Cancelled the channel creation process")
             return
 
-        if len(name) < 3:
-            return await ctx.author.send(f"{self.bot.e.cross} The provided name was under 3 characters. Cancelled the channel creation process.")
+        name = name.content
 
+        if len(name) < 3:
+            await ctx.author.send(f"{self.bot.e.cross} The provided name was under 3 characters. Cancelled the channel creation process.")
+            await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
+            return
+
+        if len(name) > 32:
+            await ctx.author.send(f"{self.bot.e.cross} The provided name was over 32 characters. Cancelled the channel creation process.")
+            await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
+            return
 
         description_message = f"{self.bot.e.youtube} **Step 2/3 | Channel Description**\n" \
                             "Send a brief channel description below. Keep it short and concise, under 200 characters long. " \
                             "Please refrain from using profanity in your channel description and keep in mind that you can change this later!"
         await ctx.author.send(description_message)
 
-        description = (await self.bot.wait_for("message", check=check, timeout=120)).content
+        description = await self.bot.wait_for("message", check=check, timeout=120)
 
-        if description.lower().strip() == "cancel":
-            await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
+        if description.content.lower().strip() == "cancel":
+            await description.add_reaction(self.bot.e.check)
             await message.edit(content=f"{self.bot.e.check} Cancelled the channel creation process")
             return
 
+        description = description.content
+
         if len(description) < 25:
-            return await ctx.author.send(f"{self.bot.e.cross} The provided description was under 25 characters. Cancelled the channel creation process.")
+            await ctx.author.send(f"{self.bot.e.cross} The provided description was under 25 characters. Cancelled the channel creation process.")
+            await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
+            return
+
+        if len(description) > 200:
+            await ctx.send(f"{self.bot.e.cross} The provided description was over 200 characters. Cancelled the channel creation process.")
+            await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
+            return
 
 
         genre_message = f"{self.bot.e.youtube} **Step 3/3 | Channel Genre**\n" \
@@ -76,7 +93,9 @@ class Simulation(commands.Cog):
 
         genre = self.bot.cache.emoji_genre[reaction.emoji]
         if not genre:
-            return await ctx.send(f"{self.bot.e.cross} Invalid genre reaction provided. Canceled the channel creation process.")
+            await ctx.send(f"{self.bot.e.cross} Invalid genre reaction provided. Canceled the channel creation process.")
+            await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
+            return
 
         await self.database.add_channel(ctx.author.id, name, description, genre)
 
