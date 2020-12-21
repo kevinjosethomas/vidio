@@ -37,7 +37,9 @@ class Simulation(commands.Cog):
         name = (await self.bot.wait_for("message", check=check, timeout=60)).content
 
         if name.lower().strip() == "cancel":
-            return await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
+            await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
+            await message.edit(f"{self.bot.e.check} Cancelled the channel creation process")
+            return
 
         if len(name) < 3:
             return await ctx.author.send(f"{self.bot.e.cross} The provided name was under 3 characters. Cancelled the channel creation process.")
@@ -51,7 +53,9 @@ class Simulation(commands.Cog):
         description = (await self.bot.wait_for("message", check=check, timeout=120)).content
 
         if description.lower().strip() == "cancel":
-            return await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
+            await ctx.author.send(f"{self.bot.e.check} Successfully cancelled the channel creation process")
+            await message.edit(f"{self.bot.e.check} Cancelled the channel creation process")
+            return
 
         if len(description) < 25:
             return await ctx.author.send(f"{self.bot.e.cross} The provided description was under 25 characters. Cancelled the channel creation process.")
