@@ -28,7 +28,7 @@ class Database(commands.Cog):
     async def get_all_genres(self) -> list:
         """Fetches all genres from the database"""
 
-        genres = await self.db.fetch("SELECT emoji, LOWER(genre) AS genre FROM genres")
+        genres = await self.db.fetch("SELECT emoji, genre FROM genres")
         emoji_genre = {}
         genre_emoji = {}
 
