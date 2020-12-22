@@ -14,6 +14,8 @@ class Events(commands.Cog):
     async def on_ready(self):
         """Event triggered when the bot is ready"""
 
+        self.bot.votes = 0
+        self.bot.command_count = 0
         self.bot.started_at = arrow.now("America/Toronto")
         self.bot.guild = self.bot.get_guild(self.bot.c.guild_id)
         self.bot.errors_channel = self.bot.guild.get_channel(self.bot.c.errors_channel_id)
