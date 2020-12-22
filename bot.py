@@ -14,6 +14,7 @@ DATABASE_HOST = os.getenv("DATABASE_HOST")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASS = os.getenv("DATABASE_PASS")
+STATCORD_KEY = os.getenv("STATCORD_KEY")
 
 with open("data/config.json", "r") as _config:
     _CONFIG = classyjson.load(_config)
@@ -57,6 +58,7 @@ asyncio.get_event_loop().run_until_complete(setup_database())
 # Configuration
 bot.c = _CONFIG
 bot.e = _EMOJIS
+bot.STATCORD_KEY = STATCORD_KEY
 
 @bot.check
 def global_bot_check(ctx: commands.Context) -> bool:
@@ -70,7 +72,8 @@ bot.cog_list = [
     "cogs.core.database",
     "cogs.core.events",
     "cogs.commands.simulation",
-    "cogs.commands.utility"
+    "cogs.commands.utility",
+    "cogs.other.statcord"
 ]
 
 for cog in bot.cog_list:
