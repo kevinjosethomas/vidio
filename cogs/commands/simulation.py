@@ -10,7 +10,7 @@ class Simulation(commands.Cog):
         self.database = self.bot.get_cog("Database")
 
     @commands.command(
-        usage="``yt start``",
+        usage="``v.start``",
         help="Starts the channel creation process"
     )
     async def start(self, ctx: commands.Context):
