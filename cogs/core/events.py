@@ -26,9 +26,31 @@ class Events(commands.Cog):
         self.bot.cache = classyjson.classify({})
         await self.database.populate_cache()
 
+        print("vidio going brrrr")
+
         await self.change_presence.start()
 
-        print("vidio going brrrr")
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        """Triggered when a message is sent"""
+
+        await self.bot.wait_until_ready()
+
+        if message.content.lower() == f"<@!{self.bot.user.id}>":
+
+            prefix = self.bot.cache.prefixes.get(message.guild.id, self.bot.c.default_prefix)
+
+            description = f":yo_yo: **Hello! I'm vidio**\n" \
+                        f"My prefix in this server is ``{prefix}`` \n" \
+                        f"Type ``{prefix}help`` for a list of all my commands!"
+
+            embed = discord.Embed(
+                description=description,
+                color=self.bot.c.red
+            )
+
+            await message.channel.send(embed=embed)
+
 
     @tasks.loop(minutes=random.randint(10, 20))
     async def change_presence(self):
