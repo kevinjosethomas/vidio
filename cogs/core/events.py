@@ -1,4 +1,4 @@
-import time
+import arrow
 import discord
 import classyjson
 from discord.ext import commands
@@ -14,7 +14,7 @@ class Events(commands.Cog):
     async def on_ready(self):
         """Event triggered when the bot is ready"""
 
-        self.bot.started_at = int(time.time())
+        self.bot.started_at = arrow.now("America/Toronto")
         self.bot.guild = self.bot.get_guild(self.bot.c.guild_id)
         self.bot.errors_channel = self.bot.guild.get_channel(self.bot.c.errors_channel_id)
         self.bot.bug_reports_channel = self.bot.guild.get_channel(self.bot.c.bug_reports_channel_id)
