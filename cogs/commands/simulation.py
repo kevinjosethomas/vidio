@@ -1,4 +1,5 @@
 import discord
+from ..exceptions import *
 from discord.ext import commands
 
 
@@ -97,7 +98,12 @@ class Simulation(commands.Cog):
             await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
             return
 
-        await self.database.add_channel(ctx.author.id, name, description, genre)
+        try:
+            await self.database.add_channel(ctx.author.id, name, description, genre)
+        except ChannelError:
+            await ctx.author.send(f"{self.bot.e.cross} Channel creation process cancelled. Make sure the details you provided follow our guidelines.")
+            await message.edit(content=f"{self.bot.e.cross} Failed to create channel")
+            return
 
         await ctx.author.send(f"{self.bot.e.check} Successfully created your channel, you're now one step closer to world domination. Poggers!")
 
