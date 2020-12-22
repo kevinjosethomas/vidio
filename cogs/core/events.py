@@ -1,7 +1,8 @@
 import arrow
+import random
 import discord
 import classyjson
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 
 class Events(commands.Cog):
@@ -25,7 +26,56 @@ class Events(commands.Cog):
         self.bot.cache = classyjson.classify({})
         await self.database.populate_cache()
 
+        await self.change_presence.start()
+
         print("vidio going brrrr")
+
+    @tasks.loop(minutes=random.randint(10, 20))
+    async def change_presence(self):
+        """Automatically changes the bot's presence every 10-20 minutes"""
+
+        presences = [
+            discord.Activity(
+                name="trending youtube videos",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="satisfying slime videos",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="cool viral videos",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="MrBeast spend more money",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="Among Us with proximity chat",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="PewDiePie scroll through reddit",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="Mark Rober troll some Porch Pirates",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="Cocomelon get dissed",
+                type=discord.ActivityType.watching
+            ),
+            discord.Activity(
+                name="Zach King do cool stuff",
+                type=discord.ActivityType.watching
+            )
+        ]
+
+        await self.bot.change_presence(
+            activity=random.choice(presences)
+        )
 
 
 def setup(bot: commands.Bot):
