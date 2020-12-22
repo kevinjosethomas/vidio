@@ -94,7 +94,7 @@ class Database(commands.Cog):
     async def add_channel(self, user_id: int, name: str, description: str, genre: str):
         """Adds a channel to the database"""
 
-        if len(name) > 32 or len(description) > 200:
+        if len(name) < 3 or len(description) < 25 or len(name) > 32 or len(description) > 200:
             raise ChannelError("Invalid channel fields provided")
 
         async with self.db.acquire() as conn:
@@ -112,6 +112,30 @@ class Database(commands.Cog):
         )
 
         return channel
+
+    async def edit_name(self, user_id: int, name: str):
+        """Edit the channel's name"""
+
+        if len(name) < 3 or len(name) > 32:
+            raise ChannelError("Invalid channel fields provided")
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "UPDATE channels SET name = $1 WHERE user_id = $2",
+                *[name, user_id]
+            )
+
+    async def edit_description(self, user_id: int, description: str):
+        """Edits the channel's description"""
+
+        if len(description) < 25 or len(description) > 200:
+            raise ChannelError("Invalid channel fields provided")
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "UPDATE channels SET description = $1 WHERE user_id = $2",
+                *[description, user_id]
+            )
 
     async def remove_channel(self, user_id: int):
         """Removes a channel from the database"""
