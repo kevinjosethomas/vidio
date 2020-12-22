@@ -1,4 +1,5 @@
 arrow
+psutil
 asyncpg
 discord.py
 classy-json
