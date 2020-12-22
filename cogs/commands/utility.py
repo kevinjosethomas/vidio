@@ -80,7 +80,9 @@ class Utility(commands.Cog):
                     f"• **{cpu}** of the CPU\n" \
                     f"• **{threads}** threads\n" \
                     f"• **{shards}** shards\n"\
-                    f"with a response time of **{ping}**"
+                    f"with a response time of **{ping}**\n\n"
+
+        description += f"[More Stats](https://statcord.com/bot/{self.bot.user.id})"
 
         embed = discord.Embed(
             description=description,
