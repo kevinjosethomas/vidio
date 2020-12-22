@@ -39,7 +39,7 @@ class Simulation(commands.Cog):
 
         if name.content.lower().strip() == "cancel":
             await name.add_reaction(self.bot.e.check)
-            await message.edit(content=f"{self.bot.e.check} Cancelled the channel creation process")
+            await message.edit(content=f"{self.bot.e.cross} Cancelled the channel creation process")
             return
 
         name = name.content
@@ -63,7 +63,7 @@ class Simulation(commands.Cog):
 
         if description.content.lower().strip() == "cancel":
             await description.add_reaction(self.bot.e.check)
-            await message.edit(content=f"{self.bot.e.check} Cancelled the channel creation process")
+            await message.edit(content=f"{self.bot.e.cross} Cancelled the channel creation process")
             return
 
         description = description.content
@@ -109,6 +109,71 @@ class Simulation(commands.Cog):
 
         await message.edit(content=f"{self.bot.e.check} Successfully created your channel")
 
+    @commands.group(invoke_without_command=True)
+    async def edit(self, ctx: commands.Context):
+        """Command Group for editing channel details"""
+
+        description = "Want to edit your channel details? Here's what you can change -\n" \
+                    "• ``name``\n" \
+                    "• ``description``\n"\
+                    "• ``genre``\n"\
+
+        embed = discord.Embed(
+            description=description,
+            color=self.bot.c.red
+        )
+
+        embed.set_footer(text=f"Usage - {ctx.prefix}edit {{ name | description | genre }}")
+
+        await ctx.send(embed=embed)
+
+    @edit.command()
+    async def name(self, ctx: commands.Context):
+        """Edits the user's name"""
+
+        def check(message: discord.Message) -> bool:
+            return message.author.id == ctx.author.id and message.channel.type == discord.ChannelType.private
+
+        channel = await self.database.get_channel(ctx.author.id)
+        if not channel:
+            return await ctx.send(f"{self.bot.e.cross} You don't have a channel, create one with ``{ctx.prefix}start``")
+
+        message = await ctx.send(f"{self.bot.e.loading} Started the channel name edit process in your DMs. Cancel anytime by replying with ``cancel``.")
+
+        name_message = f"{self.bot.e.youtube} **Edit Channel Name**\n" \
+                    "Provide us with your channel's new name below! Make sure it's under 32 characters long " \
+                    "and please refrain from using profanity in your channel name! Also remember, you can change this again later!"
+
+        await ctx.author.send(name_message)
+
+        name = await self.bot.wait_for("message", check=check, timeout=60)
+
+        if name.content.lower().strip() == "cancel":
+            await name.add_reaction(self.bot.e.check)
+            await message.edit(content=f"{self.bot.e.cross} Cancelled the channel name edit process")
+            return
+
+        name = name.content
+
+        if len(name) < 3:
+            await ctx.author.send(f"{self.bot.e.cross} The provided name was under 3 characters. Cancelled the channel creation process.")
+            await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
+            return
+
+        if len(name) > 32:
+            await ctx.author.send(f"{self.bot.e.cross} The provided name was over 32 characters. Cancelled the channel creation process.")
+            await message.edit(content=f"{self.bot.e.cross} Invalid input was provided, cancelled channel creation process.")
+            return
+
+        try:
+            await self.database.edit_name(ctx.author.id, name)
+        except ChannelError:
+            await ctx.author.send(f"{self.bot.e.cross} Channel name edit process cancelled. Make sure the name you provided follows our guidelines.")
+            await message.edit(content=f"{self.bot.e.cross} Failed to edit channel name")
+            return
+
+        await ctx.author.send(f"{self.bot.e.check} Successfully updated your channel's name")
+        await message.edit(content=f"{self.bot.e.check} Successfully updated your channel's name")
 
 def setup(bot: commands.Bot):
     bot.add_cog(Simulation(bot))
