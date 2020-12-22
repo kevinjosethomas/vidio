@@ -51,7 +51,6 @@ class Events(commands.Cog):
 
             await message.channel.send(embed=embed)
 
-
     @tasks.loop(minutes=random.randint(10, 20))
     async def change_presence(self):
         """Automatically changes the bot's presence every 10-20 minutes"""
