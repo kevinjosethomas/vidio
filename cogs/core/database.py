@@ -17,7 +17,7 @@ class Database(commands.Cog):
         """Repopulates all bot cache"""
 
         self.bot.cache.prefixes = await self.get_all_prefixes()
-        self.bot.cache.emoji_genre, self.bot.cache_genre_emoji = await self.get_all_genres()
+        self.bot.cache.emoji_genre, self.bot.cache.genre_emoji = await self.get_all_genres()
 
     async def get_all_prefixes(self) -> dict:
         """Fetches all guilds' prefixes for cache"""
@@ -94,7 +94,7 @@ class Database(commands.Cog):
     async def add_channel(self, user_id: int, name: str, description: str, genre: str):
         """Adds a channel to the database"""
 
-        if len(name) < 3 or len(description) < 25 or len(name) > 32 or len(description) > 200:
+        if len(name) < 3 or len(description) < 25 or len(name) > 32 or len(description) > 200 or genre not in self.bot.cache.genre_emoji.keys():
             raise ChannelError("Invalid channel fields provided")
 
         async with self.db.acquire() as conn:
@@ -135,6 +135,18 @@ class Database(commands.Cog):
             await conn.execute(
                 "UPDATE channels SET description = $1 WHERE user_id = $2",
                 *[description, user_id]
+            )
+
+    async def edit_genre(self, user_id: int, genre: str):
+        """Edits the channel's genre"""
+
+        if genre not in self.bot.cache.genre_emoji.keys():
+            raise ChannelError("Invalid channel fields provided")
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "UPDATE channels SET genre = $1 WHERE user_id = $2",
+                *[genre, user_id]
             )
 
     async def remove_channel(self, user_id: int):
