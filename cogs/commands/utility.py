@@ -1,6 +1,7 @@
 import arrow
 import psutil
 import discord
+from ..exceptions import *
 from discord.ext import commands
 
 
@@ -115,7 +116,13 @@ class Utility(commands.Cog):
     async def prefix(self, ctx: commands.Context, prefix: str):
         """Updates the guild's prefix"""
 
-        await self.database.update_guild_prefix(ctx.guild.id, prefix)
+        if len(prefix) > 10:
+            return await ctx.send(f"{self.bot.e.cross} Your prefix is too long, make sure it's under 10 characters!")
+
+        try:
+            await self.database.update_guild_prefix(ctx.guild.id, prefix)
+        except GuildError:
+            return await ctx.send(f"{self.bot.e.cross} Unknown error occured, please check your input")
 
         await ctx.message.add_reaction(self.bot.e.check)
 
