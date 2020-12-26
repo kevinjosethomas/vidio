@@ -71,6 +71,7 @@ def global_bot_check(ctx: commands.Context) -> bool:
 bot.cog_list = [
     "cogs.core.database",
     "cogs.core.events",
+    "cogs.commands.owner",
     "cogs.commands.simulation",
     "cogs.commands.utility",
     "cogs.other.statcord"
