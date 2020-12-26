@@ -172,7 +172,7 @@ class Owner(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def pull(self ctx: commands.Context):
+    async def pull(self, ctx: commands.Context):
         """Pulls latest code from GitHub"""
 
         os.system("git pull")
