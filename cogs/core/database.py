@@ -39,7 +39,7 @@ class Database(commands.Cog):
 
         return emoji_genre, genre_emoji
 
-    async def add_guild(self, guild_id: int, prefix: Union[str, None]):
+    async def add_guild(self, guild_id: int, prefix: Union[str, None] = None):
         """Adds a guild to the database"""
 
         prefix = prefix if prefix else self.bot.c.default_prefix
@@ -71,11 +71,17 @@ class Database(commands.Cog):
         if len(prefix) > 10:
             raise GuildError("Invalid prefix provided!")
 
+        guild = await self.get_guild(guild_id)
+        if not guild:
+            await self.add_guild(guild_id, prefix)
+            self.bot.cache.prefixes[guild_id] = prefix
+
         async with self.db.acquire() as conn:
             await conn.execute(
                 "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
                 *[prefix, guild_id]
             )
+            self.bot.cache.prefixes[guild_id] = prefix
 
     async def remove_guild(self, guild_id: int):
         """Removes a guild from the database"""

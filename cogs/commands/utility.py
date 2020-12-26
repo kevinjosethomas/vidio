@@ -8,6 +8,7 @@ class Utility(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.database = self.bot.get_cog("Database")
 
     @commands.command()
     async def ping(self, ctx: commands.Context):
@@ -107,6 +108,15 @@ class Utility(commands.Cog):
         )
 
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def prefix(self, ctx: commands.Context, prefix: str):
+        """Updates the guild's prefix"""
+
+        await self.database.update_guild_prefix(ctx.guild.id, prefix)
+
+        await ctx.message.add_reaction(self.bot.e.check)
+
 
 
 def setup(bot: commands.Bot):
