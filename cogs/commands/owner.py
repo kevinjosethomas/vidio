@@ -170,6 +170,22 @@ class Owner(commands.Cog):
         await ctx.message.add_reaction(self.bot.e.check)
         await ctx.send(result)
 
+    @commands.command()
+    @commands.is_owner()
+    async def pull(self ctx: commands.Context):
+        """Pulls latest code from GitHub"""
+
+        os.system("git pull")
+        await ctx.message.add_reaction(self.bot.e.check)
+
+    @commands.command()
+    @commands.is_owner()
+    async def restart(self, ctx: commands.Context):
+        """Restarts the PM2 bot instance"""
+
+        await ctx.message.add_reaction(self.bot.e.check)
+        os.system("pm2 restart vidio")
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Owner(bot))
