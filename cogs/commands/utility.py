@@ -35,8 +35,10 @@ class Utility(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def stats(self, ctx: commands.Context):
+    @commands.command(
+        aliases=["stats"]
+    )
+    async def statistics(self, ctx: commands.Context):
         """Returns various statistics related to the bot"""
 
         # Bot Information
