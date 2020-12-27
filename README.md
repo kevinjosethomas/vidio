@@ -32,4 +32,4 @@ Make the necessary changes and then
 ### Contact
 If you want to contact me -  
 **Mail -** ```trustedmercury@gmail.com```  
-**Discord -** ```TrustedMercury#1953```
+**Discord -** ```TrustedMercury#2007```
