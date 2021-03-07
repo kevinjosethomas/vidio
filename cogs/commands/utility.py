@@ -13,10 +13,25 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx: commands.Context):
-        """Ping command that returns the bot's latency"""
+        """Rreturns the bot's latency"""
 
         embed = discord.Embed(
             description=f"{self.bot.e.ping} Pong! ``{round(self.bot.latency * 1000)}ms``",
+            color=self.bot.c.red
+        )
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def uptime(self, ctx: commands.Context):
+        """Returns the bot's uptime"""
+
+        duration = self.bot.started_at.humanize()
+        time = self.bot.started_at.format("HH:mm").lower()
+        date = self.bot.started_at.format("MMMM DD")
+
+        embed = discord.Embed(
+            description=f":calendar_spiral: The bot started **{duration}**, at **{time} EST** on **{date}**",
             color=self.bot.c.red
         )
 
