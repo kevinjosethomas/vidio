@@ -12,7 +12,6 @@ class Database(commands.Cog):
 	async def populate_cache(self):
 		"""Populates all bot cache"""
 
-		self.bot.cache = {}
 		self.bot.cache.prefixes = await self.get_all_prefixes()
 		self.bot.cache.emoji_genre, self.bot.cache.genre_emoji = await self.get_all_genres()
 
