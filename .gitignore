@@ -1,6 +1,0 @@
-.env
-Lib
-Scripts
-pyvenv.cfg
-__pycache__
-events.log
