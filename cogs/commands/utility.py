@@ -104,6 +104,27 @@ class Utility(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def links(self, ctx: commands.Context):
+        """Returns a list of relevant links"""
+
+        description = (
+            "Here are some useful links relevant to vidio -\n\n"
+            f"• [Invite]({self.bot.c.guild_invite})\n"
+            f"• [Support Server]({self.bot.c.guild_invite})\n"
+            "• [GitHub Repository](https://github.com/TrustedMercury/vidio)\n\n"
+            f"• [Statistics](https://statcord.com/bot/{self.bot.user.id})\n"
+            "• [DBL Page](https://top.gg/bot/689210550680682560)\n"
+            "• [DBL Vote](https://top.gg/bot/689210550680682560/vote)\n"
+        )
+
+        embed = discord.Embed(
+            description=description,
+            color=self.bot.c.red
+        )
+
+        await ctx.send(embed=embed)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Utility(bot))
