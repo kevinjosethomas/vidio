@@ -3,8 +3,11 @@ import dotenv
 import asyncio
 import asyncpg
 import discord
+import classyjson
 from discord.ext import commands
 
+
+# Load environment variables
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
@@ -12,6 +15,16 @@ DATABASE_NAME = os.getenv("DATABASE_NAME")
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASS = os.getenv("DATABASE_PASS")
 
+
+# Load JSON files
+with open("data/config.json", "r") as _config:
+    CONFIG = classyjson.load(_config)
+
+with open("data/emojis.json", "r") as _emojis:
+    EMOJIS = classyjson.load(_emojis)
+
+
+# Create bot instance
 bot = commands.AutoShardedBot(
     command_prefix="v.",
     case_insensitive=True,
@@ -19,6 +32,7 @@ bot = commands.AutoShardedBot(
 )
 
 
+# Create database instance
 async def setup_database():
     """Create a database pool connection"""
 
@@ -32,4 +46,22 @@ async def setup_database():
 asyncio.get_event_loop().run_until_complete(setup_database())
 
 
+# Register JSON data
+bot.c = CONFIG
+bot.e = EMOJIS
+
+
+# Basic configuration
+@bot.check
+async def global_bot_check(ctx: commands.Context) -> bool:
+    """Global bot check to block invalid commands"""
+
+    if not ctx.bot.is_ready():
+        await ctx.send(f"{bot.e.loading} gimme a minute, I'm still starting up")
+        return False
+
+    return not ctx.author.bot and ctx.author.id != ctx.bot.user.id
+
+
+# Execute
 bot.run(TOKEN)
