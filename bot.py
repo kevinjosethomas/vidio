@@ -5,7 +5,6 @@ import asyncpg
 import discord
 import classyjson
 from discord.ext import commands
-from discord_slash import SlashCommand
 
 
 # Load environment variables
@@ -40,7 +39,6 @@ async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
 bot = commands.AutoShardedBot(
     command_prefix=get_prefix, case_insensitive=True, intents=discord.Intents.default()
 )
-slash = SlashCommand(bot, override_type=True)
 
 
 # Create database instance
