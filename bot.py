@@ -30,7 +30,7 @@ async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
     if not ctx.guild:
         return bot.c.default_prefix
 
-    prefix = bot.cache.prefix.get(ctx.guild.id, bot.c.default_prefix)
+    prefix = bot.cache.prefixes.get(ctx.guild.id, bot.c.default_prefix)
 
     return prefix
 
@@ -74,7 +74,8 @@ async def global_bot_check(ctx: commands.Context) -> bool:
     return not ctx.author.bot and ctx.author.id != ctx.bot.user.id
     
 bot.cog_list = [
-    "cogs.core.database"
+    "cogs.core.database",
+    "cogs.core.events"
 ]
 
 for cog in bot.cog_list:
