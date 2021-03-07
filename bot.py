@@ -24,9 +24,20 @@ with open("data/emojis.json", "r") as _emojis:
     EMOJIS = classyjson.load(_emojis)
 
 
+async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
+    """Fetches the prefix for a specific guild"""
+
+    if not ctx.guild:
+        return bot.c.default_prefix
+
+    prefix = bot.cache.prefix.get(ctx.guild.id, bot.c.default_prefix)
+
+    return prefix
+
+
 # Create bot instance
 bot = commands.AutoShardedBot(
-    command_prefix="v.",
+    command_prefix=get_prefix,
     case_insensitive=True,
     intents=discord.Intents.default()
 )
@@ -61,6 +72,13 @@ async def global_bot_check(ctx: commands.Context) -> bool:
         return False
 
     return not ctx.author.bot and ctx.author.id != ctx.bot.user.id
+    
+bot.cog_list = [
+    "cogs.core.database"
+]
+
+for cog in bot.cog_list:
+    bot.load_extension(cog)
 
 
 # Execute
