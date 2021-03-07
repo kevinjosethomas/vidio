@@ -5,6 +5,7 @@ import asyncpg
 import discord
 import classyjson
 from discord.ext import commands
+from discord_slash import SlashCommand
 
 
 # Load environment variables
@@ -37,10 +38,9 @@ async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
 
 # Create bot instance
 bot = commands.AutoShardedBot(
-    command_prefix=get_prefix,
-    case_insensitive=True,
-    intents=discord.Intents.default()
+    command_prefix=get_prefix, case_insensitive=True, intents=discord.Intents.default()
 )
+slash = SlashCommand(bot, override_type=True)
 
 
 # Create database instance
@@ -48,11 +48,9 @@ async def setup_database():
     """Create a database pool connection"""
 
     bot.database = await asyncpg.create_pool(
-        host=DATABASE_HOST,
-        database=DATABASE_NAME,
-        user=DATABASE_USER,
-        password=DATABASE_PASS
+        host=DATABASE_HOST, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASS
     )
+
 
 asyncio.get_event_loop().run_until_complete(setup_database())
 
@@ -72,10 +70,12 @@ async def global_bot_check(ctx: commands.Context) -> bool:
         return False
 
     return not ctx.author.bot and ctx.author.id != ctx.bot.user.id
-    
+
+
 bot.cog_list = [
     "cogs.core.database",
-    "cogs.core.events"
+    "cogs.core.events",
+    "cogs.commands.utility"
 ]
 
 for cog in bot.cog_list:
