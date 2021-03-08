@@ -50,7 +50,6 @@ class Owner(commands.Cog):
         cog = cog.lower()
 
         if cog == "all":
-
             for cog in self.bot.cog_list:
                 self.bot.load_extension(cog)
 
@@ -73,7 +72,6 @@ class Owner(commands.Cog):
         cog = cog.lower()
 
         if cog == "all":
-
             for cog in self.bot.cog_list:
                 self.bot.reload_extension(cog)
 
@@ -96,7 +94,6 @@ class Owner(commands.Cog):
         cog = cog.lower()
 
         if cog == "all":
-
             for cog in self.bot.cog_list:
                 self.bot.unload_extension(cog)
 
@@ -109,6 +106,8 @@ class Owner(commands.Cog):
                 cog = f"cogs.{cog}"
 
             self.bot.unload_extension(cog)
+
+        await ctx.message.add_reaction(self.bot.e.check)
 
 
 def setup(bot: commands.Bot):
