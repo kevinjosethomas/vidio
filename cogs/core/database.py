@@ -65,6 +65,25 @@ class Database(commands.Cog):
 
         return guild
 
+    async def update_guild_prefix(self, guild_id: int, prefix: str):
+        """Updates a guild's prefix in the database"""
+
+        if len(prefix) > 10:
+            raise GuildError("Invalid prefix provided")
+
+        guild = await self.get_guild(guild_id)
+        if not guild:
+            await self.add_guild(guild_id, prefix)
+            self.bot.cache.prefixes[guild_id] = prefix
+            return
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
+                prefix, guild_id
+            )
+            self.bot.cache.prefixes[guild_id] = prefix
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Database(bot))
