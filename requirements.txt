@@ -1,0 +1,7 @@
+arrow
+psutil
+asyncpg
+discord.py
+statcord.py
+classy-json
+python-dotenv
