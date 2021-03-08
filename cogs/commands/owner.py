@@ -43,6 +43,29 @@ class Owner(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @cog.command()
+    async def load(self, ctx: commands.Context, *, cog: str):
+        """Loads to specified cogs"""
+
+        cog = cog.lower()
+
+        if cog == "all":
+
+            for cog in self.bot.cog_list:
+                self.bot.load_extension(cog)
+
+            return await ctx.message.add_reaction(self.bot.e.check)
+
+        cogs = cog.split()
+
+        for cog in cogs:
+            if not cog.startswith("cogs."):
+                cog = f"cogs.{cog}"
+
+            self.bot.load_extension(cog)
+
+        await ctx.message.add_reaction(self.bot.e.check)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Owner(bot))
