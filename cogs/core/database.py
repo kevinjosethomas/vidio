@@ -37,6 +37,16 @@ class Database(commands.Cog):
 
         return emoji_genre, genre_emoji
 
+    async def get_guild(self, guild_id: int) -> typing.Union[asyncpg.Record, None]:
+        """Fetches a guild from the database"""
+
+        guild = await self.db.fetchrow(
+            "SELECT * FROM guilds WHERE guild_id = $1",
+            guild_id
+        )
+
+        return guild
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Database(bot))
