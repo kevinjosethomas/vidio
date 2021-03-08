@@ -27,6 +27,22 @@ class Owner(commands.Cog):
 
             await ctx.send(embed=embed)
 
+    @cog.command()
+    async def list(self, ctx: commands.Context):
+        """Lists all available cogs that belong to the bot"""
+
+        description = ""
+        for cog in self.bot.cog_list:
+            description += f"• ``{cog}``\n"
+
+        embed = discord.Embed(
+            title=":gear: All Cogs",
+            description=description,
+            color=self.bot.c.red
+        )
+
+        await ctx.send(embed=embed)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Owner(bot))
