@@ -84,6 +84,20 @@ class Database(commands.Cog):
             )
             self.bot.cache.prefixes[guild_id] = prefix
 
+    async def remove_guild(self, guild_id: int):
+        """Removes a guild from the database"""
+
+        guild = await self.get_guild(guild_id)
+        if not guild:
+            raise GuildError("Provided guild does not exist")
+            return
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "DELETE FROM guilds WHERE guild_id = $1",
+                guild_id
+            )
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Database(bot))
