@@ -2,6 +2,8 @@ import typing
 import discord
 from discord.ext import commands
 
+from ..exceptions import *
+
 
 class Database(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -36,6 +38,22 @@ class Database(commands.Cog):
             genre_emoji[genre["genre"]] = genre["emoji"]
 
         return emoji_genre, genre_emoji
+
+    async def add_guild(self, guild_id: int, prefix: typing.Union[str, None] = None):
+        """Adds a guild to the database"""
+
+        prefix = prefix if prefix else self.bot.c.default_prefix
+
+        guild = await self.get_guild(guild_id)
+        if guild:
+            raise GuildError("Provided guild already exists")
+            return
+
+        async with self.db.acquire() as conn:
+            await conn.execute(
+                "INSERT INTO guilds (id, prefix) VALUES ($1, $2)",
+                guild_id, prefix
+            )
 
     async def get_guild(self, guild_id: int) -> typing.Union[asyncpg.Record, None]:
         """Fetches a guild from the database"""
