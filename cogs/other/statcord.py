@@ -8,7 +8,7 @@ class Statcord(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.client = statcord.Client(self.bot, self.bot.STATCORD_KEY)
-        self.Client.start_loop()
+        self.client.start_loop()
 
     @commands.Cog.listener()
     async def on_command(self, ctx: commands.Context):
