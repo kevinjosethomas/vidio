@@ -10,6 +10,7 @@ from discord.ext import commands
 # Load environment variables
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
+STATCORD_KEY = os.getenv("STATCORD_KEY")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 DATABASE_USER = os.getenv("DATABASE_USER")
@@ -53,9 +54,10 @@ async def setup_database():
 asyncio.get_event_loop().run_until_complete(setup_database())
 
 
-# Register JSON data
+# Register data globally
 bot.c = CONFIG
 bot.e = EMOJIS
+bot.STATCORD_KEY = STATCORD_KEY
 
 
 # Basic configuration
@@ -74,7 +76,8 @@ bot.cog_list = [
     "cogs.core.database",
     "cogs.core.events",
     "cogs.commands.owner",
-    "cogs.commands.utility"
+    "cogs.commands.utility",
+    "cogs.other.statcord"
 ]
 
 for cog in bot.cog_list:
