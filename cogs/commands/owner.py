@@ -1,3 +1,8 @@
+
+import os
+import ast
+import time
+import asyncio
 import discord
 from discord.ext import commands
 
@@ -108,6 +113,61 @@ class Owner(commands.Cog):
             self.bot.unload_extension(cog)
 
         await ctx.message.add_reaction(self.bot.e.check)
+
+    def insert_returns(self, body: str):
+        """Inserts required return statements to the eval code"""
+
+        # Insert return stmt if the last expression is a expression statement
+        if isinstance(body[-1], ast.Expr):
+            body[-1] = ast.Return(body[-1].value)
+            ast.fix_missing_locations(body[-1])
+
+        # For if statements, we insert returns into the body and the or else
+        if isinstance(body[-1], ast.If):
+            insert_returns(body[-1].body)
+            insert_returns(body[-1].orelse)
+
+        # For with blocks, again we insert returns into the body
+        if isinstance(body[-1], ast.With):
+            insert_returns(body[-1].body)
+
+    @commands.command()
+    @commands.is_owner()
+    async def eval(self, ctx: commands.Context, *, command: str):
+        """Evaluates the provided code"""
+
+        fn_name = "_eval_expr"
+
+        command = command.strip("` ")
+
+        # Add a layer of indentation
+        command = "\n".join(f"    {i}" for i in command.splitlines())
+
+        # Wrap in async def body
+        body = f"async def {fn_name}():\n{command}"
+
+        parsed = ast.parse(body)
+        body = parsed.body[0].body
+
+        self.insert_returns(body)
+
+        env = {
+            'discord': discord,
+            'commands': commands,
+            'asyncio': asyncio,
+            'time': time,
+            'os': os,
+            'ctx': ctx,
+            'bot': self.bot,
+            '__import__': __import__           # Your variables go here
+        }
+        exec(compile(parsed, filename="<ast>", mode="exec"), env)
+
+        result = (await eval(f"{fn_name}()", env))
+
+        await ctx.message.add_reaction(self.bot.e.check)
+        await ctx.send(result)
+
 
 
 def setup(bot: commands.Bot):
