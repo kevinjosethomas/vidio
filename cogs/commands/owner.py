@@ -89,6 +89,27 @@ class Owner(commands.Cog):
 
         await ctx.message.add_reaction(self.bot.e.check)
 
+    @cog.command()
+    async def unload(self, ctx: commands.Context, *, cog: str):
+        """Unloads the specified cogs"""
+
+        cog = cog.lower()
+
+        if cog == "all":
+
+            for cog in self.bot.cog_list:
+                self.bot.unload_extension(cog)
+
+            return await ctx.message.add_reaction(self.bot.e.check)
+
+        cogs = cog.split()
+
+        for cog in cogs:
+            if not cog.startswith("cogs."):
+                cog = f"cogs.{cog}"
+
+            self.bot.unload_extension(cog)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Owner(bot))
