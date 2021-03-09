@@ -9,6 +9,10 @@ from discord.ext import commands
 
 class Owner(commands.Cog):
 
+    """
+    Owner; contains all owner only commands
+    """
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.database = self.bot.get_cog("Database")

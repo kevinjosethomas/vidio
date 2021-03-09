@@ -6,6 +6,11 @@ from discord.ext import commands, tasks
 
 
 class Events(commands.Cog):
+
+    """
+    Events; includes all event handlers and basic utility
+    """
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.database = self.bot.get_cog("Database")

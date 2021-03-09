@@ -6,6 +6,11 @@ from ..exceptions import *
 
 
 class Database(commands.Cog):
+
+    """
+    Database; includes functions for all database queries
+    """
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.db = self.bot.database
