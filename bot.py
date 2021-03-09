@@ -77,6 +77,7 @@ bot.cog_list = [
     "cogs.core.events",
     "cogs.commands.owner",
     "cogs.commands.utility",
+    "cogs.commands.simulation",
     "cogs.other.statcord"
 ]
 
