@@ -1,5 +1,7 @@
 # vidio [![Bot Status](https://top.gg/api/widget/status/689210550680682560.svg?noavatar=True)](https://top.gg/bot/689210550680682560) [![](https://top.gg/api/widget/servers/689210550680682560.svg?noavatar=True)](https://top.gg/bot/689210550680682560)
 
+## THIS PROJECT IS CURRENTLY NOT BEING MANTAINED, I'M GOING TO WORK ON A NEW VERSION IN A COUPLE OF WEEKS AFTER I CLEAR UP MY SCHEDULE
+
 **vidio** is a new discord bot that allows
 you to create a simulation of a YouTube
 Channel on your discord server! It's a
