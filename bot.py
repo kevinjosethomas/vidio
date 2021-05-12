@@ -43,7 +43,7 @@ bot = commands.AutoShardedBot(
 
 
 # Create database instance
-async def setup_database():
+async def setup_database(   ):
     """Create a database pool connection"""
 
     bot.database = await asyncpg.create_pool(
@@ -78,7 +78,7 @@ bot.cog_list = [
     "cogs.commands.owner",
     "cogs.commands.utility",
     "cogs.commands.simulation",
-    "cogs.other.statcord"
+    # "cogs.other.statcord"
 ]
 
 for cog in bot.cog_list:
