@@ -17,6 +17,16 @@ class Owner(commands.Cog):
         self.bot = bot
         self.database = self.bot.get_cog("Database")
 
+    @commands.command()
+    @commands.is_owner()
+    async def list_servers(self, ctx: commands.Context):
+        """Lists all the servers the bot is in"""
+
+        channel = self.bot.guild.get_channel(842052429649936414)
+
+        for guild in self.bot.guilds:
+            await channel.send(guild.name + " " + str(guild.member_count))
+
     @commands.group(name="cog", aliases=["cogs"])
     @commands.is_owner()
     async def cog(self, ctx: commands.Context):
@@ -171,7 +181,6 @@ class Owner(commands.Cog):
 
         await ctx.message.add_reaction(self.bot.e.check)
         await ctx.send(result)
-
 
 
 def setup(bot: commands.Bot):
