@@ -46,6 +46,8 @@ bot = commands.AutoShardedBot(
 async def setup_database():
     """Create a database pool connection"""
 
+    print(DATABASE_HOST, DATABASE_NAME, DATABASE_USER)
+
     bot.database = await asyncpg.create_pool(
         host=DATABASE_HOST, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASS
     )
