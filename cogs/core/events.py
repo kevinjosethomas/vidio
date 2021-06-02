@@ -3,6 +3,7 @@ import random
 import discord
 import classyjson
 from discord.ext import commands, tasks
+from discord_components import DiscordComponents
 
 
 class Events(commands.Cog):
@@ -18,6 +19,8 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         """Event triggered when the bot is ready"""
+
+        DiscordComponents(self.bot)
 
         self.bot.votes = 0
         self.bot.command_count = 0
