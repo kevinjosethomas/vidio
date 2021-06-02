@@ -5,3 +5,4 @@ discord.py
 statcord.py
 classy-json
 python-dotenv
+discord-components
