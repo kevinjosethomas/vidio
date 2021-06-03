@@ -36,9 +36,13 @@ async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
     return prefix
 
 
+intents = discord.Intents.default()
+intents.guilds = True
+intents.members = True
+
 # Create bot instance
 bot = commands.AutoShardedBot(
-    command_prefix=get_prefix, case_insensitive=True, intents=discord.Intents.default()
+    command_prefix=get_prefix, case_insensitive=True, intents=intents
 )
 
 

@@ -182,6 +182,27 @@ class Owner(commands.Cog):
         await ctx.message.add_reaction(self.bot.e.check)
         await ctx.send(result)
 
+    @commands.command()
+    @commands.is_owner()
+    async def lookup(self, ctx: commands.Context, user: discord.User):
+        """Returns all the bot's mutual guild with the provided user"""
+
+        message = ""
+        index = 1
+
+        for guild in self.bot.guilds:
+            if guild.get_member(user.id):
+                message += f"{index}. {guild.name} ``{guild.id}``\n"
+                index += 1
+
+        embed = discord.Embed(
+            title=":mag_right: User Lookup",
+            description=message if message else "No mutual guilds found",
+            color=self.bot.c.red
+        )
+
+        await ctx.send(embed=embed)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Owner(bot))
