@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Film & Animation",
+    "emoji": "📸"
+  },
+  {
+    "name": "Autos & Vehicles",
+    "emoji": "🏎️"
+  },
+  {
+    "name": "Music",
+    "emoji": "🎵"
+  },
+  {
+    "name": "Pets & Animals",
+    "emoji": "🐶"
+  },
+  {
+    "name": "Sports",
+    "emoji": "🏀"
+  },
+  {
+    "name": "Travel & Events",
+    "emoji": "✈️"
+  },
+  {
+    "name": "Gaming",
+    "emoji": "🎮"
+  },
+  {
+    "name": "People & Blogs",
+    "emoji": "👥"
+  },
+  {
+    "name": "Comedy",
+    "emoji": "🎭"
+  },
+  {
+    "name": "Entertainment",
+    "emoji": "📺"
+  },
+  {
+    "name": "News & Politics",
+    "emoji": "📰"
+  },
+  {
+    "name": "Howto & Style",
+    "emoji": "👚"
+  },
+  {
+    "name": "Education",
+    "emoji": "📖"
+  },
+  {
+    "name": "Science & Technology",
+    "emoji": "🧪"
+  },
+  {
+    "name": "Nonprofits & Activism",
+    "emoji": "💸"
+  }
+]
