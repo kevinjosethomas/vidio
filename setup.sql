@@ -1,9 +1,4 @@
 
-CREATE TABLE IF NOT EXISTS genres (
-  genre            VARCHAR PRIMARY KEY,
-  emoji            VARCHAR UNIQUE
-);
-
 CREATE TABLE IF NOT EXISTS channels (
   id               BIGINT PRIMARY KEY,
   banner           VARCHAR,
@@ -65,18 +60,8 @@ CREATE TABLE IF NOT EXISTS commands (
   timestamp        TIMESTAMPTZ
 );
 
-INSERT INTO genres (genre, emoji) VALUES ('Film & Animation', '📸');
-INSERT INTO genres (genre, emoji) VALUES ('Autos & Vehicles', '🏎️');
-INSERT INTO genres (genre, emoji) VALUES ('Music', '🎵');
-INSERT INTO genres (genre, emoji) VALUES ('Pets & Animals', '🐶');
-INSERT INTO genres (genre, emoji) VALUES ('Sports', '🏀');
-INSERT INTO genres (genre, emoji) VALUES ('Travel & Events', '✈️');
-INSERT INTO genres (genre, emoji) VALUES ('Gaming', '🎮');
-INSERT INTO genres (genre, emoji) VALUES ('People & Blogs', '👥');
-INSERT INTO genres (genre, emoji) VALUES ('Comedy', '🎭');
-INSERT INTO genres (genre, emoji) VALUES ('Entertainment', '📺');
-INSERT INTO genres (genre, emoji) VALUES ('News & Politics', '📰');
-INSERT INTO genres (genre, emoji) VALUES ('Howto & Style', '👚');
-INSERT INTO genres (genre, emoji) VALUES ('Education', '📖');
-INSERT INTO genres (genre, emoji) VALUES ('Science & Technology', '🧪');
-INSERT INTO genres (genre, emoji) VALUES ('Nonprofits & Activism', '💸');
+CREATE TABLE IF NOT EXISTS botbans (
+  id               BIGINT PRIMARY KEY,
+  reason           TEXT,
+  banned_at        TIMESTAMPTZ
+);
