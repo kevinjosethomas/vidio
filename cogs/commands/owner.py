@@ -204,5 +204,24 @@ class Owner(commands.Cog):
         await ctx.send(embed=embed)
 
 
+    @commands.command()
+    @commands.is_owner()
+    async def top_guilds(self, ctx: commands.Context):
+        """Returns the 10 most popular guilds"""
+
+        message = ""
+        guilds = sorted(self.bot.guilds, key=(lambda guild: guild.member_count), reverse=True)[:10]
+
+        for index, guild in enumerate(guilds, 1):
+            message += f"{index}. {guild.name} ({guild.member_count}) ``{guild.id}``\n"
+
+        embed = discord.Embed(
+            title=":trophy: Top Guilds",
+            description=message,
+            color=self.bot.c.red
+        )
+
+        await ctx.send(embed=embed)
+
 def setup(bot: commands.Bot):
     bot.add_cog(Owner(bot))
