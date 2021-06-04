@@ -1,6 +1,6 @@
 
 CREATE TABLE IF NOT EXISTS channels (
-  id               BIGINT PRIMARY KEY,
+  channel_id       BIGINT PRIMARY KEY,
   banner           VARCHAR,
   name             VARCHAR,
   username         VARCHAR,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS channels (
 );
 
 CREATE TABLE IF NOT EXISTS drafts (
-  id               SERIAL PRIMARY KEY,
+  draft_id         SERIAL PRIMARY KEY,
   channel_id       BIGINT REFERENCES channels (id),
   status           VARCHAR,
   recorded         BOOLEAN,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS drafts (
 );
 
 CREATE TABLE IF NOT EXISTS videos (
-  id               SERIAL PRIMARY KEY,
+  video_id         SERIAL PRIMARY KEY,
   channel_id       BIGINT REFERENCES channels (id),
   draft_id         INT REFERENCES drafts (id),
   name             VARCHAR,
@@ -40,19 +40,19 @@ CREATE TABLE IF NOT EXISTS videos (
 );
 
 CREATE TABLE IF NOT EXISTS items (
-  id               SERIAL PRIMARY KEY,
+  item_id          SERIAL PRIMARY KEY,
   channel_id       BIGINT REFERENCES channels (id),
   name             VARCHAR,
   count            INT
 );
 
 CREATE TABLE IF NOT EXISTS guilds (
-  id               BIGINT PRIMARY KEY,
+  guild_id         BIGINT PRIMARY KEY,
   prefix           VARCHAR
 );
 
 CREATE TABLE IF NOT EXISTS commands (
-  id               BIGSERIAL PRIMARY KEY,
+  command_id       BIGSERIAL PRIMARY KEY,
   guild            BIGINT,
   channel          BIGINT,
   author           BIGINT,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS commands (
 );
 
 CREATE TABLE IF NOT EXISTS botbans (
-  id               BIGINT PRIMARY KEY,
+  botban_id        BIGINT PRIMARY KEY,
   reason           TEXT,
   banned_at        TIMESTAMPTZ
 );

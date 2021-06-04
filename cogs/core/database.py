@@ -1,5 +1,4 @@
 import typing
-import discord
 import asyncpg
 from discord.ext import commands
 
@@ -29,7 +28,6 @@ class Database(commands.Cog):
         guild = await self.get_guild(guild_id)
         if guild:
             raise GuildError("Provided guild already exists")
-            return
 
         await conn.execute(
             "INSERT INTO guilds (id, prefix) VALUES ($1, $2)",
@@ -70,11 +68,44 @@ class Database(commands.Cog):
         guild = await self.get_guild(guild_id)
         if not guild:
             raise GuildError("Provided guild does not exist")
-            return
 
         await conn.execute(
             "DELETE FROM guilds WHERE guild_id = $1",
             guild_id
+        )
+
+    async def add_botban(self, conn: asyncpg.Connection, user_id: int, reason: str = None):
+        """Adds a botban to the database"""
+
+        botban = await self.get_botban(user_id)
+        if not botban:
+            raise BotBanError("Provided botban already exists")
+
+        await conn.execute(
+            "INSERT INTO botbans (botban_id, reason, banned_at) VALUES ($1, $2, NOW())",
+            user_id, reason
+        )
+
+    async def get_botban(self, user_id: int):
+        """Gets a botban from the database"""
+
+        botban = await self.db.fetchrow(
+            "SELECT * FROM botbans WHERE botban_id = $1",
+            user_id
+        )
+
+        return botban
+
+    async def remove_botban(self, conn: asyncpg.Connection, user_id: int):
+        """Removes a botban from the database"""
+
+        botban = await self.get_botban(user_id)
+        if not botban:
+            raise BotBanError("Provided botban does not exist")
+
+        await conn.execute(
+            "DELETE FROM botbans WHERE botban_id = $1",
+            user_id
         )
 
 
