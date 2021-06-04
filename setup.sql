@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS channels (
   balance          BIGINT,
   views            BIGINT,
   location         VARCHAR,
-  genre            VARCHAR REFERENCES genres (genre),
+  genre            VARCHAR,
   created_at       TIMESTAMPTZ
 );
 
