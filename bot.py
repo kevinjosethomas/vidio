@@ -18,13 +18,13 @@ DATABASE_PASS = os.getenv("DATABASE_PASS")
 
 
 # Load JSON files
-with open("data/config.json", "r") as _config:
+with open("data/config.json", "r", encoding="utf8") as _config:
     CONFIG = classyjson.load(_config)
 
-with open("data/emojis.json", "r") as _emojis:
+with open("data/emojis.json", "r", encoding="utf8") as _emojis:
     EMOJIS = classyjson.load(_emojis)
 
-with open("data/genres.json", "r") as _genres:
+with open("data/genres.json", "r", encoding="utf8") as _genres:
     GENRES = classyjson.load(_genres)
 
 async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
