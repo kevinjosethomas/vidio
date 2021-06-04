@@ -49,7 +49,7 @@ bot = commands.AutoShardedBot(
 
 
 # Create database instance
-async def setup_database(   ):
+async def setup_database():
     """Create a database pool connection"""
 
     bot.database = await asyncpg.create_pool(
@@ -76,7 +76,7 @@ async def global_bot_check(ctx: commands.Context) -> bool:
         await ctx.send(f"{bot.e.loading} gimme a minute, I'm still starting up")
         return False
 
-    return not ctx.author.bot and ctx.author.id != ctx.bot.user.id
+    return not ctx.author.bot and ctx.author.id != ctx.bot.user.id and ctx.author.id not in ctx.bot.cache.botbans
 
 
 bot.cog_list = [

@@ -19,6 +19,7 @@ class Database(commands.Cog):
         """Populates all bot cache"""
 
         self.bot.cache.prefixes = await self.get_all_prefixes()
+        self.bot.cache.botbans = await self.get_all_botbans()
 
     async def get_all_prefixes(self) -> dict:
         """Fetches all guilds' prefixes from the database"""
@@ -30,6 +31,13 @@ class Database(commands.Cog):
             for guild in guilds
             if (guild["prefix"] != self.bot.c.default_prefix and guild["prefix"])
         )
+
+    async def get_all_botbans(self) -> list:
+        """Fetches all botbans from the database"""
+
+        botbans = await self.db.fetch("SELECT * FROM botbans")
+
+        return [botban["botban_id"] for botban in botbans]
 
     async def add_guild(self, conn: asyncpg.Connection, guild_id: int, prefix: typing.Union[str, None] = None):
         """Adds a guild to the database"""
@@ -44,6 +52,7 @@ class Database(commands.Cog):
             "INSERT INTO guilds (id, prefix) VALUES ($1, $2)",
             guild_id, prefix
         )
+        self.bot.cache.prefixes[guild_id] = prefix
 
     async def get_guild(self, guild_id: int) -> typing.Union[asyncpg.Record, None]:
         """Fetches a guild from the database"""
@@ -96,6 +105,7 @@ class Database(commands.Cog):
             "INSERT INTO botbans (botban_id, reason, banned_at) VALUES ($1, $2, NOW())",
             user_id, reason
         )
+        self.bot.cache.botbans.append(user_id)
 
     async def get_botban(self, user_id: int):
         """Gets a botban from the database"""
@@ -118,6 +128,8 @@ class Database(commands.Cog):
             "DELETE FROM botbans WHERE botban_id = $1",
             user_id
         )
+        self.bot.cache.botbans.remove(user_id)
+
 
 
 def setup(bot: commands.Bot):
