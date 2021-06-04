@@ -203,7 +203,6 @@ class Owner(commands.Cog):
 
         await ctx.send(embed=embed)
 
-
     @commands.command()
     @commands.is_owner()
     async def top_guilds(self, ctx: commands.Context):

@@ -24,6 +24,8 @@ with open("data/config.json", "r") as _config:
 with open("data/emojis.json", "r") as _emojis:
     EMOJIS = classyjson.load(_emojis)
 
+with open("data/genres.json", "r") as _genres:
+    GENRES = classyjson.load(_genres)
 
 async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
     """Fetches the prefix for a specific guild"""
@@ -61,6 +63,7 @@ asyncio.get_event_loop().run_until_complete(setup_database())
 # Register data globally
 bot.c = CONFIG
 bot.e = EMOJIS
+bot.g = GENRES
 bot.STATCORD_KEY = STATCORD_KEY
 
 
