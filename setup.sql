@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS channels (
 
 CREATE TABLE IF NOT EXISTS drafts (
   draft_id         SERIAL PRIMARY KEY,
-  channel_id       BIGINT REFERENCES channels (id),
+  channel_id       BIGINT REFERENCES channels (channel_id),
   status           VARCHAR,
   recorded         BOOLEAN,
   edited           BOOLEAN,
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS drafts (
 
 CREATE TABLE IF NOT EXISTS videos (
   video_id         SERIAL PRIMARY KEY,
-  channel_id       BIGINT REFERENCES channels (id),
-  draft_id         INT REFERENCES drafts (id),
+  channel_id       BIGINT REFERENCES channels (channel_id),
+  draft_id         INT REFERENCES drafts (draft_id),
   name             VARCHAR,
   description      VARCHAR,
   status           VARCHAR,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS videos (
 
 CREATE TABLE IF NOT EXISTS items (
   item_id          SERIAL PRIMARY KEY,
-  channel_id       BIGINT REFERENCES channels (id),
+  channel_id       BIGINT REFERENCES channels (channel_id),
   name             VARCHAR,
   count            INT
 );
