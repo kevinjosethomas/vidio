@@ -24,10 +24,10 @@ class Database(commands.Cog):
     async def get_all_prefixes(self) -> dict:
         """Fetches all guilds' prefixes from the database"""
 
-        guilds = await self.db.fetch("SELECT id, prefix FROM guilds")
+        guilds = await self.db.fetch("SELECT * FROM guilds")
 
         return dict(
-            (guild["id"], guild["prefix"])
+            (guild["guild_id"], guild["prefix"])
             for guild in guilds
             if (guild["prefix"] != self.bot.c.default_prefix and guild["prefix"])
         )
