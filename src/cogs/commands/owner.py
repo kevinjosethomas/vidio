@@ -1,10 +1,11 @@
-
 import os
 import ast
 import time
 import asyncio
 import discord
 from discord.ext import commands
+
+from ..exceptions import *
 
 
 class Owner(commands.Cog):
@@ -221,6 +222,24 @@ class Owner(commands.Cog):
         )
 
         await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.is_owner()
+    async def botban(self, ctx: commands.Context, user: discord.User, reason: str = None):
+        """Bans the provided user from using the bot"""
+
+        async with self.bot.database.acquire() as conn:
+            await self.database.add_botban(conn, user.id, reason)
+
+        await ctx.message.add_reaction(self.bot.e.check)
+
+    @botban.error
+    async def botban_error(ctx: commands.Context, error: Exception):
+        """Error handler for botban command"""
+
+        if isinstance(error, BotBanError):
+            await ctx.send()
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Owner(bot))
