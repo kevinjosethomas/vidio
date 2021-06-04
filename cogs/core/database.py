@@ -20,6 +20,17 @@ class Database(commands.Cog):
 
         self.bot.cache.prefixes = await self.get_all_prefixes()
 
+    async def get_all_prefixes(self) -> dict:
+        """Fetches all guilds' prefixes from the database"""
+
+        guilds = await self.db.fetch("SELECT id, prefix FROM guilds")
+
+        return dict(
+            (guild["id"], guild["prefix"])
+            for guild in guilds
+            if (guild["prefix"] != self.bot.c.default_prefix and guild["prefix"])
+        )
+
     async def add_guild(self, conn: asyncpg.Connection, guild_id: int, prefix: typing.Union[str, None] = None):
         """Adds a guild to the database"""
 
