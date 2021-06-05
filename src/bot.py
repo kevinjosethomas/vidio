@@ -27,6 +27,7 @@ with open("data/emojis.json", "r", encoding="utf8") as _emojis:
 with open("data/genres.json", "r", encoding="utf8") as _genres:
     GENRES = classyjson.load(_genres)
 
+
 async def get_prefix(bot: commands.Bot, ctx: commands.Context) -> str:
     """Fetches the prefix for a specific guild"""
 
@@ -44,7 +45,9 @@ intents.members = True
 
 # Create bot instance
 bot = commands.AutoShardedBot(
-    command_prefix=get_prefix, case_insensitive=True, intents=intents
+    command_prefix=get_prefix,
+    case_insensitive=True,
+    intents=intents,
 )
 
 
@@ -53,7 +56,10 @@ async def setup_database():
     """Create a database pool connection"""
 
     bot.database = await asyncpg.create_pool(
-        host=DATABASE_HOST, database=DATABASE_NAME, user=DATABASE_USER, password=DATABASE_PASS
+        host=DATABASE_HOST,
+        database=DATABASE_NAME,
+        user=DATABASE_USER,
+        password=DATABASE_PASS,
     )
 
 
@@ -73,10 +79,16 @@ async def global_bot_check(ctx: commands.Context) -> bool:
     """Global bot check to block invalid commands"""
 
     if not ctx.bot.is_ready():
-        await ctx.send(f"{bot.e.loading} gimme a minute, I'm still starting up")
+        await ctx.send(
+            f"{bot.e.loading} gimme a minute, I'm still starting up"
+        )
         return False
 
-    return not ctx.author.bot and ctx.author.id != ctx.bot.user.id and ctx.author.id not in ctx.bot.cache.botbans
+    return (
+        not ctx.author.bot
+        and ctx.author.id != ctx.bot.user.id
+        and ctx.author.id not in ctx.bot.cache.botbans
+    )
 
 
 bot.cog_list = [
