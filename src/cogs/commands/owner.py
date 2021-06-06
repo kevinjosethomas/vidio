@@ -18,7 +18,7 @@ class Owner(commands.Cog):
         self.bot = bot
         self.database = self.bot.get_cog("Database")
 
-    @commands.command()
+    @commands.command(usage="list_servers")
     @commands.is_owner()
     async def list_servers(self, ctx: commands.Context):
         """Lists all the servers the bot is in"""
@@ -34,20 +34,22 @@ class Owner(commands.Cog):
         """Command Group for all cog management commands"""
 
         if not ctx.invoked_subcommand:
-            description = f"• ``{ctx.prefix}cog list`` Lists all loaded cogs\n" \
-                        f"• ``{ctx.prefix}cog load {{cog}}`` Loads the mentioned cog\n" \
-                        f"• ``{ctx.prefix}cog reload {{cog}}`` Reloads the mentioned cog\n" \
-                        f"• ``{ctx.prefix}cog unload {{cog}}`` Unloads the mentioned cog\n"
+            description = (
+                f"• ``{ctx.prefix}cog list`` Lists all loaded cogs\n"
+                f"• ``{ctx.prefix}cog load {{cog}}`` Loads the mentioned cog\n"
+                f"• ``{ctx.prefix}cog reload {{cog}}`` Reloads the mentioned cog\n"
+                f"• ``{ctx.prefix}cog unload {{cog}}`` Unloads the mentioned cog\n"
+            )
 
             embed = discord.Embed(
                 title=":gear: Cog Commands",
                 description=description,
-                color=self.bot.c.red
+                color=self.bot.c.red,
             )
 
             await ctx.send(embed=embed)
 
-    @cog.command()
+    @cog.command(usage="cog list < cog | all >")
     async def list(self, ctx: commands.Context):
         """Lists all available cogs that belong to the bot"""
 
@@ -58,12 +60,12 @@ class Owner(commands.Cog):
         embed = discord.Embed(
             title=":gear: All Cogs",
             description=description,
-            color=self.bot.c.red
+            color=self.bot.c.red,
         )
 
         await ctx.send(embed=embed)
 
-    @cog.command()
+    @cog.command(usage="cog load < cog | all >")
     async def load(self, ctx: commands.Context, *, cog: str):
         """Loads to specified cogs"""
 
@@ -85,7 +87,7 @@ class Owner(commands.Cog):
 
         await ctx.message.add_reaction(self.bot.e.check)
 
-    @cog.command()
+    @cog.command(usage="cog reload")
     async def reload(self, ctx: commands.Context, *, cog: str):
         """Reloads the specified cogs"""
 
@@ -107,7 +109,7 @@ class Owner(commands.Cog):
 
         await ctx.message.add_reaction(self.bot.e.check)
 
-    @cog.command()
+    @cog.command(usage="cog unload < cog | all >")
     async def unload(self, ctx: commands.Context, *, cog: str):
         """Unloads the specified cogs"""
 
@@ -146,7 +148,7 @@ class Owner(commands.Cog):
         if isinstance(body[-1], ast.With):
             insert_returns(body[-1].body)
 
-    @commands.command()
+    @commands.command(usage="eval <code>")
     @commands.is_owner()
     async def eval(self, ctx: commands.Context, *, command: str):
         """Evaluates the provided code"""
@@ -167,23 +169,23 @@ class Owner(commands.Cog):
         self.insert_returns(body)
 
         env = {
-            'discord': discord,
-            'commands': commands,
-            'asyncio': asyncio,
-            'time': time,
-            'os': os,
-            'ctx': ctx,
-            'bot': self.bot,
-            '__import__': __import__           # Your variables go here
+            "discord": discord,
+            "commands": commands,
+            "asyncio": asyncio,
+            "time": time,
+            "os": os,
+            "ctx": ctx,
+            "bot": self.bot,
+            "__import__": __import__,  # Your variables go here
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
 
-        result = (await eval(f"{fn_name}()", env))
+        result = await eval(f"{fn_name}()", env)
 
         await ctx.message.add_reaction(self.bot.e.check)
         await ctx.send(result)
 
-    @commands.command()
+    @commands.command(usage="lookup <user>")
     @commands.is_owner()
     async def lookup(self, ctx: commands.Context, user: discord.User):
         """Returns all the bot's mutual guild with the provided user"""
@@ -199,18 +201,22 @@ class Owner(commands.Cog):
         embed = discord.Embed(
             title=":mag_right: User Lookup",
             description=message if message else "No mutual guilds found",
-            color=self.bot.c.red
+            color=self.bot.c.red,
         )
 
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(usage="top_guilds")
     @commands.is_owner()
     async def top_guilds(self, ctx: commands.Context):
         """Returns the 10 most popular guilds"""
 
         message = ""
-        guilds = sorted(self.bot.guilds, key=(lambda guild: guild.member_count), reverse=True)[:10]
+        guilds = sorted(
+            self.bot.guilds,
+            key=(lambda guild: guild.member_count),
+            reverse=True,
+        )[:10]
 
         for index, guild in enumerate(guilds, 1):
             message += f"{index}. {guild.name} ({guild.member_count}) ``{guild.id}``\n"
@@ -218,14 +224,16 @@ class Owner(commands.Cog):
         embed = discord.Embed(
             title=":trophy: Top Guilds",
             description=message,
-            color=self.bot.c.red
+            color=self.bot.c.red,
         )
 
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(usage="botban <user> [reason]")
     @commands.is_owner()
-    async def botban(self, ctx: commands.Context, user: discord.User, reason: str = None):
+    async def botban(
+        self, ctx: commands.Context, user: discord.User, reason: str = None
+    ):
         """Bans the provided user from using the bot"""
 
         async with self.bot.database.acquire() as conn:
@@ -239,10 +247,12 @@ class Owner(commands.Cog):
 
         if getattr(error, "original"):
             if isinstance(error.original, BotBanError):
-                await ctx.send(f"{self.bot.e.cross} this user is already banned")
+                await ctx.send(
+                    f"{self.bot.e.cross} this user is already banned"
+                )
                 ctx.handled = True
 
-    @commands.command()
+    @commands.command(usage="unbotban <user>")
     @commands.is_owner()
     async def unbotban(self, ctx: commands.Context, user: discord.User):
         """Unbans the provided user and allows them to use the bot"""

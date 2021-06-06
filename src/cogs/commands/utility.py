@@ -80,7 +80,7 @@ class Utility(commands.Cog):
     def cog_unload(self):
         self.bot.help_command = self._original_help_command
 
-    @commands.command()
+    @commands.command(usage="ping")
     async def ping(self, ctx: commands.Context):
         """Returns the bot's latency"""
 
@@ -91,7 +91,7 @@ class Utility(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(usage="uptime")
     async def uptime(self, ctx: commands.Context):
         """Returns the bot's uptime"""
 
@@ -106,7 +106,7 @@ class Utility(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=["stats"])
+    @commands.command(aliases=["stats"], usage="statistics")
     async def statistics(self, ctx: commands.Context):
         """Returns various statistics related to the bot"""
 
@@ -189,7 +189,7 @@ class Utility(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(usage="links")
     async def links(self, ctx: commands.Context):
         """Returns a list of relevant links"""
 
