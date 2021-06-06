@@ -25,7 +25,7 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
 
             for command in command_objects:
                 try:
-                    if await command.can_run(self.context):
+           s         if await command.can_run(self.context):
 
                         commands.append(f"``{command.name}``")
                 except:
@@ -37,7 +37,7 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
                 message += f"**{cog_name}**\n{' '.join(commands)}\n\n"
 
         embed = discord.Embed(
-            title=":wrench: Command Help",
+            title=":tools: Command Help",
             description=message,
             color=self.context.bot.c.red,
         )
@@ -55,7 +55,7 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
 
         message = (
             f"**{self.context.prefix}{command.name} [{', '.join(command.aliases)}]**\n"
-            f"{command.help}\n\n**• Usage**\n{command.usage}"
+            f"{command.help}\n\n**• Usage**\n``{self.context.prefix}{command.usage}``"
         )
         embed = discord.Embed(
             description=message,
