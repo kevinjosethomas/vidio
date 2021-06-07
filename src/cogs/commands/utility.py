@@ -2,6 +2,7 @@ import arrow
 import psutil
 import discord
 from discord.ext import commands
+from discord_components import Button
 
 
 class CustomHelpCommand(commands.MinimalHelpCommand):
@@ -179,19 +180,22 @@ class Utility(commands.Cog):
     async def links(self, ctx: commands.Context):
         """Returns a list of relevant links"""
 
-        description = (
-            "Here are some useful links relevant to vidio -\n\n"
-            f"• [Invite]({self.bot.c.guild_invite})\n"
-            f"• [Support Server]({self.bot.c.guild_invite})\n"
-            "• [GitHub Repository](https://github.com/TrustedMercury/vidio)\n\n"
-            f"• [Statistics](https://statcord.com/bot/{self.bot.user.id})\n"
-            "• [DBL Page](https://top.gg/bot/689210550680682560)\n"
-            "• [DBL Vote](https://top.gg/bot/689210550680682560/vote)\n"
-        )
+        message = f"{self.bot.e.youtube} here are some cool links related to vidio -"
 
-        embed = discord.Embed(description=description, color=self.bot.c.red)
+        links = [
+            [
+                Button(label="Invite", style=5, url=self.bot.c.links.bot_invite),
+                Button(label="Support Server", style=5, url=self.bot.c.links.support_server_invite),
+                Button(label="Upvote", style=5, url=self.bot.c.links.dbl_vote),
+            ],
+            [
+                Button(label="Statistics", style=5, url=self.bot.c.links.statcord_page),
+                Button(label="DBL Page", style=5, url=self.bot.c.links.dbl_page),
+                Button(label="GitHub Repo", style=5, url=self.bot.c.links.github_repo),
+            ],
+        ]
 
-        await ctx.send(embed=embed)
+        await ctx.send(message, components=links)
 
 
 def setup(bot: commands.Bot):

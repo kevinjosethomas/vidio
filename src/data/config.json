@@ -3,5 +3,12 @@
   "default_prefix": "v.",
   "guild_id": 689210707232686158,
   "errors_channel_id": 737058501687378103,
-  "guild_invite": "https://discord.gg/ddgqsBQp5z"
+  "links": {
+    "bot_invite": "https://discord.com/api/oauth2/authorize?client_id=689210550680682560&permissions=2251672641&scope=bot",
+    "support_server_invite": "https://discord.gg/ddgqsBQp5z",
+    "github_repo": "https://github.com/trustedmercury/vidio",
+    "statcord_page": "https://statcord.com/bot/689210550680682560",
+    "dbl_page": "https://top.gg/bot/689210550680682560",
+    "dbl_vote": "https://top.gg/bot/689210550680682560/vote"
+  }
 }
