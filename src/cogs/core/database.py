@@ -39,7 +39,12 @@ class Database(commands.Cog):
 
         return [botban["botban_id"] for botban in botbans]
 
-    async def add_guild(self, conn: asyncpg.Connection, guild_id: int, prefix: typing.Union[str, None] = None):
+    async def add_guild(
+        self,
+        conn: asyncpg.Connection,
+        guild_id: int,
+        prefix: typing.Union[str, None] = None,
+    ):
         """Adds a guild to the database"""
 
         prefix = prefix if prefix else self.bot.c.default_prefix
@@ -48,19 +53,13 @@ class Database(commands.Cog):
         if guild:
             raise GuildError("Provided guild already exists")
 
-        await conn.execute(
-            "INSERT INTO guilds (id, prefix) VALUES ($1, $2)",
-            guild_id, prefix
-        )
+        await conn.execute("INSERT INTO guilds (id, prefix) VALUES ($1, $2)", guild_id, prefix)
         self.bot.cache.prefixes[guild_id] = prefix
 
     async def get_guild(self, guild_id: int) -> typing.Union[asyncpg.Record, None]:
         """Fetches a guild from the database"""
 
-        guild = await self.db.fetchrow(
-            "SELECT * FROM guilds WHERE guild_id = $1",
-            guild_id
-        )
+        guild = await self.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", guild_id)
 
         return guild
 
@@ -78,7 +77,8 @@ class Database(commands.Cog):
 
         await conn.execute(
             "UPDATE guilds SET prefix = $1 WHERE guild_id = $2",
-            prefix, guild_id
+            prefix,
+            guild_id,
         )
         self.bot.cache.prefixes[guild_id] = prefix
 
@@ -89,10 +89,14 @@ class Database(commands.Cog):
         if not guild:
             raise GuildError("Provided guild does not exist")
 
-        await conn.execute(
-            "DELETE FROM guilds WHERE guild_id = $1",
-            guild_id
-        )
+        await conn.execute("DELETE FROM guilds WHERE guild_id = $1", guild_id)
+
+    async def get_channel(self, channel_id: int):
+        """Gets a channel from the database"""
+
+        channel = await self.db.fetchrow("SELECT * FROM channels WHERE channel_id = $1", channel_id)
+
+        return channel
 
     async def add_botban(self, conn: asyncpg.Connection, user_id: int, reason: str = None):
         """Adds a botban to the database"""
@@ -102,7 +106,8 @@ class Database(commands.Cog):
 
         await conn.execute(
             "INSERT INTO botbans (botban_id, reason, banned_at) VALUES ($1, $2, NOW())",
-            user_id, reason
+            user_id,
+            reason,
         )
         self.bot.cache.botbans.append(user_id)
 
@@ -114,10 +119,7 @@ class Database(commands.Cog):
     async def get_botban(self, user_id: int):
         """Gets a botban from the database"""
 
-        botban = await self.db.fetchrow(
-            "SELECT * FROM botbans WHERE botban_id = $1",
-            user_id
-        )
+        botban = await self.db.fetchrow("SELECT * FROM botbans WHERE botban_id = $1", user_id)
 
         return botban
 
@@ -127,12 +129,8 @@ class Database(commands.Cog):
         if not await self.check_botbanned(user_id):
             raise BotBanError("Provided botban does not exist")
 
-        await conn.execute(
-            "DELETE FROM botbans WHERE botban_id = $1",
-            user_id
-        )
+        await conn.execute("DELETE FROM botbans WHERE botban_id = $1", user_id)
         self.bot.cache.botbans.remove(user_id)
-
 
 
 def setup(bot: commands.Bot):

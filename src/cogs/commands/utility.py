@@ -25,7 +25,7 @@ class CustomHelpCommand(commands.MinimalHelpCommand):
 
             for command in command_objects:
                 try:
-           s         if await command.can_run(self.context):
+                    if await command.can_run(self.context):
 
                         commands.append(f"``{command.name}``")
                 except:
@@ -117,32 +117,20 @@ class Utility(commands.Cog):
         command_count = self.bot.command_count
         commands_minute = round(
             self.bot.command_count
-            / (
-                (
-                    arrow.now("America/Toronto") - self.bot.started_at
-                ).total_seconds()
-                / 60
-            ),
+            / ((arrow.now("America/Toronto") - self.bot.started_at).total_seconds() / 60),
             2,
         )
         vote_count = self.bot.votes
         votes_hour = round(
             self.bot.votes
-            / (
-                (
-                    arrow.now("America/Toronto") - self.bot.started_at
-                ).total_seconds()
-                / 3600
-            ),
+            / ((arrow.now("America/Toronto") - self.bot.started_at).total_seconds() / 3600),
             2,
         )
 
         # System Information
         process = psutil.Process()
         with process.oneshot():
-            memory = (
-                str(round(process.memory_full_info().uss / 1000000)) + "mb"
-            )
+            memory = str(round(process.memory_full_info().uss / 1000000)) + "mb"
             threads = process.num_threads()
             process.cpu_percent(interval=0.1)
 
@@ -181,9 +169,7 @@ class Utility(commands.Cog):
             f"with a response time of **{ping}**\n\n"
         )
 
-        description += (
-            f"[More Stats](https://statcord.com/bot/{self.bot.user.id})"
-        )
+        description += f"[More Stats](https://statcord.com/bot/{self.bot.user.id})"
 
         embed = discord.Embed(description=description, color=self.bot.c.red)
 
