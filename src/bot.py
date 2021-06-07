@@ -69,7 +69,7 @@ asyncio.get_event_loop().run_until_complete(setup_database())
 # Register data globally
 bot.c = CONFIG
 bot.e = EMOJIS
-bot.g = GENRES
+bot.genres = GENRES
 bot.STATCORD_KEY = STATCORD_KEY
 
 
@@ -79,9 +79,7 @@ async def global_bot_check(ctx: commands.Context) -> bool:
     """Global bot check to block invalid commands"""
 
     if not ctx.bot.is_ready():
-        await ctx.send(
-            f"{bot.e.loading} gimme a minute, I'm still starting up"
-        )
+        await ctx.send(f"{bot.e.loading} gimme a minute, I'm still starting up")
         return False
 
     return (

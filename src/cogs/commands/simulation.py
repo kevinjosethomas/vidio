@@ -1,6 +1,7 @@
-from typing import Callable
 import discord
+from typing import Callable
 from discord.ext import commands
+from discord_components import Button
 
 
 class Simulation(commands.Cog):
@@ -115,6 +116,36 @@ class Simulation(commands.Cog):
         ).content
 
         print(description)
+
+        genre_message = (
+            f"{self.bot.e.youtube} **Channel Genre** 3/3\n"
+            "Choose a topic that most accurately describes your channel!\n"
+            "You can change this later too."
+        )
+
+        genre_buttons = []
+        genre_row = []
+        for index, genre in enumerate(self.bot.genres, 1):
+            genre_row.append(Button(label=genre.name, emoji=genre.emoji))
+            if index % 5 == 0:
+                genre_buttons.append(genre_row)
+                genre_row = []
+
+        if genre_row:
+            genre_buttons.append(genre_row)
+
+        sent_genre_message = await ctx.author.send(genre_message, components=genre_buttons)
+
+        def check_button(interaction):
+            """Validates DM channel wait_for event"""
+
+            return (
+                interaction.user.id == ctx.author.id
+                and interaction.message.id == sent_genre_message.id
+            )
+
+        interaction = await self.bot.wait_for("button_click", check=check_button)
+        print(interaction.component.label)
 
 
 def setup(bot: commands.Cog):
