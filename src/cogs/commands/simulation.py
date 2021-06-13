@@ -1,3 +1,4 @@
+import arrow
 import discord
 from typing import Callable
 from discord.ext import commands
@@ -169,11 +170,24 @@ class Simulation(commands.Cog):
     async def channel(self, ctx: commands.Context, user: discord.User = None):
         """Returns data about the provided user's channel"""
 
-        user = user.id if user else ctx.author.id
+        user = user if user else ctx.author
+        channel = await self.database.get_channel(user.id)
 
-        channel = await self.database.get_channel(user)
+        description = (
+            f"{channel.description}\n\n"
+            f"**Subscribers:** {channel.subscribers}\n"
+            f"**Total views:** {channel.views}\n"
+            f"**Genre:** {channel.genre}\n"
+            f"Joined {arrow.get(channel.created_at).format('MMMM DD, YYYY')}\n\n"
+            f"👤 **Inventory**\n"
+            f"⌬ {channel.balance} dollars\n"
+        )
 
-        print(channel)
+        embed = discord.Embed(description=description, color=self.bot.c.red)
+        embed.set_author(name=channel.name, icon_url=user.avatar_url)
+        embed.set_thumbnail(url=user.avatar_url)
+
+        await ctx.send(embed=embed)
 
 
 def setup(bot: commands.Cog):
