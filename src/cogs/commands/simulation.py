@@ -85,8 +85,6 @@ class Simulation(commands.Cog):
 
         name = (await self.validate_wait(ctx, name_message, 1, check_name)).content
 
-        print(name)
-
         description_message = (
             f"{self.bot.e.youtube} **Channel Description** 2/3\n"
             "Provide a cool description for your channel!\n"
@@ -114,8 +112,6 @@ class Simulation(commands.Cog):
         description = (
             await self.validate_wait(ctx, description_message, 1, check_description)
         ).content
-
-        print(description)
 
         genre_message = (
             f"{self.bot.e.youtube} **Channel Genre** 3/3\n"
@@ -145,7 +141,21 @@ class Simulation(commands.Cog):
             )
 
         interaction = await self.bot.wait_for("button_click", check=check_button)
-        print(interaction.component.label)
+
+        genre = interaction.component.label
+        await interaction.respond(type=6)
+
+        new_genre_buttons = []
+        for genre_row in genre_buttons:
+            new_genre_row = []
+            for genre_button in genre_row:
+                if genre_button.label == genre:
+                    genre_button.style = 3
+                new_genre_row.append(genre_button)
+
+            new_genre_buttons.append(new_genre_row)
+
+        await sent_genre_message.edit(genre_message, components=new_genre_buttons)
 
 
 def setup(bot: commands.Cog):
