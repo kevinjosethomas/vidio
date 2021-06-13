@@ -114,20 +114,12 @@ class Database(commands.Cog):
     async def add_botban(self, conn: asyncpg.Connection, user_id: int, reason: str = None):
         """Adds a botban to the database"""
 
-        if await self.check_botbanned(user_id):
-            raise BotBanError("Provided botban already exists")
-
         await conn.execute(
             "INSERT INTO botbans (botban_id, reason, banned_at) VALUES ($1, $2, NOW())",
             user_id,
             reason,
         )
         self.bot.cache.botbans.append(user_id)
-
-    async def check_botbanned(self, user_id: int):
-        """Gets a botban from the database"""
-
-        return user_id in self.bot.cache.botbans
 
     async def get_botban(self, user_id: int):
         """Gets a botban from the database"""
@@ -138,9 +130,6 @@ class Database(commands.Cog):
 
     async def remove_botban(self, conn: asyncpg.Connection, user_id: int):
         """Removes a botban from the database"""
-
-        if not await self.check_botbanned(user_id):
-            raise BotBanError("Provided botban does not exist")
 
         await conn.execute("DELETE FROM botbans WHERE botban_id = $1", user_id)
         self.bot.cache.botbans.remove(user_id)

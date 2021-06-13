@@ -231,45 +231,31 @@ class Owner(commands.Cog):
 
     @commands.command(usage="botban <user> [reason]")
     @commands.is_owner()
-    async def botban(
-        self, ctx: commands.Context, user: discord.User, reason: str = None
-    ):
+    async def botban(self, ctx: commands.Context, user: discord.User, reason: str = None):
         """Bans the provided user from using the bot"""
+
+        if ctx.author.id in self.bot.cache.botbans:
+            await ctx.send(f"{self.bot.e.cross} this user is already banned")
+            return
 
         async with self.bot.database.acquire() as conn:
             await self.database.add_botban(conn, user.id, reason)
 
         await ctx.message.add_reaction(self.bot.e.check)
 
-    @botban.error
-    async def botban_error(self, ctx: commands.Context, error: Exception):
-        """Error handler for botban command"""
-
-        if getattr(error, "original"):
-            if isinstance(error.original, BotBanError):
-                await ctx.send(
-                    f"{self.bot.e.cross} this user is already banned"
-                )
-                ctx.handled = True
-
     @commands.command(usage="unbotban <user>")
     @commands.is_owner()
     async def unbotban(self, ctx: commands.Context, user: discord.User):
         """Unbans the provided user and allows them to use the bot"""
 
+        if not ctx.author.id in self.bot.cache.botbans:
+            await ctx.send(f"{self.bot.e.cross} this user is not banned")
+            return
+
         async with self.bot.database.acquire() as conn:
             await self.database.remove_botban(conn, user.id)
 
         await ctx.message.add_reaction(self.bot.e.check)
-
-    @unbotban.error
-    async def botban_error(self, ctx: commands.Context, error: Exception):
-        """Error handler for unbotban command"""
-
-        if getattr(error, "original"):
-            if isinstance(error.original, BotBanError):
-                await ctx.send(f"{self.bot.e.cross} this user is not banned")
-                ctx.handled = True
 
 
 def setup(bot: commands.Bot):
