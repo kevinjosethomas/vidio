@@ -3,6 +3,7 @@ import asyncpg
 from discord.ext import commands
 
 from ..exceptions import *
+from ..models import Channel
 
 
 class Database(commands.Cog):
@@ -91,12 +92,24 @@ class Database(commands.Cog):
 
         await conn.execute("DELETE FROM guilds WHERE guild_id = $1", guild_id)
 
-    async def get_channel(self, channel_id: int):
+    async def get_channel(self, channel_id: int) -> Channel:
         """Gets a channel from the database"""
 
         channel = await self.db.fetchrow("SELECT * FROM channels WHERE channel_id = $1", channel_id)
 
-        return channel
+        return Channel(
+            channel_id=channel.get("channel_id"),
+            banner=channel.get("banner"),
+            name=channel.get("name"),
+            vanity=channel.get("vanity"),
+            description=channel.get("description"),
+            awards=channel.get("awards"),
+            subscribers=channel.get("subscribers"),
+            balance=channel.get("balance"),
+            views=channel.get("views"),
+            genre=channel.get("genre"),
+            created_at=channel.get("created_at"),
+        )
 
     async def add_channel(
         self, conn: asyncpg.Connection, channel_id: int, name: str, description: str, genre: str
