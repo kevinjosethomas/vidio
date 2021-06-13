@@ -165,6 +165,16 @@ class Simulation(commands.Cog):
             f"{self.bot.e.check} successfully created your channel, use ``{ctx.prefix}channel`` to check it out!"
         )
 
+    @commands.command(usage="channel [user]", aliases=["c", "profile", "p"])
+    async def channel(self, ctx: commands.Context, user: discord.User = None):
+        """Returns data about the provided user's channel"""
+
+        user = user.id if user else ctx.author.id
+
+        channel = await self.database.get_channel(user)
+
+        print(channel)
+
 
 def setup(bot: commands.Cog):
     bot.add_cog(Simulation(bot))

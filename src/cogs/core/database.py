@@ -97,6 +97,9 @@ class Database(commands.Cog):
 
         channel = await self.db.fetchrow("SELECT * FROM channels WHERE channel_id = $1", channel_id)
 
+        if not channel:
+            return None
+
         return Channel(
             channel_id=channel.get("channel_id"),
             banner=channel.get("banner"),

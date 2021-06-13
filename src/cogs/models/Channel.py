@@ -1,7 +1,7 @@
 class Channel:
     """Stores instance of a vidio channel"""
 
-    def __init__(**kwargs):
+    def __init__(self, **kwargs):
         """Initializes Channel object"""
 
         self.channel_id = kwargs.get("channel_id")
