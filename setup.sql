@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS channels (
   name             VARCHAR NOT NULL,
   vanity           VARCHAR,
   description      TEXT NOT NULL,
-  awards           SMALLINT[],
+  awards           SMALLINT[] DEFAULT ARRAY[]::SMALLINT[],
   subscribers      INT NOT NULL DEFAULT 0,
   balance          BIGINT NOT NULL DEFAULT 0,
   views            BIGINT NOT NULL DEFAULT 0,
