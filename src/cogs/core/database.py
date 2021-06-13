@@ -98,7 +98,18 @@ class Database(commands.Cog):
 
         return channel
 
-    async def add_channel(self, )
+    async def add_channel(
+        self, conn: asyncpg.Connection, channel_id: int, name: str, description: str, genre: str
+    ):
+        """Adds a channel to the database"""
+
+        await conn.execute(
+            "INSERT INTO channels (channel_id, name, description, genre, created_at) VALUES ($1, $2, $3, $4, NOW())",
+            channel_id,
+            name,
+            description,
+            genre,
+        )
 
     async def add_botban(self, conn: asyncpg.Connection, user_id: int, reason: str = None):
         """Adds a botban to the database"""

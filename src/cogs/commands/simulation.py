@@ -56,6 +56,7 @@ class Simulation(commands.Cog):
         channel = await self.database.get_channel(ctx.author.id)
         if channel:
             await ctx.send(f"{self.bot.e.cross} you cannot create more than one channel")
+            return
 
         await ctx.send(f"{self.bot.e.check} starting channel creation process in your DMs")
 
@@ -156,6 +157,13 @@ class Simulation(commands.Cog):
             new_genre_buttons.append(new_genre_row)
 
         await sent_genre_message.edit(genre_message, components=new_genre_buttons)
+
+        async with self.bot.database.acquire() as conn:
+            await self.database.add_channel(conn, ctx.author.id, name, description, genre)
+
+        await ctx.author.send(
+            f"{self.bot.e.check} successfully created your channel, use ``{ctx.prefix}channel`` to check it out!"
+        )
 
 
 def setup(bot: commands.Cog):
