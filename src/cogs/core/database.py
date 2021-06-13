@@ -98,6 +98,8 @@ class Database(commands.Cog):
 
         return channel
 
+    async def add_channel(self, )
+
     async def add_botban(self, conn: asyncpg.Connection, user_id: int, reason: str = None):
         """Adds a botban to the database"""
 

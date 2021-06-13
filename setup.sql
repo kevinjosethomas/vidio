@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS channels (
   channel_id       BIGINT PRIMARY KEY,
   banner           VARCHAR,
   name             VARCHAR,
-  username         VARCHAR,
+  vanity           VARCHAR,
   description      TEXT,
   awards           JSON,
   subscribers      INT,
