@@ -39,10 +39,11 @@ CREATE TABLE IF NOT EXISTS videos (
 );
 
 CREATE TABLE IF NOT EXISTS items (
-  item_id          SERIAL PRIMARY KEY,
+  item_id          INT NOT NULL,
   channel_id       BIGINT REFERENCES channels (channel_id),
   name             VARCHAR NOT NULL,
-  count            INT NOT NULL DEFAULT 0
+  count            INT NOT NULL DEFAULT 1,
+  tradable         BOOLEAN DEFAULT false
 );
 
 CREATE TABLE IF NOT EXISTS guilds (

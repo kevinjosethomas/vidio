@@ -173,6 +173,10 @@ class Simulation(commands.Cog):
         user = user if user else ctx.author
         channel = await self.database.get_channel(user.id)
 
+        if not channel:
+            await ctx.send(f"{self.bot.e.cross} you do not have a channel")
+            return
+
         description = (
             f"{channel.description}\n\n"
             f"**Subscribers:** {channel.subscribers}\n"
