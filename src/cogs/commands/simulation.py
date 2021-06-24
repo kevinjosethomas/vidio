@@ -174,7 +174,10 @@ class Simulation(commands.Cog):
         channel = await self.database.get_channel(user.id)
 
         if not channel:
-            await ctx.send(f"{self.bot.e.cross} you do not have a channel")
+            if user.id == ctx.author.id:
+                await ctx.send(f"{self.bot.e.cross} you do not own a channel")
+            else:
+                await ctx.send(f"{self.bot.e.cross} this user does not own a channel")
             return
 
         description = (
