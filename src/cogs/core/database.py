@@ -1,5 +1,6 @@
 import typing
 import asyncpg
+import classyjson
 from discord.ext import commands
 
 from ..exceptions import *
@@ -39,6 +40,27 @@ class Database(commands.Cog):
         botbans = await self.db.fetch("SELECT * FROM botbans")
 
         return [botban["botban_id"] for botban in botbans]
+
+    async def parse_items(self, items: list) -> list:
+        """Parses a list of items"""
+
+        parsed_items = []
+
+        for item in items:
+            i = self.bot.i[str(item["item_id"])]
+            parsed_items.append(
+                classyjson.classify(
+                    {
+                        "id": item["item_id"],
+                        "name": i.name,
+                        "price": i.price,
+                        "count": item["count"],
+                        "tradable": i.tradable,
+                    }
+                )
+            )
+
+        return parsed_items
 
     async def add_guild(
         self,
@@ -96,6 +118,7 @@ class Database(commands.Cog):
         """Gets a channel from the database"""
 
         channel = await self.db.fetchrow("SELECT * FROM channels WHERE channel_id = $1", channel_id)
+        items = await self.db.fetch("SELECT * FROM items WHERE channel_id = $1", channel_id)
 
         if not channel:
             return None
@@ -112,6 +135,7 @@ class Database(commands.Cog):
             views=channel.get("views"),
             genre=channel.get("genre"),
             created_at=channel.get("created_at"),
+            items=(await self.parse_items(list(items))),
         )
 
     async def add_channel(

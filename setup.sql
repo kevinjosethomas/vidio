@@ -41,9 +41,7 @@ CREATE TABLE IF NOT EXISTS videos (
 CREATE TABLE IF NOT EXISTS items (
   item_id          INT NOT NULL,
   channel_id       BIGINT REFERENCES channels (channel_id),
-  name             VARCHAR NOT NULL,
-  count            INT NOT NULL DEFAULT 1,
-  tradable         BOOLEAN DEFAULT false
+  count            INT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS guilds (

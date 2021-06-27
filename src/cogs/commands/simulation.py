@@ -187,8 +187,13 @@ class Simulation(commands.Cog):
             f"**Genre:** {channel.genre}\n"
             f"Joined {arrow.get(channel.created_at).format('MMMM DD, YYYY')}\n\n"
             f"👤 **Inventory**\n"
-            f"⌬ {channel.balance} dollars\n"
+            f"⌬ {channel.balance} coins\n"
         )
+
+        for item in channel.items:
+            description += (
+                f"``{item.count}x`` {item.name} {'(⌬  )' + item.price if item.tradable else ''}\n"
+            )
 
         embed = discord.Embed(description=description, color=self.bot.c.red)
         embed.set_author(name=channel.name, icon_url=user.avatar_url)

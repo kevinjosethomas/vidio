@@ -15,3 +15,4 @@ class Channel:
         self.views = kwargs.get("views", 0)
         self.genre = kwargs.get("genre")
         self.created_at = kwargs.get("created_at")
+        self.items = kwargs.get("items")

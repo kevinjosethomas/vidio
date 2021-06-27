@@ -24,6 +24,9 @@ with open("data/config.json", "r", encoding="utf8") as _config:
 with open("data/emojis.json", "r", encoding="utf8") as _emojis:
     EMOJIS = classyjson.load(_emojis)
 
+with open("data/items.json", "r", encoding="utf8") as _items:
+    ITEMS = classyjson.load(_items)
+
 with open("data/genres.json", "r", encoding="utf8") as _genres:
     GENRES = classyjson.load(_genres)
 
@@ -69,6 +72,7 @@ asyncio.get_event_loop().run_until_complete(setup_database())
 # Register data globally
 bot.c = CONFIG
 bot.e = EMOJIS
+bot.i = ITEMS
 bot.genres = GENRES
 bot.STATCORD_KEY = STATCORD_KEY
 
