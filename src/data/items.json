@@ -1,7 +1,82 @@
 {
   "1": {
     "name": "test item",
+    "price": 999999999,
+    "tradable": false
+  },
+  "2": {
+    "name": "crappy laptop",
     "price": 0,
+    "tradable": false
+  },
+  "3": {
+    "name": "decent laptop",
+    "price": 1000,
+    "tradable": false
+  },
+  "4": {
+    "name": "good pc",
+    "price": 5000,
+    "tradable": false
+  },
+  "5": {
+    "name": "beast pc",
+    "price": 10000,
+    "tradable": false
+  },
+  "6": {
+    "name": "movie maker",
+    "price": 0,
+    "tradable": false
+  },
+  "7": {
+    "name": "free filmora",
+    "price": 500,
+    "tradable": false
+  },
+  "8": {
+    "name": "adobe premiere pro",
+    "price": 1000,
+    "tradable": false
+  },
+  "9": {
+    "name": "personal editor",
+    "price": 100000,
+    "tradable": false
+  },
+  "10": {
+    "name": "phone camera",
+    "price": 0,
+    "tradable": false
+  },
+  "11": {
+    "name": "bandicam",
+    "price": 100,
+    "tradable": false
+  },
+  "12": {
+    "name": "obs studio",
+    "price": 1000,
+    "tradable": false
+  },
+  "13": {
+    "name": "crappy phone mic",
+    "price": 0,
+    "tradable": false
+  },
+  "14": {
+    "name": "default laptop mic",
+    "price": 100,
+    "tradable": false
+  },
+  "15": {
+    "name": "rode mic",
+    "price": 1000,
+    "tradable": false
+  },
+  "16": {
+    "name": "blue yeti mic",
+    "price": 5000,
     "tradable": false
   }
 }
