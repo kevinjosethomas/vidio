@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
+const moment = require("moment");
 const { Client, Collection, Intents } = require("discord.js");
 
 dotenv.config();
@@ -36,6 +37,7 @@ client.on("interactionCreate", async (interaction) => {
 
 client.once("ready", () => {
   console.log("hello!");
+  client.startup = moment();
 });
 
 client.login(process.env.TOKEN);
