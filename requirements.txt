@@ -1,4 +1,0 @@
-python-dotenv
-discord.py
-asyncpg
-dblpy
