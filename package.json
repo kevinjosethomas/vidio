@@ -1,0 +1,10 @@
+{
+  "name": "vidio",
+  "version": "1.0.0",
+  "description": "🎙️ A YouTube Simulation Discord Bot",
+  "main": "build/index.js",
+  "repository": "https://github.com/TrustedMercury/vidio.git",
+  "author": "Kevin Thomas <kevin.jt2007@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
