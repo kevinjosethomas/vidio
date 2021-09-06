@@ -9,7 +9,7 @@
   "private": false,
   "scripts": {
     "dev": "tsc --build && nodemon build/bot.js",
-    "commands": "tsc --build && nodemon build/commands.js"
+    "commands": "tsc --build && node build/commands.js"
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
