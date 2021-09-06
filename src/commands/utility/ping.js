@@ -1,8 +1,8 @@
 const { MessageEmbed } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-const { ping } = require.main.require("./data/emojis");
 const { red } = require.main.require("./data/config");
+const { ping } = require.main.require("./data/emojis");
 
 const data = new SlashCommandBuilder()
   .setName("ping")
