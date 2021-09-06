@@ -2,13 +2,19 @@
   "name": "vidio",
   "version": "1.0.0",
   "description": "🎙️ A YouTube Simulation Discord Bot",
-  "main": "build/index.js",
+  "main": "src/bot.ts",
   "repository": "https://github.com/TrustedMercury/vidio.git",
   "author": "Kevin Thomas <kevin.jt2007@gmail.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "dev": "tsc --build && nodemon build/bot.js"
+  },
   "dependencies": {
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
