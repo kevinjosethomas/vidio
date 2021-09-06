@@ -8,8 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "nodemon src/bot.js",
-    "commands": "node src/commands.js"
+    "dev": "node src/commands.js && nodemon src/bot.js"
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
